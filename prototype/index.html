@@ -16,7 +16,7 @@
 
 		<link rel="stylesheet" href="css/reveal.css">
 		<link rel="stylesheet" href="css/theme/black.css" id="theme">
-
+	<link rel="stylesheet" href="css/collapse.css">
 		<!-- Code syntax highlighting -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
 
@@ -40,6 +40,7 @@
 
 			<!-- Any section element inside of this container is displayed as a slide -->
 			<div class="slides">
+
 				<section>
 					<h1>How to Laser Cut</h1>
 				
@@ -51,21 +52,33 @@
 				<section>
 					<h2>Create Geometry</h2>
 					<p><font size="6">
-						<li>Vector lines must be used if desired outcome is to cut materials 
-						<br>
-						<img src="http://zhinii.github.io/prototype/21.JPG">
+
 						
-						(see example)</li>
+						<li>
+						Vector lines must be used if desired outcome is to cut materials 
+						<br>
+							<button id='button'>show/hide</button>
+
+						<!-- A `div` to hold our photo -->
+						<div id='photo'></div>
+						
+						</li>
+						
+						
 						<li>Vector lines can also be used fo engraving linework 
-						<br>(see Example)</li>
+						<br><img src="images/22.JPG">
+						</li>
+						
 						<li>Greyscale Images can be used to 'raster' and image onto material 
-						<br>(see example)</li>
+						<br><img src="images/23.JPG">
+						</li>
+						
 						</font>
 						</p>
 					
 				</section>
 
-				<!-- Example of nested vertical slides -->
+				
 				<section>
 					
 						<h2>Organize Geometry For Material</h2>
@@ -191,6 +204,7 @@
 
 		<script src="lib/js/head.min.js"></script>
 		<script src="js/reveal.js"></script>
+		<script src="js/collapse.js"></script>
 
 		<script>
 
