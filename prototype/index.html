@@ -16,7 +16,9 @@
 
 		<link rel="stylesheet" href="css/reveal.css">
 		<link rel="stylesheet" href="css/theme/black.css" id="theme">
+
 	<link rel="stylesheet" href="css/collapse.css">
+
 		<!-- Code syntax highlighting -->
 		<link rel="stylesheet" href="lib/css/zenburn.css">
 
@@ -50,17 +52,18 @@
 				</section>
 
 				<section>
+				<ul>
 					<h2>Create Geometry</h2>
 					<p><font size="6">
 
-						
 						<li>
 						Vector lines must be used if desired outcome is to cut materials 
 						<br>
-							<button id='button'>show/hide</button>
 
-						<!-- A `div` to hold our photo -->
-						<div id='photo'></div>
+
+						<button id='button'>show/hide</button>
+				
+						<center><div id='photo'></div></center>
 						
 						</li>
 						
@@ -75,11 +78,11 @@
 						
 						</font>
 						</p>
-					
+					</ul>
 				</section>
 
 				
-				<section>
+				<section><ul>
 					
 						<h2>Organize Geometry For Material</h2>
 						<font size="6">
@@ -91,7 +94,7 @@
 					
 				</section>
 
-				<section>
+				<section><ul>
 					
 				<h2>Import/Copy into Laser Template</h2>
 						<font size="6">
@@ -100,9 +103,9 @@
 						<li>Import or copy past original file into laser template file
 						<br>(see example)</li>
 						</font>
-				</section>
+				</ul></section>
 
-				<section>
+				<section><ul>
 					<h2>Specify Properties</h2>
 						<font size="6">
 						<li>Place Cut lines on the same layer, verify their properties match a sample line from template file
@@ -112,9 +115,9 @@
 						<li>Place greyscale images on their own layer, verify the layer color is 'black'
 						<br>(see example)</li>
 						</font>
-				</section>
+				</ul></section>
 
-				<section>
+				<section><ul>
 					<h2>Print Properties</h2>
 						<font size="6">
 						<li>Click File -> Print
@@ -128,9 +131,9 @@
 						<li>Specify whether to use one or two laser tubes(if more than one is available)
 						<br>(see example)</li>
 						</font>
-				</section>
+				</ul></section>
 
-				<section >
+				<section ><ul>
 					<h2>Print Properties Continued</h2>
 						<font size="6">
 						<li>Select 'window' from 'view and output scale
@@ -140,9 +143,9 @@
 						<li>Verify the print preview is correct (print preview is a representation of the laser bed)
 						<br>(see example)</li>
 						</font>
-				</section>
+				</ul></section>
 
-				<section>
+				<section><ul>
 					<h2>Open UCP Software</h2>
 						<font size="6">
 						<li>Click on the desktop icon, Menu Icon or use alt+tab to open the UCP software
@@ -152,27 +155,27 @@
 					
 						</font>
 				
-				</section>
+				</ul></section>
 
-				<section>
+				<section><ul>
 				<h2>Turn Laser On</h2>
 						<font size="6">
 						<li>Swipe Harvard ID Card in Card Reader to turn Laser on
 						<br>(see example, 3d model)</li>
 						
 						</font>
-				</section>
+				</ul></section>
 				
-				<section>
+				<section><ul>
 				<h2>Materials Placement</h2>
 						<font size="6">
 						<li>Place Material in the laser in the same orientation as drawn.
 						<br>(see example, 3d model)</li>
 						
 						</font>
-				</section>
+				</ul></section>
 				
-				<section>
+				<section><ul>
 				<h2>Focus Lens</h2>
 						<font size="6">
 						<li>On laser control panel, Press the Focus button
@@ -184,9 +187,9 @@
 						<br>(see example, 3d model)</li>
 						
 						</font>
-				</section>
+				</ul></section>
 			
-				<section>
+				<section><ul>
 				<h2>Press Play</h2>
 						<font size="6">
 						<li>Open UCP software and press the green play button.
@@ -194,7 +197,7 @@
 						<li>Remove material and throw offcuts/scraps in trash.
 						<br>(see example, 3d model)</li>
 						</font>
-				</section>
+				</ul></section>
 				
 
 
@@ -204,10 +207,21 @@
 
 		<script src="lib/js/head.min.js"></script>
 		<script src="js/reveal.js"></script>
-		<script src="js/collapse.js"></script>
+		
 
 		<script>
+		window.addEventListener('load', function() {
+			// Grab the photo element
+			var photo = document.getElementById('photo');
 
+			// Grab the event listener
+			var button = document.getElementById('button');
+
+			button.addEventListener('click', function(){ // When we click the button
+			  // Toggle `hidden` as a class for the photo, enabling (or disabling) the `display: none` rule
+			  photo.classList.toggle('hidden');
+			});
+		});
 			// Full list of configuration options available at:
 			// https://github.com/hakimel/reveal.js#configuration
 			Reveal.initialize({

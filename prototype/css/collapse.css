@@ -1,9 +1,8 @@
-
 #photo {
   /*   Grabbed a random photo online and set the width and height to the width and height of the photo */
   width: 550px;
   height: 412px;
-  background: url(images/21.jpg);
+  background: url(../images/21.jpg);
 }
 
 .hidden {
@@ -14,5 +13,5 @@
 button {
   /*   Some styling of the button to make it bit easier to see */
   font-size: 1em;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
