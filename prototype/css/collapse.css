@@ -2,7 +2,7 @@
   /*   Grabbed a random photo online and set the width and height to the width and height of the photo */
   width: 550px;
   height: 412px;
-  background: url(./images/21.jpg);
+  background: url(/images/21.jpg);
 }
 
 .hidden {
