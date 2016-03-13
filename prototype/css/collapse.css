@@ -3,6 +3,8 @@
   width: 550px;
   height: 412px;
   background: url(../images/21.JPG);
+   style="display:none
+
 }
 
 .hidden {
@@ -14,4 +16,13 @@ button {
   /*   Some styling of the button to make it bit easier to see */
   font-size: 1em;
   margin-bottom: 8px;
+}
+
+
+
+.fragment.current-visible.visible:not(.current-fragment) {
+    display: none;
+    height:0px;
+    line-height: 0px;
+    font-size: 0px;
 }
