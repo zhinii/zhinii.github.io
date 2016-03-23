@@ -12,6 +12,7 @@
 
 <body>
 
+<!--menu icons to hide/reveal-->
 
 <div id='clicker'>
 <a href="javascript: void(0)" onclick="toggle_visibility('menu');">
@@ -20,18 +21,68 @@
 </a>
 </div>
 
+<!--menu list-->
 
     <div id='hider'>
 
    <ul id="menu">
-   <li>
-   <a href="javascript: void(0)" id="images/21.JPG" onclick="changeImage(this.id)">Step 1</a></li>
-   <li><a href="javascript: void(0)" id="images/22.JPG" onclick="changeImage(this.id)">Step 2</a></li>
-   <li><a href="javascript: void(0)" id="images/23.JPG" onclick="changeImage(this.id)">Step 3</a></li>
-</ul>  
    
+ <li> <a href="#" onclick="toggleVisibility('Menu1');">Menu1</a>
+  <li><a href="#" onclick="toggleVisibility('Menu2');">Menu2</a>
+  <li><a href="#" onclick="toggleVisibility('Menu3');">Menu3</a>
+  <li><a href="#" onclick="toggleVisibility('Menu4');">Menu4</a>
+   
+   </ul>  
     </div>
 
+<!--div for content of menu1-->
+
+
+            <div id="Menu1" style="display:none;">
+
+            <a style="position: absolute; top: 65px; left: 882px; width: 38px; height: 34px;"  alt="" title="" <a href="javascript: void(0)" onclick="toggle_visibility('text');" target="" ><i class="fa fa-eye fa-2x"></i><em></em></a>
+
+
+            <div id="text" style="display:none">
+            <a style="position: absolute; top: 95px; left: 882px; width: 38px; height: 50px;"  alt="" title="" href="javascript: void(0)" onclick="toggle_visibility();" ><em>text goes here</em></a></div>
+
+
+            <a style="position: absolute; top: 91px; left: 638px; width: 37px; height: 37px;"  alt="" title="" href="#" target="" ><i class="fa fa-camera-retro fa-2x"></i><em></em></a>
+
+            <a style="position: absolute; top: 144px; left: 734px; width: 49px; height: 36px;"  alt="" title="" href="#" target="" ><i class="fa fa-camera-retro fa-2x"></i><em></em></a>
+
+            <a style="position: absolute; top: 267px; left: 252px; width: 43px; height: 33px;"  alt="" title="" href="#" target="" ><i class="fa fa-camera-retro fa-2x"></i><em></em></a>
+
+
+
+            <img src="image1.jpg" width="1024" height="576" align="left">
+
+
+            </div>
+
+
+
+
+
+
+
+
+
+<!--script for icons-->
+
+
+<script type="text/javascript">
+        function toggle_visibility(id) {
+           var e = document.getElementById(id);
+           if(e.style.display == 'block')
+              e.style.display = 'none';
+           else
+              e.style.display = 'block';
+        }
+ </script>
+
+
+<!--script for menu hide/reveal-->
 
 
 
@@ -43,6 +94,8 @@ x.addEventListener('click', function(event) {
 });
  </script>
 
+
+<!--script for menu icon change on hide/reveal-->
 
 
 
@@ -56,17 +109,35 @@ x.addEventListener('click', function(event) {
 </script> 
 
 
+<!--script for menu content to reveal-->
+
+
 <script>
-function changeImage(img){
 
-    document.body.style.backgroundImage = 'url('+img+')';
+var divs = ["Menu1", "Menu2", "Menu3", "Menu4"];
+    var visibleDivId = null;
+    function toggleVisibility(divId) {
+      if(visibleDivId === divId) {
+        visibleDivId = null;
+      } else {
+        visibleDivId = divId;
+      }
+      hideNonVisibleDivs();
+    }
+    function hideNonVisibleDivs() {
+      var i, divId, div;
+      for(i = 0; i < divs.length; i++) {
+        divId = divs[i];
+        div = document.getElementById(divId);
+        if(visibleDivId === divId) {
+          div.style.display = "block";
+        } else {
+          div.style.display = "none";
+        }
+      }
+    }
 
-}
 </script>
-
-
-
-
 
 
 
