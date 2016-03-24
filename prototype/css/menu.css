@@ -25,5 +25,9 @@ body {
     background:  url("../images/steps.GIF") no-repeat fixed center; 
     background-size: contain;
 }
+.invisible {
+  display: none
+}
+
 </style>
 
