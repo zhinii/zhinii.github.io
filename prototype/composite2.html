@@ -1,0 +1,62 @@
+<html>
+
+<head>
+    <link rel='stylesheet' href='css/font-awesome.css'>
+    <link rel="stylesheet" href="css/menu.css">
+</head>
+
+<body>
+    <!--menu list-->
+    <ul id="mainmenu" class="top">
+        <li id="step1"> <span>Step1</span>
+            <ul id='step1mid' class='middle invisible'>
+                <li style="position: absolute; top: 65px; left: 882px; width: 38px; height: 34px;"><i class="fa fa-eye fa-2x"></i>
+                    <div class='bottom invisible'>text text text</div></li>
+                
+                <li style="position: absolute; top: 91px; left: 638px; width: 37px; height: 37px;"><i class="fa fa-camera-retro fa-2x"></i></li>
+                <li style="position: absolute; top: 144px; left: 734px; width: 49px; height: 36px;"><i class="fa fa-camera-retro fa-2x"></i></li>
+                <li style="position: absolute; top: 267px; left: 252px; width: 43px; height: 33px;"><i class="fa fa-camera-retro fa-2x"></i></li>
+            </ul>
+        </li>
+        <li id="step2"><span>Step2</span>
+            <ul id='step2mid' class='middle invisible'>
+                <li style="position: absolute; top: 150px; left: 882px; width: 38px; height: 34px;"><i class="fa fa-eye fa-2x"></i>
+                    <div class='bottom invisible'>text text text</li>
+                </div>
+                <li style="position: absolute; top: 200px; left: 638px; width: 37px; height: 37px;"><i class="fa fa-camera-retro fa-2x"></i></li>
+                <li style="position: absolute; top: 500px; left: 734px; width: 49px; height: 36px;"><i class="fa fa-camera-retro fa-2x"></i></li>
+                <li style="position: absolute; top: 350px; left: 252px; width: 43px; height: 33px;"><i class="fa fa-camera-retro fa-2x"></i></li>
+            </ul>
+        </li>
+        <li id="step3"><span>Step3</span></li>
+        <li id="step4"><span>Step4</span></li>
+    </ul>
+    <!--script for menu icon change on hide/reveal-->
+    <script>
+    var topLis = document.querySelectorAll('.top > li');
+    topLis = Array.prototype.slice.call(topLis);
+    topLis.forEach(function(topLi) {
+        topLi.addEventListener('click', function(event) {
+            event.stopPropagation();
+            topLi.querySelector('.middle').classList.toggle('invisible');
+            
+        });
+    });
+
+    var middleLis = document.querySelectorAll('.middle > li');
+    middleLis = Array.prototype.slice.call(middleLis);
+    middleLis.forEach(function(middleLi) {
+        middleLi.addEventListener('click', function(event) {
+            event.stopPropagation();
+            console.log(middleLi);
+            middleLi.querySelector('.bottom').classList.toggle('invisible');
+        });
+    });
+
+    document.body.addEventListener('click', function() {
+        console.log('hi');
+    });
+    </script>
+</body>
+
+</html>
