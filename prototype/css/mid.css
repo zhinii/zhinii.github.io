@@ -1,6 +1,6 @@
 
 
-ul#mainmenu {
+ul{
   list-style: none;
   padding: 0;
 }
@@ -28,11 +28,15 @@ ul#mainmenu li div:hover {
 #step1mid {
           z-index: -10;
           position: absolute;
-    color: green;
+    color: red;
        background-image: url(../images/screenshot.jpg);
         height: 1024px;
         width: 1280px;
         background-position: fixed;
         top: 0%;
         left: 0%;
+}
+
+#bottom1 {
+  z-index: 10;
 }
