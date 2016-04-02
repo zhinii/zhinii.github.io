@@ -1,0 +1,38 @@
+
+
+ul#mainmenu {
+  list-style: none;
+  padding: 0;
+}
+
+ul#mainmenu li div{
+    background-color: black;
+    color: white;
+    padding: 5px  10px ;
+    text-decoration: none;
+    border-radius: 10px 10px 10px 10px;
+    width: 40px;
+}
+ul#mainmenu li div:hover {
+    background-color: orange;
+    width: 40px;
+}
+
+
+
+   .invisible {
+        display: none;
+    }
+
+
+#step1mid {
+          z-index: -10;
+          position: absolute;
+    color: green;
+       background-image: url(../images/screenshot.jpg);
+        height: 1024px;
+        width: 1280px;
+        background-position: fixed;
+        top: 0%;
+        left: 0%;
+}
