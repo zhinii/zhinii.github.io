@@ -14,7 +14,7 @@
         </ul>
     
     <div id='step1mid' class='middle invisible'>  <ul>
-            <li style="position: absolute; top: 65px; left: 882px; width: 38px; height: 34px;"><i id='bottom1eye' class="fa fa-eye fa-2x"></i>
+            <li style="position: absolute; top: 65px; left: 882px; width: 38px; height: 34px;"><div id='bottom1eye'><i class="fa fa-eye fa-2x"></i></div>
                 <div id='bottom1' class='bottom invisible'>text text text</div>
             </li>
             <li style="position: absolute; top: 91px; left: 638px; width: 37px; height: 37px;"><i class="fa fa-camera-retro fa-2x"></i></li>
@@ -45,6 +45,11 @@
         '#step2': {
             'show': ['#step2mid'],
             'hide': ['#step1mid'],
+            'toggle': []
+        },
+         '#bottom1eye': {
+            'show': ['#bottom1'],
+            'hide': [],
             'toggle': []
         }
     };
