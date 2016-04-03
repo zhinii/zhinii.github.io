@@ -5,6 +5,10 @@ ul{
   padding: 0;
 }
 
+ul#mainmenu {
+  width: 50px;
+}
+
 ul#mainmenu li div{
     background-color: black;
     color: white;
@@ -38,5 +42,5 @@ ul#mainmenu li div:hover {
 }
 
 #bottom1 {
-  z-index: 10;
+  z-index: 20;
 }
