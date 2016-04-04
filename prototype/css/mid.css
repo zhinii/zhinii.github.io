@@ -9,16 +9,16 @@ ul{
 
 }
 
-#mainmenu {
-  z-index: 10;
-}
+
+
+
 
 ul#mainmenu {
   z-index: 10;
+  position: absolute;
 }
 
 ul#mainmenu li div{
-z-index: 10;
     background-color: black;
     color: white;
     padding: 5px  10px ;
@@ -28,7 +28,6 @@ z-index: 10;
 }
 
 ul#mainmenu li div:hover {
-  z-index: 10;
     background-color: orange;
     width: 40px;
 
@@ -42,14 +41,18 @@ ul#mainmenu li div:hover {
 
 
 #step1mid {
-z-index: 1;
-          position: absolute;
+        z-index: 1;
+        position: relative;
         color: red;
-       background-image: url(../images/screenshot.jpg);
-        height: 1024px;
-        width: 1280px;
-        background-position: fixed;
+        background-image: url(../images/screenshot.jpg);
+        height: 100%;
+        width: 100%;
+        background-size: contain;
+        background-repeat: no-repeat;
         top: 0%;
         left: 0%;
 }
 
+.bottom {
+  background-color: white;
+}
