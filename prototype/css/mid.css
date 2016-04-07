@@ -40,10 +40,15 @@ ul#mainmenu li div:hover {
     }
 
 
+#step1mid li {
+
+  color:red;
+}
+
 #step1mid {
+        
         z-index: 1;
-        position: relative;
-        color: red;
+        position: fixed;
         background-image: url(../images/screenshot.jpg);
         height: 100%;
         width: 100%;
