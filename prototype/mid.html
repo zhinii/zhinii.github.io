@@ -17,14 +17,26 @@
     <div id='step1mid' class='middle invisible'> 
 
      <ul>
-            <li style="position: absolute; top: 22%; left: 79%; width: 35px; height: 24px;"><div id='bottom1eye'><i class="fa fa-eye fa-2x"></i></div>
-               <div id='bottom1' class='bottom invisible'>text text text</div>
+            <li style="position: absolute; top: 22%; left: 57%; width: 35px; height: 24px;"><div id='bottom1eye'><i class="fa fa-eye fa-2x"></i></div>
+               <div id='bottom1' class='bottom invisible' style="width: 120px">Each operation exists on its own layer.</div>
                
             </li>
-            <li style="position: absolute; top: 40%; left: 61%; width: 35px; height: 24px;"><i class="fa fa-camera-retro fa-2x"></i></li>
-            <li style="position: absolute; top: 43%; left: 30%; width: 35px; height: 24px;"><i class="fa fa-camera-retro fa-2x"></i></li>
-            <li style="position: absolute; top: 23%; left: 44%; width: 35px; height: 24px;"><i class="fa fa-camera-retro fa-2x"></i></li>
-            <li style="position: absolute; top: 19%; left: 13%; width: 35px; height: 24px;"><i class="fa fa-camera-retro fa-2x"></i></li>
+            <li style="position: absolute; top: 40%; left: 44%; width: 35px; height: 24px;"><div id='pic1'><i class="fa fa-camera-retro fa-2x"></i></div>
+                               <div id='bottom2' class='invisible'><img src="images/pic1.jpg" style="width:304px;height:228px;"></div>
+
+            </li>
+            <li style="position: absolute; top: 43%; left: 21%; width: 35px; height: 24px;"><div id='pic2'><i class="fa fa-camera-retro fa-2x"></i></div>
+               <div id='bottom3' class='invisible' style="width: 120px"><img src="images/pic2.jpg" style="width:304px;height:228px;"></div>
+
+            </li>
+            <li style="position: absolute; top: 23%; left: 32%; width: 35px; height: 24px;"><div id='pic3'><i class="fa fa-camera-retro fa-2x"></i></div>
+               <div id='bottom4' class='invisible' style="width: 120px"><img src="images/pic3.jpg" style="width:304px;height:228px;"></div>
+
+            </li>
+            <li style="position: absolute; top: 19%; left: 10%; width: 35px; height: 24px;"><div id='pic4'><i class="fa fa-camera-retro fa-2x"></i></div>
+               <div id='bottom5' class='invisible' style="width: 120px"><img src="images/pic4.jpg" style="width:304px;height:228px;"></div>
+
+            </li>
         </ul>
     </div>
 
@@ -58,7 +70,28 @@
             'show': [],
             'hide': [],
             'toggle': ['#bottom1']
+        },
+         '#pic1': {
+            'show': [],
+            'hide': [],
+            'toggle': ['#bottom2']
+        },
+            '#pic2': {
+            'show': [],
+            'hide': [],
+            'toggle': ['#bottom3']
+        },
+            '#pic3': {
+            'show': [],
+            'hide': [],
+            'toggle': ['#bottom4']
+        },
+            '#pic4': {
+            'show': [],
+            'hide': [],
+            'toggle': ['#bottom5']
         }
+
     };
    for (selector in clickMap) { // Go through every key in clickMap (i.e. #a, #a1, etc.)
         var element = document.querySelector(selector); // For a given selector, go get the element associated with it
