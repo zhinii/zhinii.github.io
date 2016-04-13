@@ -14,11 +14,13 @@ ul{
 
 
 ul#mainmenu {
+   cursor: pointer;
   z-index: 10;
   position: absolute;
 }
 
 ul#mainmenu li div{
+   cursor: pointer;
     background-color: black;
     color: white;
     padding: 5px  10px ;
@@ -28,6 +30,7 @@ ul#mainmenu li div{
 }
 
 ul#mainmenu li div:hover {
+   cursor: pointer;
     background-color: orange;
     width: 40px;
 
@@ -35,23 +38,24 @@ ul#mainmenu li div:hover {
 
 
 
-   .invisible {
+   .invisible { 
+     cursor: pointer;
         display: none;
     }
 
 
 #step1mid li {
-
+ cursor: pointer;
   color:red;
 }
 
 #step1mid {
-        
+       
         z-index: 1;
-        position: fixed;
+        position: absolute;
         background-image: url(../images/screenshot.jpg);
-        height: 100%;
-        width: 100%;
+        height: 756px;
+        width: 1344px;
         background-size: contain;
         background-repeat: no-repeat;
         top: 0%;
@@ -59,5 +63,8 @@ ul#mainmenu li div:hover {
 }
 
 .bottom {
-  background-color: white;
+
+  background-color: grey;
+  color: black;
+  padding: 5px 5px;
 }
