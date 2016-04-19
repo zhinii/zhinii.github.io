@@ -20,6 +20,7 @@
    <script src="js/three.min.js"></script>
     <script src="js/OrbitControls.js"></script>
     <script src="js/OBJLoader.js"></script>
+       <script src="js/MTLLoader.js"></script>
 
     <script>
     var scene = new THREE.Scene();
@@ -46,7 +47,16 @@
 
     // scene.add(light);
 
+	var mtlLoader = new THREE.MTLLoader();
+				mtlLoader.setBaseUrl( 'obj' );
+				mtlLoader.setPath( 'obj' );
+				mtlLoader.load( 'object1.mtl', function( materials ) {
+					materials.preload();
+
+
      var loader = new THREE.OBJLoader();
+     loader.setMaterial( materials );
+     loader.setPath( 'obj/object1.mtl')
  loader.load( 'obj/object1.obj',
   function ( object ) {
    scene.add( object );
