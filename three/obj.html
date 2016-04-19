@@ -50,8 +50,6 @@
 
 
      var loader = new THREE.OBJLoader();
-     loader.setMaterial( materials );
-     loader.setPath( 'obj/object1.mtl');
  loader.load( 'obj/object1.obj',
   function ( object ) {
    scene.add( object );
