@@ -47,11 +47,6 @@
 
     // scene.add(light);
 
-	var mtlLoader = new THREE.MTLLoader();
-				mtlLoader.setBaseUrl( 'obj' );
-				mtlLoader.setPath( 'obj' );
-				mtlLoader.load( 'object1.mtl', function( materials ) {
-					materials.preload();
 
 
      var loader = new THREE.OBJLoader();
@@ -62,7 +57,7 @@
    scene.add( object );
   } );
 
-});
+
 
     var ground = new THREE.BoxGeometry(50, .5, 50);
     var groundmat = new THREE.MeshLambertMaterial({
