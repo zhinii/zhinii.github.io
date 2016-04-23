@@ -49,7 +49,7 @@
         var loader = new THREE.OBJLoader();
         loader.load('obj/object1.obj',
             function(object) {
-                var myObject = new THREE.mesh(object, materials);
+                var myObject = new THREE.Mesh(object, materials);
                 scene.add(object);
             });
     });
@@ -133,7 +133,7 @@
             document.body.style.cursor = 'auto';
         }
     }
-    renderer.domElement.addEventListener('mousemove', onDocumentMouseMove, false);
+    // renderer.domElement.addEventListener('mousemove', onDocumentMouseMove, false);
 
 
     var render = function() {
