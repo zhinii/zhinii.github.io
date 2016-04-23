@@ -1,0 +1,100 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <style>
+    body {
+        width: 100%;
+        height: 100%;
+        position: fixed;
+    }
+    #firstMiddle {
+        color: red;
+    }
+    
+    #secondMiddle {
+        color: blue;
+    }
+    
+    .middle {
+        position: absolute;
+        left: 500px;
+    }
+    
+    .invisible {
+        display: none;
+    }
+    
+    .bottom {
+        width: 100px;
+        height: 100px;
+        background-color: yellow;
+    }
+    </style>
+</head>
+
+<body>
+    <ul class='top'>
+        <li id='first'>
+            <h2>first</h2>
+            <ul id='firstMiddle' class='middle invisible'>
+                <li>
+                    <h3>firstMiddle</h3>
+                    <div class='bottom invisible'></div>
+                </li>
+                <li>secondMiddle</li>
+                <li>thirdMiddle</li>
+            </ul>
+        </li>
+        <li id='second'>
+            <h2>second</h2>
+            <ul id='secondMiddle' class='middle invisible'>
+                <li>firstMiddle</li>
+                <li>secondMiddle</li>
+                <li>thirdMiddle</li>
+            </ul>
+        </li>
+    </ul>
+    <script>
+    var topLis = document.querySelectorAll('.top > li');
+    topLis = Array.prototype.slice.call(topLis);
+    topLis.forEach(function(topLi) {
+        topLi.addEventListener('click', function(event) {
+            event.stopPropagation();
+            topLi.querySelector('.middle').classList.toggle('invisible');
+        });
+    });
+    var middleLis = document.querySelectorAll('.middle > li');
+    middleLis = Array.prototype.slice.call(middleLis);
+    middleLis.forEach(function(middleLi) {
+        middleLi.addEventListener('click', function(event) {
+            event.stopPropagation();
+            console.log(middleLi);
+            middleLi.querySelector('.bottom').classList.toggle('invisible');
+        });
+    });
+    document.body.addEventListener('click', function() {
+        console.log('hi');
+    });
+    
+    // var showOnly = function(element, selectorToHide) {
+    //     var toHide = document.querySelectorAll(selectorToHide);
+    //     toHide = Array.prototype.slice.call(toHide);
+    //     toHide.forEach(function(thingToHide) {
+    //         thingToHide.classList.add('invisible');
+    //     });
+    //     element.classList.remove('invisible');
+    // };
+    // document.getElementById('first').addEventListener('click', function() {
+    //     showOnly(document.querySelector('#firstMiddle'), '.middle');
+    // });
+    // document.getElementById('second').addEventListener('click', function() {
+    //     showOnly(document.querySelector('#secondMiddle'), '.middle');
+    // });
+    // document.querySelector('#secondMiddle li:nth-child(2)').addEventListener('click', function() {
+    //     document.querySelector('.second.bottom').classList.toggle('invisible');
+    // });
+    </script>
+</body>
+
+</html>

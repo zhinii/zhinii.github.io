@@ -1,0 +1,26 @@
+#step1mid {
+        
+       
+        position: fixed;
+        background-image: url(../images/screenshot.jpg);
+        height: 75%;
+        width: 75%;
+        background-size: contain;
+        background-repeat: no-repeat;
+            background-color: green;
+
+}
+
+
+
+#bottom1eye {
+  position: absolute;
+  color:red;
+top: 50%; 
+left: 50%; 
+ 
+}
+
+
+
+
