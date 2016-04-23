@@ -11,17 +11,14 @@
         width: 200px;
         height: 150px;
     }
-
     </style>
 </head>
 
 <body>
-
-   <script src="js/three.min.js"></script>
+    <script src="js/three.min.js"></script>
     <script src="js/OrbitControls.js"></script>
     <script src="js/OBJLoader.js"></script>
-       <script src="js/MTLLoader.js"></script>
-
+    <script src="js/MTLLoader.js"></script>
     <script>
     var scene = new THREE.Scene();
     var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -30,7 +27,7 @@
     var renderer = new THREE.WebGLRenderer({
         antialias: true
     });
-        var sceneHeight = 500;
+    var sceneHeight = 500;
     var sceneWidth = 800;
     renderer.setSize(sceneWidth, sceneHeight);
 
@@ -47,15 +44,15 @@
 
     // scene.add(light);
 
-
-
-     var loader = new THREE.OBJLoader();
- loader.load( 'obj/object1.obj',
-  function ( object ) {
-   scene.add( object );
-  } );
-
-
+    var materials = new THREE.MTLLoader();
+    materials.load('obj/object1.mtl', function(material) {
+        var loader = new THREE.OBJLoader();
+        loader.load('obj/object1.obj',
+            function(object) {
+                var myObject = new THREE.mesh(object, materials);
+                scene.add(object);
+            });
+    });
 
     var ground = new THREE.BoxGeometry(50, .5, 50);
     var groundmat = new THREE.MeshLambertMaterial({
@@ -82,13 +79,13 @@
     var intersected;
 
     function onDocumentClick(event) { // This is a function to run when we click; we get information about the event through the `event` parameter
-        
+
         // Set the x and y coordinates of our mouse vector to our pointer position, scaling for the width and height of our renderer (400 and 300, respectively)
-        var offsetX = renderer.domElement.offsetLeft*(2/sceneWidth);
-        var offsetY = renderer.domElement.offsetTop*(2/sceneHeight);
+        var offsetX = renderer.domElement.offsetLeft * (2 / sceneWidth);
+        var offsetY = renderer.domElement.offsetTop * (2 / sceneHeight);
         mouse.x = (event.clientX / sceneWidth) * 2 - 1 - offsetX;
-        mouse.y = -(event.clientY / sceneHeight) * 2 + 1 +offsetY;
-        
+        mouse.y = -(event.clientY / sceneHeight) * 2 + 1 + offsetY;
+
         // Tell our raycaster to cast from our mouse
         raycaster.setFromCamera(mouse, camera);
 
@@ -99,9 +96,9 @@
         var intersections = raycaster.intersectObjects(objects);;
         if (intersections.length > 0) { // If we find any intersections
 
-        	// Do stuff
-          	console.log("Clicked");
-           document.querySelector('#toShow').style.visibility = 'visible';
+            // Do stuff
+            console.log("Clicked");
+            document.querySelector('#toShow').style.visibility = 'visible';
         }
     };
     // And then actually attach our onDocumentClick function as an event handler to when the canvas hears a `click`
@@ -110,13 +107,13 @@
 
     function onDocumentMouseMove(event) {
         event.preventDefault();
-        var offsetX = renderer.domElement.offsetLeft*(2/sceneWidth);
-        var offsetY = renderer.domElement.offsetTop*(2/sceneHeight);
+        var offsetX = renderer.domElement.offsetLeft * (2 / sceneWidth);
+        var offsetY = renderer.domElement.offsetTop * (2 / sceneHeight);
         mouse.x = (event.clientX / sceneWidth) * 2 - 1 - offsetX;
-        mouse.y = -(event.clientY / sceneHeight) * 2 + 1 +offsetY;
+        mouse.y = -(event.clientY / sceneHeight) * 2 + 1 + offsetY;
         raycaster.setFromCamera(mouse, camera);
         var numObjects;
-        // var numFaces = 0	;
+        // var numFaces = 0 ;
         var intersections;
 
         var objects = [cube];
@@ -138,7 +135,7 @@
     }
     renderer.domElement.addEventListener('mousemove', onDocumentMouseMove, false);
 
-	
+
     var render = function() {
         requestAnimationFrame(render);
 
