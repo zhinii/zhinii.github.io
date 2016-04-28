@@ -44,8 +44,8 @@
 
     // scene.add(light);
 
-    var materials = new THREE.MTLLoader();
-    materials.load('obj/water.mtl', function(material) {
+    var waterbox = new THREE.MTLLoader();
+    waterbox.load('obj/water.mtl', function(material) {
         material.preload();
         var loader = new THREE.OBJLoader();
         loader.setMaterials(material);
@@ -58,8 +58,8 @@
 
 
 
-     var materials2 = new THREE.MTLLoader();
-    materials2.load('obj/plastic.mtl', function(material) {
+     var plasticbox = new THREE.MTLLoader();
+    plasticbox.load('obj/plastic.mtl', function(material) {
         material.preload();
         var loader = new THREE.OBJLoader();
         loader.setMaterials(material);
