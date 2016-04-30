@@ -53,7 +53,7 @@
         loader.load('laser/black.obj',
             function(object) {
                 scene.add(object);
-            });
+            }, function(), function(err) { console.log("Loading black", error)});
     });
 
 
