@@ -53,46 +53,50 @@
         loader.load('laser/black.obj',
             function(object) {
                 scene.add(object);
-            }, function(), function(err) { console.log("Loading black", error)});
+            },
+            function(progress) {},
+            function(err) {
+                console.log("Loading black", error)
+            });
     });
 
 
 
-//      var chassis = new THREE.MTLLoader();
-// chassis.load('laser/chassis.mtl', function(material) {
-//         material.preload();
-//         var loader = new THREE.OBJLoader();
-//         loader.setMaterials(material);
+    //      var chassis = new THREE.MTLLoader();
+    // chassis.load('laser/chassis.mtl', function(material) {
+    //         material.preload();
+    //         var loader = new THREE.OBJLoader();
+    //         loader.setMaterials(material);
 
-//         loader.load('laser/chassis.obj',
-//             function(object) {
-//                 scene.add(object);
-//             });
-//     });
+    //         loader.load('laser/chassis.obj',
+    //             function(object) {
+    //                 scene.add(object);
+    //             });
+    //     });
 
-//          var lid = new THREE.MTLLoader();
-// lid.load('laser/lid.mtl', function(material) {
-//         material.preload();
-//         var loader = new THREE.OBJLoader();
-//         loader.setMaterials(material);
+    //          var lid = new THREE.MTLLoader();
+    // lid.load('laser/lid.mtl', function(material) {
+    //         material.preload();
+    //         var loader = new THREE.OBJLoader();
+    //         loader.setMaterials(material);
 
-//         loader.load('laser/lid.obj',
-//             function(object) {
-//                 scene.add(object);
-//             });
-//     });
+    //         loader.load('laser/lid.obj',
+    //             function(object) {
+    //                 scene.add(object);
+    //             });
+    //     });
 
-//          var insides = new THREE.MTLLoader();
-//   insides.load('laser/insides.mtl', function(material) {
-//         material.preload();
-//         var loader = new THREE.OBJLoader();
-//         loader.setMaterials(material);
+    //          var insides = new THREE.MTLLoader();
+    //   insides.load('laser/insides.mtl', function(material) {
+    //         material.preload();
+    //         var loader = new THREE.OBJLoader();
+    //         loader.setMaterials(material);
 
-//         loader.load('laser/insides.obj',
-//             function(object) {
-//                 scene.add(object);
-//             });
-//     });
+    //         loader.load('laser/insides.obj',
+    //             function(object) {
+    //                 scene.add(object);
+    //             });
+    //     });
 
 
 
