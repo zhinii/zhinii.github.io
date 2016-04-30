@@ -59,7 +59,7 @@
 
 
      var chassis = new THREE.MTLLoader();
-    plasticbox.load('laser/chassis.mtl', function(material) {
+chassis.load('laser/chassis.mtl', function(material) {
         material.preload();
         var loader = new THREE.OBJLoader();
         loader.setMaterials(material);
@@ -71,7 +71,7 @@
     });
 
          var lid = new THREE.MTLLoader();
-    plasticbox.load('laser/lid.mtl', function(material) {
+lid.load('laser/lid.mtl', function(material) {
         material.preload();
         var loader = new THREE.OBJLoader();
         loader.setMaterials(material);
@@ -83,7 +83,7 @@
     });
 
          var insides = new THREE.MTLLoader();
-    plasticbox.load('laser/insides.mtl', function(material) {
+  insides.load('laser/insides.mtl', function(material) {
         material.preload();
         var loader = new THREE.OBJLoader();
         loader.setMaterials(material);
