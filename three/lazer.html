@@ -45,7 +45,7 @@
     // scene.add(light);
 
     var black = new THREE.MTLLoader();
-    black.load('obj/black.mtl', function(material) {
+    black.load('laser/black.mtl', function(material) {
         material.preload();
         var loader = new THREE.OBJLoader();
         loader.setMaterials(material);
