@@ -1,0 +1,194 @@
+<html>
+
+<head>
+    <title>cube control</title>
+    <style>
+    body {
+        margin: 0;
+    }
+    
+    canvas {
+        width: 200px;
+        height: 150px;
+    }
+    </style>
+</head>
+
+<body>
+    <script src="js/three.min.js"></script>
+    <script src="js/OrbitControls.js"></script>
+    <script src="js/OBJLoader.js"></script>
+    <script src="js/MTLLoader.js"></script>
+    <script>
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+
+
+    var renderer = new THREE.WebGLRenderer({
+        antialias: true
+    });
+    var sceneHeight = 500;
+    var sceneWidth = 800;
+    renderer.setSize(sceneWidth, sceneHeight);
+
+    // renderer.setSize(window.innerWidth, window.innerHeight);
+
+    document.body.appendChild(renderer.domElement);
+    renderer.domElement.id = "context"
+
+    // var light = new THREE.AmbientLight(0x404040); // soft white light
+    scene.add(new THREE.HemisphereLight(0xaaaaaa, 0x444444));
+    var light = new THREE.DirectionalLight(0xffffff, 0.5);
+    light.position.set(1, 1, 1);
+    scene.add(light);
+
+    // scene.add(light);
+
+    var black = new THREE.MTLLoader();
+    black.load('obj/black.mtl', function(material) {
+        material.preload();
+        var loader = new THREE.OBJLoader();
+        loader.setMaterials(material);
+
+        loader.load('laser/black.obj',
+            function(object) {
+                scene.add(object);
+            });
+    });
+
+
+
+     var chassis = new THREE.MTLLoader();
+    plasticbox.load('laser/chassis.mtl', function(material) {
+        material.preload();
+        var loader = new THREE.OBJLoader();
+        loader.setMaterials(material);
+
+        loader.load('laser/chassis.obj',
+            function(object) {
+                scene.add(object);
+            });
+    });
+
+         var lid = new THREE.MTLLoader();
+    plasticbox.load('laser/lid.mtl', function(material) {
+        material.preload();
+        var loader = new THREE.OBJLoader();
+        loader.setMaterials(material);
+
+        loader.load('laser/lid.obj',
+            function(object) {
+                scene.add(object);
+            });
+    });
+
+         var insides = new THREE.MTLLoader();
+    plasticbox.load('laser/insides.mtl', function(material) {
+        material.preload();
+        var loader = new THREE.OBJLoader();
+        loader.setMaterials(material);
+
+        loader.load('laser/insides.obj',
+            function(object) {
+                scene.add(object);
+            });
+    });
+
+
+
+    var ground = new THREE.BoxGeometry(100, .5, 100);
+    var groundmat = new THREE.MeshLambertMaterial({
+        color: 0xfafcf1
+    })
+
+
+    var groundplane = new THREE.Mesh(ground, groundmat);
+    scene.add(groundplane);
+
+    groundplane.position.y = -1;
+
+
+
+
+    camera.position.x = 10;
+    camera.position.y = 10;
+
+    var baseColor = 0xffffff;
+    var foundColor = 0x12C0E3;
+    var intersectColor = 0x00D66B;
+    var raycaster = new THREE.Raycaster();
+    var mouse = new THREE.Vector2();
+    var intersected;
+
+    function onDocumentClick(event) { // This is a function to run when we click; we get information about the event through the `event` parameter
+
+        // Set the x and y coordinates of our mouse vector to our pointer position, scaling for the width and height of our renderer (400 and 300, respectively)
+        var offsetX = renderer.domElement.offsetLeft * (2 / sceneWidth);
+        var offsetY = renderer.domElement.offsetTop * (2 / sceneHeight);
+        mouse.x = (event.clientX / sceneWidth) * 2 - 1 - offsetX;
+        mouse.y = -(event.clientY / sceneHeight) * 2 + 1 + offsetY;
+
+        // Tell our raycaster to cast from our mouse
+        raycaster.setFromCamera(mouse, camera);
+
+        // Construct the array of objects we want to check intersection with
+        var objects = [cube];
+
+        // Tell our raycaster to detect the intersection with that array of objects
+        var intersections = raycaster.intersectObjects(objects);;
+        if (intersections.length > 0) { // If we find any intersections
+
+            // Do stuff
+            console.log("Clicked");
+            document.querySelector('#toShow').style.visibility = 'visible';
+        }
+    };
+    // And then actually attach our onDocumentClick function as an event handler to when the canvas hears a `click`
+    // renderer.domElement.addEventListener('click', onDocumentClick, false);
+
+
+    function onDocumentMouseMove(event) {
+        event.preventDefault();
+        var offsetX = renderer.domElement.offsetLeft * (2 / sceneWidth);
+        var offsetY = renderer.domElement.offsetTop * (2 / sceneHeight);
+        mouse.x = (event.clientX / sceneWidth) * 2 - 1 - offsetX;
+        mouse.y = -(event.clientY / sceneHeight) * 2 + 1 + offsetY;
+        raycaster.setFromCamera(mouse, camera);
+        var numObjects;
+        // var numFaces = 0 ;
+        var intersections;
+
+        var objects = [cube];
+        var intersections = raycaster.intersectObjects(objects);
+        numObjects = objects.length;
+        // numFaces = totalFaces;
+        if (intersections.length > 0) {
+            if (intersected != intersections[0].object) {
+                if (intersected) intersected.material.color.setHex(baseColor);
+                intersected = intersections[0].object;
+                intersected.material.color.setHex(intersectColor);
+            }
+            document.body.style.cursor = 'pointer';
+        } else if (intersected) {
+            intersected.material.color.setHex(baseColor);
+            intersected = null;
+            document.body.style.cursor = 'auto';
+        }
+    }
+    // renderer.domElement.addEventListener('mousemove', onDocumentMouseMove, false);
+
+
+    var render = function() {
+        requestAnimationFrame(render);
+
+        renderer.render(scene, camera);
+        controls.update();
+    };
+
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
+
+    render();
+    </script>
+</body>
+
+</html>
