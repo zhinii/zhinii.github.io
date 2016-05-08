@@ -72,8 +72,9 @@
     cube2.position.z = 5;
     cube2.position.y = -.5;
 
-      // cube2.visibility = hidden; 
- // {document.getElementByid(cube2).style.visibility = 'hidden';}  ////// LOOK AT ME ALEC!!!!!!!!!!!!!!!!!!!!!!!!&IY$(U(*@&(*$&**$&@*(&$(@*&(*$&))))))
+    cube2.visible = false;
+
+
 
     var cube = new THREE.Mesh(geometry, material);
     scene.add(cube);
@@ -105,20 +106,23 @@
         if (intersections.length > 0) { // If we find any intersections
         	// Do stuff
           	console.log("Clicked");
-           document.querySelector('cube2').style.visibility = 'visible';
+             cube2.visible = true;
+           // document.querySelector('cube2').style.visibility = 'visible';
+        }
+
+         var objects2 = [cube2];  // objects to display when clicked
+        // Tell our raycaster to detect the intersection with that array of objects
+        var intersections = raycaster.intersectObjects(objects2);;
+        if (intersections.length > 0) { // If we find any intersections
+            // Do stuff
+            console.log("Clicked");
+           document.querySelector('#toShow').style.visibility = 'visible';
         }
     };
 
 
-   //var objects = [cube2];  // objects to display when clicked
-   //     // Tell our raycaster to detect the intersection with that array of objects
-   //     var intersections = raycaster.intersectObjects(objects);;
-   //     if (intersections.length > 0) { // If we find any intersections
-   //         // Do stuff
-   //         console.log("Clicked");
-   //        document.querySelector('#toShow').style.visibility = 'visible';
-   //     }
-   // };
+  
+
 
 
     // And then actually attach our onDocumentClick function as an event handler to when the canvas hears a `click`
