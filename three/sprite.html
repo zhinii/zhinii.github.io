@@ -1,0 +1,249 @@
+<html>
+
+<head>
+    <title>cube control</title>
+    <style>
+    body {
+        margin: 0;
+    }
+    
+    canvas {
+        width: 200px;
+        height: 150px;
+    }
+    #toShow {
+    	visibility: hidden;
+    }
+    </style>
+</head>
+
+<body>
+	<div id='toShow'>Tip!</div>
+   <script src="js/three.min.js"></script>
+    <script src="js/OrbitControls.js"></script>
+    <script>
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    var renderer = new THREE.WebGLRenderer({
+        antialias: true
+    });
+        var sceneHeight = 400;
+    var sceneWidth = 400;
+    renderer.setSize(sceneWidth, sceneHeight);
+    // renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+    renderer.domElement.id = "context"
+    // var light = new THREE.AmbientLight(0x404040); // soft white light
+    scene.add(new THREE.HemisphereLight(0xaaaaaa, 0x444444));
+    var light = new THREE.DirectionalLight(0xffffff, 0.5);
+    light.position.set(1, 1, 1);
+    scene.add(light);
+    // scene.add(light);
+    var geometry = new THREE.BoxGeometry(2, 2, 2);
+    var material = new THREE.MeshStandardMaterial({
+        color: 0xffffff,
+        roughness: 0.5,
+        metalness: 0,
+        shading: THREE.FlatShading
+    });
+
+
+    var geometry2 = new THREE.BoxGeometry(5, 1, 5);
+      var material2 = new THREE.MeshStandardMaterial({
+        color: 0x000000,
+        roughness: 0.5,
+        metalness: 0,
+        shading: THREE.FlatShading
+    });
+
+
+    var ground = new THREE.BoxGeometry(50, .5, 50);
+    var groundmat = new THREE.MeshLambertMaterial({
+        color: 0x00ff00
+    });
+
+    var groundplane = new THREE.Mesh(ground, groundmat);
+    scene.add(groundplane);
+    groundplane.position.y = -1;
+
+
+    var cube2 = new THREE.Mesh(geometry2, material2);
+    scene.add(cube2);
+    cube2.position.z = 5;
+    cube2.position.y = -.5;
+
+    cube2.visible = false;
+
+
+
+    var cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+    cube.position.z = -5;
+    camera.position.x = 10;
+    camera.position.y = 10;
+
+
+    var baseColor = 0xffffff;
+    var foundColor = 0x12C0E3;
+    var intersectColor = 0x00D66B;
+    var raycaster = new THREE.Raycaster();
+    var mouse = new THREE.Vector2();
+    var intersected;
+    function onDocumentClick(event) { // This is a function to run when we click; we get information about the event through the `event` parameter
+
+        
+        // Set the x and y coordinates of our mouse vector to our pointer position, scaling for the width and height of our renderer (400 and 300, respectively)
+        var offsetX = renderer.domElement.offsetLeft*(2/sceneWidth);
+        var offsetY = renderer.domElement.offsetTop*(2/sceneHeight);
+        mouse.x = (event.clientX / sceneWidth) * 2 - 1 - offsetX;
+        mouse.y = -(event.clientY / sceneHeight) * 2 + 1 +offsetY;
+        
+        // Tell our raycaster to cast from our mouse
+        raycaster.setFromCamera(mouse, camera);
+        // Construct the array of objects we want to check intersection with
+        var objects = [cube];  // objects to display when clicked
+        // Tell our raycaster to detect the intersection with that array of objects
+        var intersections = raycaster.intersectObjects(objects);;
+        if (intersections.length > 0) { // If we find any intersections
+        	// Do stuff
+          	console.log("Clicked");
+             cube2.visible = true;
+           // document.querySelector('cube2').style.visibility = 'visible';
+        }
+
+         var objects2 = [cube2];  // objects to display when clicked
+        // Tell our raycaster to detect the intersection with that array of objects
+        var intersections = raycaster.intersectObjects(objects2);;
+        if (intersections.length > 0) { // If we find any intersections
+            // Do stuff
+            console.log("Clicked");
+           document.querySelector('#toShow').style.visibility = 'visible';
+        }
+    };
+
+
+var Hello_Label = textSprite ( "Hello Alec!!!", {} ); ///////defines what the text is
+    Hello_Label.scale.normalize().multiplyScalar ( 20 );
+    Hello_Label.position.setZ ( -2 );
+    Hello_Label.position.setX ( 5 );  
+     Hello_Label.position.setY ( 1 );  
+    Hello_Label.name = "Hello Label";   
+    Hello_Label.id = "HL";
+
+    scene.add ( Hello_Label );  /////////add text to scene
+    
+function textSprite( message, parameters ) ///////////////////function that controls attributes
+    {
+        if ( parameters === undefined ) parameters = {};
+        var fontface = parameters.hasOwnProperty("fontface") ? parameters["fontface"] : "Arial";
+        var fontsize = parameters.hasOwnProperty("fontsize") ? parameters["fontsize"] : 20;
+        var borderThickness = parameters.hasOwnProperty("borderThickness") ? parameters["borderThickness"] : 4;
+        var borderColor = parameters.hasOwnProperty("borderColor") ?parameters["borderColor"] : { r:0, g:0, b:0, a:1.0 };
+        var backgroundColor = parameters.hasOwnProperty("backgroundColor") ?parameters["backgroundColor"] : { r:255, g:255, b:255, a:1.0 };
+        var textColor = parameters.hasOwnProperty("textColor") ?parameters["textColor"] : { r:255, g:0, b:0, a:1.0 };
+
+        var canvas = document.createElement('canvas');
+        var context = canvas.getContext('2d');
+        context.font = "Bold " + fontsize + "px " + fontface;
+        var metrics = context.measureText( message );
+        var textWidth = metrics.width;
+
+        context.fillStyle   = "rgba(" + backgroundColor.r + "," + backgroundColor.g + "," + backgroundColor.b + "," + backgroundColor.a + ")";
+        context.strokeStyle = "rgba(" + borderColor.r + "," + borderColor.g + "," + borderColor.b + "," + borderColor.a + ")";
+
+        context.lineWidth = borderThickness;
+        // roundRect(context, borderThickness/2, borderThickness/2, (textWidth + borderThickness) * 1.1, fontsize * 1.4 + borderThickness, 8);
+
+        context.fillStyle = "rgba("+textColor.r+", "+textColor.g+", "+textColor.b+", 1.0)";
+        context.fillText( message, borderThickness, fontsize + borderThickness);
+
+        var texture = new THREE.Texture(canvas) 
+        texture.needsUpdate = true;
+
+        var spriteMaterial = new THREE.SpriteMaterial( { map: texture, useScreenCoordinates: false } );
+        var sprite = new THREE.Sprite( spriteMaterial );
+        sprite.scale.set(0.5 * fontsize, 0.25 * fontsize, 0.75 * fontsize);
+        return sprite;  
+    }
+    
+  // ////////////////////////////I DONT KNOW WHAT IS HAPPENING HERE
+  //   function makeTextSprite( message, parameters )
+  //   {
+  //       if ( parameters === undefined ) parameters = {};
+  //       var fontface = parameters.hasOwnProperty("fontface") ? parameters["fontface"] : "Arial";
+  //       var fontsize = parameters.hasOwnProperty("fontsize") ? parameters["fontsize"] : 18;
+  //       var borderThickness = parameters.hasOwnProperty("borderThickness") ? parameters["borderThickness"] : 4;
+  //       var borderColor = parameters.hasOwnProperty("borderColor") ?parameters["borderColor"] : { r:0, g:0, b:0, a:1.0 };
+  //       var backgroundColor = parameters.hasOwnProperty("backgroundColor") ?parameters["backgroundColor"] : { r:255, g:255, b:255, a:1.0 };
+  //       var textColor = parameters.hasOwnProperty("textColor") ?parameters["textColor"] : { r:0, g:0, b:0, a:1.0 };
+
+  //       var canvas = document.createElement('canvas');
+  //       var context = canvas.getContext('2d');
+  //       context.font = "Bold " + fontsize + "10px " + fontface;
+  //       var metrics = context.measureText( message );
+  //       var textWidth = metrics.width;
+
+  //       context.fillStyle   = "rgba(" + backgroundColor.r + "," + backgroundColor.g + "," + backgroundColor.b + "," + backgroundColor.a + ")";
+  //       context.strokeStyle = "rgba(" + borderColor.r + "," + borderColor.g + "," + borderColor.b + "," + borderColor.a + ")";
+
+  //       context.lineWidth = borderThickness;
+  //       roundRect(context, borderThickness/2, borderThickness/2, (textWidth + borderThickness) * 1.1, fontsize * 1.4 + borderThickness, 8);
+
+  //       context.fillStyle = "rgba("+textColor.r+", "+textColor.g+", "+textColor.b+", 1.0)";
+  //       context.fillText( message, borderThickness, fontsize + borderThickness);
+
+  //       var texture = new THREE.Texture(canvas) 
+  //       texture.needsUpdate = true;
+
+  //       var spriteMaterial = new THREE.SpriteMaterial( { map: texture, useScreenCoordinates: false } );
+  //       var sprite = new THREE.Sprite( spriteMaterial );
+  //       sprite.scale.set(0.5 * fontsize, 0.25 * fontsize, 0.75 * fontsize);
+  //       return sprite;  
+  //   }
+  //   //////////////////////////////////END OF WHAT I DON"T KNOW IS HAPPENING
+
+
+
+
+    // And then actually attach our onDocumentClick function as an event handler to when the canvas hears a `click`
+    renderer.domElement.addEventListener('click', onDocumentClick, false);
+    function onDocumentMouseMove(event) {
+        event.preventDefault();
+        var offsetX = renderer.domElement.offsetLeft*(2/sceneWidth);
+        var offsetY = renderer.domElement.offsetTop*(2/sceneHeight);
+        mouse.x = (event.clientX / sceneWidth) * 2 - 1 - offsetX;
+        mouse.y = -(event.clientY / sceneHeight) * 2 + 1 +offsetY;
+        raycaster.setFromCamera(mouse, camera);
+        var numObjects;
+        // var numFaces = 0	;
+        var intersections;
+        var objects = [cube, cube2]; //objects to change color from ray cast
+        var intersections = raycaster.intersectObjects(objects);
+        numObjects = objects.length;
+        // numFaces = totalFaces;
+        if (intersections.length > 0) {
+            if (intersected != intersections[0].object) {
+                if (intersected) intersected.material.color.setHex(baseColor);
+                intersected = intersections[0].object;
+                intersected.material.color.setHex(intersectColor);
+            }
+            document.body.style.cursor = 'pointer';
+        } else if (intersected) {
+            intersected.material.color.setHex(baseColor);
+            intersected = null;
+            document.body.style.cursor = 'auto';
+        }
+    }
+    renderer.domElement.addEventListener('mousemove', onDocumentMouseMove, false);
+	
+    var render = function() {
+        requestAnimationFrame(render);
+        renderer.render(scene, camera);
+        controls.update();
+    };
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
+    render();
+    </script>
+</body>
+
+</html>
