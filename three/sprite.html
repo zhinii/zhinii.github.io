@@ -21,12 +21,15 @@
 	<div id='toShow'>Tip!</div>
    <script src="js/three.min.js"></script>
     <script src="js/OrbitControls.js"></script>
-    <script>
+<!--        <script src="js/Sprite.js"></script>
+ -->    <script>
     var scene = new THREE.Scene();
     var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     var renderer = new THREE.WebGLRenderer({
         antialias: true
     });
+
+
         var sceneHeight = 400;
     var sceneWidth = 400;
     renderer.setSize(sceneWidth, sceneHeight);
@@ -121,88 +124,59 @@
         }
     };
 
+    //////sprite
 
-var Hello_Label = textSprite ( "Hello Alec!!!", {} ); ///////defines what the text is
-    Hello_Label.scale.normalize().multiplyScalar ( 10 );///affects size
-    Hello_Label.position.setZ ( -2 );
-    Hello_Label.position.setX ( 5 );  
-     Hello_Label.position.setY ( 1 );  
-    Hello_Label.name = "Hello Label";   
-    Hello_Label.id = "HL";
+    var text = new THREE.Texture("text");
+    var textmaterial = new THREE.SpriteMaterial( { map:text } );
+  var spritetext = new THREE.Sprite( textmaterial );
+                scene.add( spritetext );
 
-    scene.add ( Hello_Label );  /////////add text to scene
+
+// var Hello_Label = textSprite ( "Hello Alec!!!", {} ); ///////defines what the text is
+//     Hello_Label.scale.normalize().multiplyScalar ( 10 );///affects size
+//     Hello_Label.position.setZ ( -2 );
+//     Hello_Label.position.setX ( 5 );  
+//      Hello_Label.position.setY ( 1 );  
+//     Hello_Label.name = "Hello Label";   
+//     Hello_Label.id = "HL";
+
+//     scene.add ( Hello_Label );  /////////add text to scene
     
-function textSprite( message, parameters ) ///////////////////function that controls attributes
-    {
-        if ( parameters === undefined ) parameters = {};
-        var fontface = parameters.hasOwnProperty("fontface") ? parameters["fontface"] : "Arial";
-        var fontsize = parameters.hasOwnProperty("fontsize") ? parameters["fontsize"] : 20;/// affects size
-        var borderThickness = parameters.hasOwnProperty("borderThickness") ? parameters["borderThickness"] : 4;
-        var borderColor = parameters.hasOwnProperty("borderColor") ?parameters["borderColor"] : { r:0, g:0, b:0, a:1.0 };
-        var backgroundColor = parameters.hasOwnProperty("backgroundColor") ?parameters["backgroundColor"] : { r:255, g:255, b:255, a:1.0 };
-        var textColor = parameters.hasOwnProperty("textColor") ?parameters["textColor"] : { r:255, g:0, b:0, a:1.0 };
+// function textSprite( message, parameters ) ///////////////////function that controls attributes
+//     {
+//         if ( parameters === undefined ) parameters = {};
+//         var fontface = parameters.hasOwnProperty("fontface") ? parameters["fontface"] : "Arial";
+//         var fontsize = parameters.hasOwnProperty("fontsize") ? parameters["fontsize"] : 20;/// affects size
+//         var borderThickness = parameters.hasOwnProperty("borderThickness") ? parameters["borderThickness"] : 4;
+//         var borderColor = parameters.hasOwnProperty("borderColor") ?parameters["borderColor"] : { r:0, g:0, b:0, a:1.0 };
+//         var backgroundColor = parameters.hasOwnProperty("backgroundColor") ?parameters["backgroundColor"] : { r:255, g:255, b:255, a:1.0 };
+//         var textColor = parameters.hasOwnProperty("textColor") ?parameters["textColor"] : { r:255, g:0, b:0, a:1.0 };
 
-        var canvas = document.createElement('canvas');
-        var context = canvas.getContext('2d');
-        context.font = "Bold " + fontsize + "px " + fontface;////size?
-        var metrics = context.measureText( message );
-        var textWidth = metrics.width;
+//         var canvas = document.createElement('canvas');
+//         var context = canvas.getContext('2d');
+//         context.font = "Bold " + fontsize + "px " + fontface;////size?
+//         var metrics = context.measureText( message );
+//         var textWidth = metrics.width;
 
-        context.fillStyle   = "rgba(" + backgroundColor.r + "," + backgroundColor.g + "," + backgroundColor.b + "," + backgroundColor.a + ")";
-        context.strokeStyle = "rgba(" + borderColor.r + "," + borderColor.g + "," + borderColor.b + "," + borderColor.a + ")";
+//         context.fillStyle   = "rgba(" + backgroundColor.r + "," + backgroundColor.g + "," + backgroundColor.b + "," + backgroundColor.a + ")";
+//         context.strokeStyle = "rgba(" + borderColor.r + "," + borderColor.g + "," + borderColor.b + "," + borderColor.a + ")";
 
-        context.lineWidth = borderThickness;
-        // roundRect(context, borderThickness/2, borderThickness/2, (textWidth + borderThickness) * 1.1, fontsize * 1.4 + borderThickness, 8);
+//         context.lineWidth = borderThickness;
+//         // roundRect(context, borderThickness/2, borderThickness/2, (textWidth + borderThickness) * 1.1, fontsize * 1.4 + borderThickness, 8);
 
-        context.fillStyle = "rgba("+textColor.r+", "+textColor.g+", "+textColor.b+", 1.0)";
-        context.fillText( message, borderThickness, fontsize + borderThickness);
+//         context.fillStyle = "rgba("+textColor.r+", "+textColor.g+", "+textColor.b+", 1.0)";
+//         context.fillText( message, borderThickness, fontsize + borderThickness);
 
-        var texture = new THREE.Texture(canvas) 
-        texture.needsUpdate = true;
+//         var texture = new THREE.Texture(canvas) 
+//         texture.needsUpdate = true;
 
-        var spriteMaterial = new THREE.SpriteMaterial( { map: texture, useScreenCoordinates: false } );
-        var sprite = new THREE.Sprite( spriteMaterial );
-        // sprite.scale.set(0.5 * fontsize, 0.25 * fontsize, 0.75 * fontsize);  ///affects size
-        return sprite;  
-    }
+//         var spriteMaterial = new THREE.SpriteMaterial( { map: texture, useScreenCoordinates: false } );
+//         var sprite = new THREE.Sprite( spriteMaterial );
+//         // sprite.scale.set(0.5 * fontsize, 0.25 * fontsize, 0.75 * fontsize);  ///affects size
+//         return sprite;  
+//     }
     
-  // ////////////////////////////I DONT KNOW WHAT IS HAPPENING HERE
-  //   function makeTextSprite( message, parameters )
-  //   {
-  //       if ( parameters === undefined ) parameters = {};
-  //       var fontface = parameters.hasOwnProperty("fontface") ? parameters["fontface"] : "Arial";
-  //       var fontsize = parameters.hasOwnProperty("fontsize") ? parameters["fontsize"] : 18;
-  //       var borderThickness = parameters.hasOwnProperty("borderThickness") ? parameters["borderThickness"] : 4;
-  //       var borderColor = parameters.hasOwnProperty("borderColor") ?parameters["borderColor"] : { r:0, g:0, b:0, a:1.0 };
-  //       var backgroundColor = parameters.hasOwnProperty("backgroundColor") ?parameters["backgroundColor"] : { r:255, g:255, b:255, a:1.0 };
-  //       var textColor = parameters.hasOwnProperty("textColor") ?parameters["textColor"] : { r:0, g:0, b:0, a:1.0 };
-
-  //       var canvas = document.createElement('canvas');
-  //       var context = canvas.getContext('2d');
-  //       context.font = "Bold " + fontsize + "10px " + fontface;
-  //       var metrics = context.measureText( message );
-  //       var textWidth = metrics.width;
-
-  //       context.fillStyle   = "rgba(" + backgroundColor.r + "," + backgroundColor.g + "," + backgroundColor.b + "," + backgroundColor.a + ")";
-  //       context.strokeStyle = "rgba(" + borderColor.r + "," + borderColor.g + "," + borderColor.b + "," + borderColor.a + ")";
-
-  //       context.lineWidth = borderThickness;
-  //       roundRect(context, borderThickness/2, borderThickness/2, (textWidth + borderThickness) * 1.1, fontsize * 1.4 + borderThickness, 8);
-
-  //       context.fillStyle = "rgba("+textColor.r+", "+textColor.g+", "+textColor.b+", 1.0)";
-  //       context.fillText( message, borderThickness, fontsize + borderThickness);
-
-  //       var texture = new THREE.Texture(canvas) 
-  //       texture.needsUpdate = true;
-
-  //       var spriteMaterial = new THREE.SpriteMaterial( { map: texture, useScreenCoordinates: false } );
-  //       var sprite = new THREE.Sprite( spriteMaterial );
-  //       sprite.scale.set(0.5 * fontsize, 0.25 * fontsize, 0.75 * fontsize);
-  //       return sprite;  
-  //   }
-  //   //////////////////////////////////END OF WHAT I DON"T KNOW IS HAPPENING
-
-
+  
 
 
     // And then actually attach our onDocumentClick function as an event handler to when the canvas hears a `click`
