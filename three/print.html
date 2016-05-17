@@ -39,9 +39,6 @@
     // scene.add(light);
 
 
-
-
-
     var chassis = new THREE.MTLLoader();
    chassis.load('printer/case.mtl', function(material) {
         material.preload();
@@ -52,13 +49,73 @@
                 scene.add(object);
             });
     });
-    var ground = new THREE.BoxGeometry(50, .5, 50);
+
+    var control = new THREE.MTLLoader();
+   control.load('printer/control.mtl', function(material) {
+        material.preload();
+        var loader = new THREE.OBJLoader();
+        loader.setMaterials(material);
+        loader.load('printer/control.obj',
+            function(object) {
+                scene.add(object);
+            });
+    });
+
+   var door = new THREE.MTLLoader();
+   door.load('printer/door.mtl', function(material) {
+        material.preload();
+        var loader = new THREE.OBJLoader();
+        loader.setMaterials(material);
+        loader.load('printer/door.obj',
+            function(object) {
+                scene.add(object);
+            });
+    });
+
+   var monitor = new THREE.MTLLoader();
+   monitor.load('printer/monitor.mtl', function(material) {
+        material.preload();
+        var loader = new THREE.OBJLoader();
+        loader.setMaterials(material);
+        loader.load('printer/monitor.obj',
+            function(object) {
+                scene.add(object);
+            });
+    });
+
+   var screen = new THREE.MTLLoader();
+   screen.load('printer/screen.mtl', function(material) {
+        material.preload();
+        var loader = new THREE.OBJLoader();
+        loader.setMaterials(material);
+        loader.load('printer/screen.obj',
+            function(object) {
+                scene.add(object);
+            });
+    });
+
+   var table = new THREE.MTLLoader();
+   table.load('printer/table.mtl', function(material) {
+        material.preload();
+        var loader = new THREE.OBJLoader();
+        loader.setMaterials(material);
+        loader.load('printer/table.obj',
+            function(object) {
+                scene.add(object);
+            });
+    });
+
+
+    var ground = new THREE.BoxGeometry(100, 0, 100);
     var groundmat = new THREE.MeshLambertMaterial({
-        color: 0x00ff00
+        color: 0x000000
     })
+
+
+
     var groundplane = new THREE.Mesh(ground, groundmat);
     scene.add(groundplane);
-    groundplane.position.y = -1;
+    groundplane.position.y = 0;
     camera.position.x = 10;
     camera.position.y = 10;
     var baseColor = 0xffffff;
