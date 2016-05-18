@@ -126,6 +126,8 @@
         // Construct the array of objects we want to check intersection with
         var objects = [screens];
         // Tell our raycaster to detect the intersection with that array of objects
+        var intersects = raycaster.intersectObjects( objects, true );
+
         var intersections = raycaster.intersectObjects(objects);
         if (intersections.length > 0) { // If we find any intersections
             // Do stuff
@@ -146,6 +148,8 @@
         // var numFaces = 0 ;
         var intersections;
         var objects = [screens];
+        var intersects = raycaster.intersectObjects( objects, true );
+
         var intersections = raycaster.intersectObjects(objects);
         numObjects = objects.length;
         // numFaces = totalFaces;
