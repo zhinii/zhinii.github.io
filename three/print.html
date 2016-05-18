@@ -127,7 +127,7 @@
         // Tell our raycaster to cast from our mouse
         raycaster.setFromCamera(mouse, camera);
         // Construct the array of objects we want to check intersection with
-        var objects = [groundplane];
+        var objects = [groundplane, chassis];;
         // Tell our raycaster to detect the intersection with that array of objects
 
         var intersections = raycaster.intersectObjects(objects);
@@ -149,7 +149,7 @@
         var numObjects;
         // var numFaces = 0 ;
         var intersections;
-        var objects = [groundplane];
+        var objects = [groundplane, chassis];
 
         var intersections = raycaster.intersectObjects(objects);
         numObjects = objects.length;
