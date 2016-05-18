@@ -37,8 +37,6 @@
     light.position.set(1, 1, 1);
     scene.add(light);
     // scene.add(light);
-
-
     var chassis = new THREE.MTLLoader();
    chassis.load('printer/case.mtl', function(material) {
         material.preload();
@@ -49,7 +47,6 @@
                 scene.add(object);
             });
     });
-
     var control = new THREE.MTLLoader();
    control.load('printer/control.mtl', function(material) {
         material.preload();
@@ -60,7 +57,6 @@
                 scene.add(object);
             });
     });
-
    var door = new THREE.MTLLoader();
    door.load('printer/door.mtl', function(material) {
         material.preload();
@@ -71,7 +67,6 @@
                 scene.add(object);
             });
     });
-
    var monitor = new THREE.MTLLoader();
    monitor.load('printer/monitor.mtl', function(material) {
         material.preload();
@@ -82,7 +77,6 @@
                 scene.add(object);
             });
     });
-
    var screens = new THREE.MTLLoader();
    screens.load('printer/screen.mtl', function(material) {
         material.preload();
@@ -93,7 +87,6 @@
                 scene.add(object);
             });
     });
-
    var table = new THREE.MTLLoader();
    table.load('printer/table.mtl', function(material) {
         material.preload();
@@ -104,15 +97,10 @@
                 scene.add(object);
             });
     });
-
-
     var ground = new THREE.BoxGeometry(100, 0, 100);
     var groundmat = new THREE.MeshLambertMaterial({
         color: 0xffffff
     })
-
-
-
     var groundplane = new THREE.Mesh(ground, groundmat);
     scene.add(groundplane);
     groundplane.position.y = 0;
@@ -125,6 +113,8 @@
     var raycaster = new THREE.Raycaster();
     var mouse = new THREE.Vector2();
     var intersected;
+
+
     function onDocumentClick(event) { // This is a function to run when we click; we get information about the event through the `event` parameter
         // Set the x and y coordinates of our mouse vector to our pointer position, scaling for the width and height of our renderer (400 and 300, respectively)
         var offsetX = renderer.domElement.offsetLeft * (2 / sceneWidth);
@@ -134,9 +124,9 @@
         // Tell our raycaster to cast from our mouse
         raycaster.setFromCamera(mouse, camera);
         // Construct the array of objects we want to check intersection with
-        var objects = [screens, door, control];
+        var objects = [screens];
         // Tell our raycaster to detect the intersection with that array of objects
-        var intersections = raycaster.intersectObjects(objects);;
+        var intersections = raycaster.intersectObjects(objects);
         if (intersections.length > 0) { // If we find any intersections
             // Do stuff
             console.log("Clicked");
@@ -155,7 +145,7 @@
         var numObjects;
         // var numFaces = 0 ;
         var intersections;
-        var objects = [screens, door, control];
+        var objects = [screens];
         var intersections = raycaster.intersectObjects(objects);
         numObjects = objects.length;
         // numFaces = totalFaces;
