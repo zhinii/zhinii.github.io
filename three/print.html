@@ -111,7 +111,7 @@
     camera.position.y = 75;
     camera.lookAt(new THREE.Vector3(0,-100,50));
     var baseColor = 0xffffff;
-    var foundColor = 0xFF0000;
+    var foundColor = 0xffffff;
     var intersectColor = 0x00D66B;
     var raycaster = new THREE.Raycaster();
     var mouse = new THREE.Vector2();
@@ -127,7 +127,7 @@
         // Tell our raycaster to cast from our mouse
         raycaster.setFromCamera(mouse, camera);
         // Construct the array of objects we want to check intersection with
-        var objects = [groundplane, chassis];
+        var objects = [groundplane];
         // Tell our raycaster to detect the intersection with that array of objects
 
         var intersections = raycaster.intersectObjects(objects);
@@ -149,7 +149,7 @@
         var numObjects;
         // var numFaces = 0 ;
         var intersections;
-        var objects = [groundplane, chassis];
+        var objects = [groundplane];
 
         var intersections = raycaster.intersectObjects(objects);
         numObjects = objects.length;
