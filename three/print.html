@@ -164,7 +164,7 @@
             document.body.style.cursor = 'auto';
         }
     }
-    // renderer.domElement.addEventListener('mousemove', onDocumentMouseMove, false);
+    renderer.domElement.addEventListener('mousemove', onDocumentMouseMove, false);
     var render = function() {
         requestAnimationFrame(render);
         renderer.render(scene, camera);
