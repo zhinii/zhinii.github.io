@@ -127,7 +127,7 @@
         var objects = [groundplane];
         // Tell our raycaster to detect the intersection with that array of objects
 
-        var intersections = raycaster.intersectObjects(objects, true);
+        var intersections = raycaster.intersectObjects(objects);
         if (intersections.length > 0) { // If we find any intersections
             // Do stuff
             console.log("Clicked");
@@ -148,7 +148,7 @@
         var intersections;
         var objects = [groundplane];
 
-        var intersections = raycaster.intersectObjects(objects, true);
+        var intersections = raycaster.intersectObjects(objects);
         numObjects = objects.length;
         // numFaces = totalFaces;
         if (intersections.length > 0) {
