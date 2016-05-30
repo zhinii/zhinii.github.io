@@ -2,23 +2,10 @@
 
 <head>
     <title>template</title>
-    <!--    <style>
-    body {
-        margin: 0;
-    }
-    
-    canvas {
-        width: 200px;
-        height: 150px;
-    }
-    #toShow {
-        visibility: hidden;
-    }
-    </style> -->
+   
 </head>
 
 <body>
-    <!-- <div id='toShow'>Tip!</div> -->
     <script src="js/three.min.js"></script>
     <script src="js/OrbitControls.js"></script>
     <script src="js/Sprite.js"></script>
@@ -42,7 +29,7 @@
     scene.add(light);
 /////everything above this is needed for basic scene. includes lights, camera, setting scene size
 
-
+///everything below is object in the scene, these can be changed
 
     var geometry = new THREE.BoxGeometry(2, 2, 2);
     var material = new THREE.MeshStandardMaterial({
@@ -50,6 +37,7 @@
         roughness: 0.5,
         metalness: 0,
         shading: THREE.FlatShading
+        
     });
 
 
@@ -87,6 +75,17 @@
     camera.position.x = 10;
     camera.position.y = 10;
 
+    //this is a sprite object
+    var can = document.getElementById("myCanvas");
+var ctx = can.getContext("2d");
+ctx.font = "30px Arial";
+ctx.fillText("potato",5,50);
+var material = new THREE.SpriteMaterial({ctx});
+     var sprite = new THREE.Sprite( material );
+                scene.add( sprite );
+    ///end objects in scene
+
+///below is for raycasting
 
     var baseColor = 0xffffff;
     var foundColor = 0x12C0E3;
@@ -96,7 +95,6 @@
     var intersected;
 
 
-///below is for raycasting
     function onDocumentClick(event) { // This is a function to run when we click; we get information about the event through the `event` parameter
 
 

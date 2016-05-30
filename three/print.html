@@ -58,8 +58,17 @@
         loader.load('printer/control.obj',
             function(object) {
                 scene.add(object);
-            });
+
+
+                var ruta_1 = textSprite("Ruta 1 ", {});
+ruta_1.scale.normalize().multiplyScalar(0.10);
+ruta_1.position.setX(-1);
+ruta_1.position.setY(2);
+ruta_1.position.setZ(-9);
+ruta_1.name = "ruta_1";
+obj.add(ruta_1);
     });
+        
    var door = new THREE.MTLLoader();
    door.load('printer/door.mtl', function(material) {
         material.preload();
