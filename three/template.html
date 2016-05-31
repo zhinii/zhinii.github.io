@@ -76,20 +76,26 @@
 
     //this is a sprite object
 
-    var canvas = document.createElement('canvas');
-   canvas.width = 400;///create canvas same size of scene
-    canvas.height = 300;
-        var context = canvas.getContext('2d');
+   //  var canvas = document.createElement('canvas');
+   // canvas.width = 400;///create canvas same size of scene
+   //  canvas.height = 300;
+   //      var context = canvas.getContext('2d');
 
-    context.font = '48px Arial';
-    context.fillText('GAME OVER' ,0 ,0);
-    // g.fillStyle = 'whi
-    var text = new THREE.Texture(context);
-    var textmaterial = new THREE.SpriteMaterial({map:text
-    }
-    );
-    var spritetext = new THREE.Sprite(textmaterial);
-    scene.add(spritetext);
+   //  context.font = '48px Arial';
+   //  context.fillText('GAME OVER' ,0 ,0);
+   //  // g.fillStyle = 'whi
+   //  var text = new THREE.Texture(context);
+   //  var textmaterial = new THREE.SpriteMaterial({map:text
+   //  }
+   //  );
+   //  var spritetext = new THREE.Sprite(textmaterial);
+   //  scene.add(spritetext);
+
+
+   var map = new THREE.TextureLoader().load( "dog.jpg" );
+                var material = new THREE.SpriteMaterial( { map: map, color: 0xffffff, fog: true } );
+                var sprite = new THREE.Sprite( material );
+                scene.add( sprite );
     ///end objects in scene
 
     ///below is for raycasting
