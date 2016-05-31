@@ -2,7 +2,6 @@
 
 <head>
     <title>template</title>
-   
 </head>
 
 <body>
@@ -27,9 +26,9 @@
     var light = new THREE.DirectionalLight(0xffffff, 0.5);
     light.position.set(1, 1, 1);
     scene.add(light);
-/////everything above this is needed for basic scene. includes lights, camera, setting scene size
+    /////everything above this is needed for basic scene. includes lights, camera, setting scene size
 
-///everything below is object in the scene, these can be changed
+    ///everything below is object in the scene, these can be changed
 
     var geometry = new THREE.BoxGeometry(2, 2, 2);
     var material = new THREE.MeshStandardMaterial({
@@ -37,7 +36,7 @@
         roughness: 0.5,
         metalness: 0,
         shading: THREE.FlatShading
-        
+
     });
 
 
@@ -76,16 +75,24 @@
     camera.position.y = 10;
 
     //this is a sprite object
-    var can = document.getElementById("myCanvas");
-var ctx = can.getContext("2d");
-ctx.font = "30px Arial";
-ctx.fillText("potato",5,50);
-var material = new THREE.SpriteMaterial({ctx});
-     var sprite = new THREE.Sprite( material );
-                scene.add( sprite );
+
+    var canvas = document.createElement('canvas');
+   canvas.width = 400;///create canvas same size of scene
+    canvas.height = 300;
+        var context = canvas.getContext('2d');
+
+    context.font = '48px Arial';
+    context.fillText('GAME OVER' ,0 ,0);
+    // g.fillStyle = 'whi
+    var text = new THREE.Texture(context);
+    var textmaterial = new THREE.SpriteMaterial({map:text
+    }
+    );
+    var spritetext = new THREE.Sprite(textmaterial);
+    scene.add(spritetext);
     ///end objects in scene
 
-///below is for raycasting
+    ///below is for raycasting
 
     var baseColor = 0xffffff;
     var foundColor = 0x12C0E3;
@@ -125,11 +132,11 @@ var material = new THREE.SpriteMaterial({ctx});
             console.log("Clicked");
             document.querySelector('#toShow').style.visibility = 'visible';
         }
-    };///end of raycasting
+    }; ///end of raycasting
 
-    
 
-///below is what happens as a result of raycasting, changing object color, knowing where the mouse is on clicks and intersecting objects
+
+    ///below is what happens as a result of raycasting, changing object color, knowing where the mouse is on clicks and intersecting objects
     // And then actually attach our onDocumentClick function as an event handler to when the canvas hears a `click`
     renderer.domElement.addEventListener('click', onDocumentClick, false);
 
