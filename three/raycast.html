@@ -109,7 +109,7 @@
     groundplane.position.y = 0;
     camera.position.z = 50;
     camera.position.y = 75;
-    
+
     camera.lookAt(new THREE.Vector3(0,-100,50));
     var baseColor = 0xffffff;
     var foundColor = 0xffffff;
@@ -131,7 +131,7 @@
         var objects = [groundplane, table];
         // Tell our raycaster to detect the intersection with that array of objects
 
-        var intersections = raycaster.intersectObjects(objects);
+        var intersections = raycaster.intersectObjects(objects, true);
         if (intersections.length > 0) { // If we find any intersections
             // Do stuff
             console.log("Clicked");
