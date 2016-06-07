@@ -1,5 +1,4 @@
 <html>
-<html>
 
 <head>
     <title>cube control</title>
@@ -65,7 +64,7 @@
     camera.position.y = 75;
     camera.lookAt(new THREE.Vector3(0,-100,50));
 
-    var objects = ["table", "groundplane"];
+ 
 
     var baseColor = 0xffffff;
     var foundColor = 0xffffff;
@@ -109,6 +108,7 @@
         // var numFaces = 0 ;
         // var intersections;
         // var objects = table;
+           var objects = ["table", "groundplane"];
         var intersections = raycaster.intersectObjects([objects], true);
         // numObjects = objects.length;
         // numFaces = totalFaces;
