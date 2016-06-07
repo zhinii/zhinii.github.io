@@ -1,4 +1,5 @@
 <html>
+<html>
 
 <head>
     <title>cube control</title>
@@ -39,57 +40,7 @@
     var light = new THREE.DirectionalLight(0xffffff, 0.5);
     light.position.set(1, 1, 1);
     scene.add(light);
-    // scene.add(light);
-   //  var chassis = new THREE.MTLLoader();
-   // chassis.load('printer/case.mtl', function(material) {
-   //      material.preload();
-   //      var loader = new THREE.OBJLoader();
-   //      loader.setMaterials(material);
-   //      loader.load('printer/case.obj',
-   //          function(object) {
-   //              scene.add(object);
-   //          });
-   //  });
-   //  var control = new THREE.MTLLoader();
-   // control.load('printer/control.mtl', function(material) {
-   //      material.preload();
-   //      var loader = new THREE.OBJLoader();
-   //      loader.setMaterials(material);
-   //      loader.load('printer/control.obj',
-   //          function(object) {
-   //              scene.add(object);
-   //          });
-   //  });
-   // var door = new THREE.MTLLoader();
-   // door.load('printer/door.mtl', function(material) {
-   //      material.preload();
-   //      var loader = new THREE.OBJLoader();
-   //      loader.setMaterials(material);
-   //      loader.load('printer/door.obj',
-   //          function(object) {
-   //              scene.add(object);
-   //          });
-   //  });
-   // var monitor = new THREE.MTLLoader();
-   // monitor.load('printer/monitor.mtl', function(material) {
-   //      material.preload();
-   //      var loader = new THREE.OBJLoader();
-   //      loader.setMaterials(material);
-   //      loader.load('printer/monitor.obj',
-   //          function(object) {
-   //              scene.add(object);
-   //          });
-   //  });
-   // var screens = new THREE.MTLLoader();
-   // screens.load('printer/screen.mtl', function(material) {
-   //      material.preload();
-   //      var loader = new THREE.OBJLoader();
-   //      loader.setMaterials(material);
-   //      loader.load('printer/screen.obj',
-   //          function(object) {
-   //              scene.add(object);
-   //          });
-   //  });
+
    var table = new THREE.MTLLoader();
    table.load('printer/table.mtl', function(material) {
         material.preload();
@@ -100,24 +51,26 @@
                 scene.add(object);
             });
     });
+
     var ground = new THREE.BoxGeometry(100, 0, 100);
     var groundmat = new THREE.MeshLambertMaterial({
         color: 0xffffff
     })
+
     var groundplane = new THREE.Mesh(ground, groundmat);
     scene.add(groundplane);
     groundplane.position.y = 0;
     camera.position.z = 50;
     camera.position.y = 75;
-
     camera.lookAt(new THREE.Vector3(0,-100,50));
+
+
     var baseColor = 0xffffff;
     var foundColor = 0xffffff;
     var intersectColor = 0x00D66B;
     var raycaster = new THREE.Raycaster();
     var mouse = new THREE.Vector2();
     var intersected;
-
 
     function onDocumentClick(event) { // This is a function to run when we click; we get information about the event through the `event` parameter
         // Set the x and y coordinates of our mouse vector to our pointer position, scaling for the width and height of our renderer (400 and 300, respectively)
@@ -130,7 +83,6 @@
         // Construct the array of objects we want to check intersection with
         var objects = [groundplane, table];
         // Tell our raycaster to detect the intersection with that array of objects
-
         var intersections = raycaster.intersectObjects( scene.children, true );
         if (intersections.length > 0) { // If we find any intersections
             // Do stuff
@@ -138,6 +90,7 @@
             document.querySelector('#toShow').style.visibility = 'visible';
         }
     };
+
     // And then actually attach our onDocumentClick function as an event handler to when the canvas hears a `click`
     // renderer.domElement.addEventListener('click', onDocumentClick, false);
     function onDocumentMouseMove(event) {
@@ -150,9 +103,8 @@
         var numObjects;
         // var numFaces = 0 ;
         var intersections;
-        var objects = [groundplane];
-
-        var intersections = raycaster.intersectObjects(objects);
+        var objects = scene.children;
+        var intersections = raycaster.intersectObjects(scene.children, true);
         numObjects = objects.length;
         // numFaces = totalFaces;
         if (intersections.length > 0) {
