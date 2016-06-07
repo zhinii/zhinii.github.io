@@ -1,5 +1,4 @@
 <html>
-<html>
 
 <head>
     <title>cube control</title>
@@ -103,8 +102,8 @@
         var numObjects;
         // var numFaces = 0 ;
         var intersections;
-        var objects = scene.children;
-        var intersections = raycaster.intersectObjects(scene.children, true);
+        var objects = [table];
+        var intersections = raycaster.intersectObjects(objects, true);
         numObjects = objects.length;
         // numFaces = totalFaces;
         if (intersections.length > 0) {
