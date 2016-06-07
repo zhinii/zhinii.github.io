@@ -1,4 +1,5 @@
 <html>
+<html>
 
 <head>
     <title>cube control</title>
@@ -59,10 +60,12 @@
     var groundplane = new THREE.Mesh(ground, groundmat);
     scene.add(groundplane);
     groundplane.position.y = 0;
+
     camera.position.z = 50;
     camera.position.y = 75;
     camera.lookAt(new THREE.Vector3(0,-100,50));
 
+    var objects = ["table", "groundplane"];
 
     var baseColor = 0xffffff;
     var foundColor = 0xffffff;
@@ -94,7 +97,7 @@
     // renderer.domElement.addEventListener('click', onDocumentClick, false);
 
 
-    
+
     function onDocumentMouseMove(event) {
         event.preventDefault();
         var offsetX = renderer.domElement.offsetLeft * (2 / sceneWidth);
@@ -102,11 +105,11 @@
         mouse.x = (event.clientX / sceneWidth) * 2 - 1 - offsetX;
         mouse.y = -(event.clientY / sceneHeight) * 2 + 1 + offsetY;
         raycaster.setFromCamera(mouse, camera);
-        // var numObjects;
+        // var numObjects; 
         // var numFaces = 0 ;
         // var intersections;
         // var objects = table;
-        var intersections = raycaster.intersectObjects(scene.children, true);
+        var intersections = raycaster.intersectObjects(objects, true);
         // numObjects = objects.length;
         // numFaces = totalFaces;
         if (intersections.length > 0) {
