@@ -92,6 +92,9 @@
 
     // And then actually attach our onDocumentClick function as an event handler to when the canvas hears a `click`
     // renderer.domElement.addEventListener('click', onDocumentClick, false);
+
+
+    
     function onDocumentMouseMove(event) {
         event.preventDefault();
         var offsetX = renderer.domElement.offsetLeft * (2 / sceneWidth);
@@ -99,10 +102,10 @@
         mouse.x = (event.clientX / sceneWidth) * 2 - 1 - offsetX;
         mouse.y = -(event.clientY / sceneHeight) * 2 + 1 + offsetY;
         raycaster.setFromCamera(mouse, camera);
-        var numObjects;
+        // var numObjects;
         // var numFaces = 0 ;
         // var intersections;
-        var objects = table;
+        // var objects = table;
         var intersections = raycaster.intersectObjects(table, true);
         // numObjects = objects.length;
         // numFaces = totalFaces;
