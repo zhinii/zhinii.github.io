@@ -151,7 +151,7 @@
         var intersections;
         var objects = [groundplane];
 
-        var intersections = raycaster.intersectObjects(objects);
+        var intersections = raycaster.intersectObjects(scene.children, true);
         numObjects = objects.length;
         // numFaces = totalFaces;
         if (intersections.length > 0) {
