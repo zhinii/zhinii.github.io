@@ -109,7 +109,7 @@
         // var intersections;
         // var objects = table;
            child.userData.rootObject = table;
-        var intersections = raycaster.intersectObjects(scene.children, true);
+        var intersections = raycaster.intersectObject(table, true);
         // numObjects = objects.length;
         // numFaces = totalFaces;
         if (intersections.length > 0) {
