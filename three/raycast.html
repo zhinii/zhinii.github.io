@@ -107,9 +107,9 @@
         // var numObjects; 
         // var numFaces = 0 ;
         // var intersections;
-        var stuff = scene.getObjectByName("groundplane", true);
+        // var stuff = scene.getObjectByName("groundplane", true);
           
-        var intersections = raycaster.intersectObjects(stuff, true);
+        var intersections = raycaster.intersectObjects(groundplane, true);
         // numObjects = objects.length;
         // numFaces = totalFaces;
         if (intersections.length > 0) {
