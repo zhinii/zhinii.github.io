@@ -40,7 +40,7 @@
     light.position.set(1, 1, 1);
     scene.add(light);
 
-    var stuff
+    // var stuff
    var table = new THREE.MTLLoader();
    table.load('printer/table.mtl', function(material) {
         material.preload();
@@ -48,11 +48,12 @@
         loader.setMaterials(material);
         loader.load('printer/table.obj',
             function(object) {
-                // scene.add(object);
-                stuff = object.getChildByName('object', true);
+                scene.add(object);
+                // stuff = object.getChildByName('object', true);
             });
     });
-   scene.add(stuff);
+   // scene.add(stuff);
+
 
 
     var ground = new THREE.BoxGeometry(100, 0, 100);
@@ -102,9 +103,9 @@
         // var numObjects; 
         // var numFaces = 0 ;
         // var intersections;
-       
+       var stuff = scene.getChildByName('table', true);
           
-        var intersections = raycaster.intersectObjects(scene.stuff, true);
+        var intersections = raycaster.intersectObjects(stuff, true);
         // numObjects = objects.length;
         // numFaces = totalFaces;
         if (intersections.length > 0) {
