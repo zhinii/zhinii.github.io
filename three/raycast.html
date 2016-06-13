@@ -48,10 +48,11 @@
         loader.setMaterials(material);
         loader.load('printer/table.obj',
             function(object) {
-                scene.add(object);
+                // scene.add(object);
                 stuff = object.getObjectByName('stuff', true);
             });
     });
+   scene.add(stuff);
 
 
     var ground = new THREE.BoxGeometry(100, 0, 100);
