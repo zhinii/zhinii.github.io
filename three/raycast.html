@@ -49,7 +49,7 @@
         loader.load('printer/table.obj',
             function(object) {
                 scene.add(object);
-
+                objects.push(object);
                 
             });
     });
@@ -107,8 +107,8 @@
         // var numObjects; 
         // var numFaces = 0 ;
         // var intersections;
-
-        var intersections = raycaster.intersectObjects(scene.children, true);
+var stuff = [table];
+        var intersections = raycaster.intersectObjects(stuff, true);
         // numObjects = objects.length;
         // numFaces = totalFaces;
         if (intersections.length > 0) {
