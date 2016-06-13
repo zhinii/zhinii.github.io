@@ -58,13 +58,15 @@
 
 
 
-    var ground = new THREE.BoxGeometry(100, 0, 100);
-    var groundmat = new THREE.MeshLambertMaterial({
-        color: 0xffffff
-    })
-    var groundplane = new THREE.Mesh(ground, groundmat);
-    scene.add(groundplane);
-    groundplane.position.y = 0;
+    // var ground = new THREE.BoxGeometry(100, 0, 100);
+    // var groundmat = new THREE.MeshLambertMaterial({
+    //     color: 0xffffff
+    // })
+    // var groundplane = new THREE.Mesh(ground, groundmat);
+    // scene.add(groundplane);
+    // groundplane.position.y = 0;
+
+    
     camera.position.z = 50;
     camera.position.y = 75;
     camera.lookAt(new THREE.Vector3(0,-100,50));
