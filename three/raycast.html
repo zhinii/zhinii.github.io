@@ -52,6 +52,8 @@
                 stuff = object.getObjectByName('stuff', true);
             });
     });
+
+
     var ground = new THREE.BoxGeometry(100, 0, 100);
     var groundmat = new THREE.MeshLambertMaterial({
         color: 0xffffff
@@ -101,7 +103,7 @@
         // var intersections;
        
           
-        var intersections = raycaster.intersectObjects(stuff, true);
+        var intersections = raycaster.intersectObjects(scene.stuff, true);
         // numObjects = objects.length;
         // numFaces = totalFaces;
         if (intersections.length > 0) {
