@@ -42,7 +42,7 @@
     scene.add(light);
 
 
-   var table = new THREE.MTLLoader();
+   var stuff = new THREE.MTLLoader();
    table.load('printer/table.mtl', function(material) {
         material.preload();
         var loader = new THREE.OBJLoader();
@@ -107,10 +107,9 @@
         // var numObjects; 
         // var numFaces = 0 ;
         // var intersections;
-var stuff = [];
-stuff.push (table);
+var magic = [stuff];
 
-        var intersections = raycaster.intersectObjects(stuff, true);
+        var intersections = raycaster.intersectObjects(magic, true);
         // numObjects = objects.length;
         // numFaces = totalFaces;
         if (intersections.length > 0) {
