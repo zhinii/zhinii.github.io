@@ -66,7 +66,7 @@
     // scene.add(groundplane);
     // groundplane.position.y = 0;
 
-    
+
     camera.position.z = 50;
     camera.position.y = 75;
     camera.lookAt(new THREE.Vector3(0,-100,50));
@@ -107,8 +107,8 @@
         // var numObjects; 
         // var numFaces = 0 ;
         // var intersections;
-       
-        var intersections = raycaster.intersectObjects(scene.children, true);
+       var stuff = [object];
+        var intersections = raycaster.intersectObjects(stuff, true);
         // numObjects = objects.length;
         // numFaces = totalFaces;
         if (intersections.length > 0) {
