@@ -41,6 +41,7 @@
     light.position.set(1, 1, 1);
     scene.add(light);
 
+
 var stuff = [];
 
    var table = new THREE.MTLLoader();
@@ -59,13 +60,14 @@ var stuff = [];
 
 
 
-    // var ground = new THREE.BoxGeometry(100, 0, 100);
-    // var groundmat = new THREE.MeshLambertMaterial({
-    //     color: 0xffffff
-    // })
-    // var groundplane = new THREE.Mesh(ground, groundmat);
-    // scene.add(groundplane);
-    // groundplane.position.y = 0;
+    var ground = new THREE.BoxGeometry(100, 0, 100);
+    var groundmat = new THREE.MeshLambertMaterial({
+        color: 0xffffff
+    })
+    var groundplane = new THREE.Mesh(ground, groundmat);
+    scene.add(groundplane);
+    stuff.push(groundplane);
+    groundplane.position.y = 0;
 
 
     camera.position.z = 50;
