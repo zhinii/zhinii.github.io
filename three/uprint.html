@@ -30,11 +30,11 @@
 var stuff = [];
 
    var static = new THREE.MTLLoader();
-   static.load('printer/static.mtl', function(material) {
+   static.load('uprint/static.mtl', function(material) {
         material.preload();
         var loader = new THREE.OBJLoader();
         loader.setMaterials(material);
-        loader.load('printer/static.obj',
+        loader.load('uprint/static.obj',
             function(object) {
                 scene.add(object);
                 stuff.push(object);
