@@ -82,10 +82,12 @@ var stuff = [];
     //         document.querySelector('#toShow').style.visibility = 'visible';
     //     }
     // };
+        // renderer.domElement.addEventListener('click', onDocumentClick, false);
+
      ///end of raycasting
     ///below is what happens as a result of raycasting, changing object color, knowing where the mouse is on clicks and intersecting objects
     // And then actually attach our onDocumentClick function as an event handler to when the canvas hears a `click`
-    renderer.domElement.addEventListener('click', onDocumentClick, false);
+
     function onDocumentMouseMove(event) {
         event.preventDefault();
         var offsetX = renderer.domElement.offsetLeft * (2 / sceneWidth);
