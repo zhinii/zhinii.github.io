@@ -5,7 +5,7 @@
 </head>
 
 <body>
-    <script src="js/three.min.js"></script>
+     <script src="js/three.min.js"></script>
        <script src="js/three.js"></script>
     <script src="js/OrbitControls.js"></script>
     <script src="js/OBJLoader.js"></script>
@@ -31,8 +31,8 @@
 
 var stuff = [];
 
-   var table = new THREE.MTLLoader();
-   table.load('uprint/static.mtl', function(material) {
+   var blank = new THREE.MTLLoader();
+   blank.load('uprint/static.mtl', function(material) {
         material.preload();
         var loader = new THREE.OBJLoader();
         loader.setMaterials(material);
@@ -55,33 +55,34 @@ var stuff = [];
     var raycaster = new THREE.Raycaster();
     var mouse = new THREE.Vector2();
     var intersected;
-    function onDocumentClick(event) { // This is a function to run when we click; we get information about the event through the `event` parameter
-        // Set the x and y coordinates of our mouse vector to our pointer position, scaling for the width and height of our renderer (400 and 300, respectively)
-        var offsetX = renderer.domElement.offsetLeft * (2 / sceneWidth);
-        var offsetY = renderer.domElement.offsetTop * (2 / sceneHeight);
-        mouse.x = (event.clientX / sceneWidth) * 2 - 1 - offsetX;
-        mouse.y = -(event.clientY / sceneHeight) * 2 + 1 + offsetY;
-        // Tell our raycaster to cast from our mouse
-        raycaster.setFromCamera(mouse, camera);
-        // Construct the array of objects we want to check intersection with
-        var objects = [cube]; // objects to display when clicked
-        // Tell our raycaster to detect the intersection with that array of objects
-        var intersections = raycaster.intersectObjects(objects);;
-        if (intersections.length > 0) { // If we find any intersections
-            // Do stuff
-            console.log("Clicked");
-            cube2.visible = true;
-            // document.querySelector('cube2').style.visibility = 'visible';
-        }
-        var objects2 = [cube2]; // objects to display when clicked
-        // Tell our raycaster to detect the intersection with that array of objects
-        var intersections = raycaster.intersectObjects(objects2);;
-        if (intersections.length > 0) { // If we find any intersections
-            // Do stuff
-            console.log("Clicked");
-            document.querySelector('#toShow').style.visibility = 'visible';
-        }
-    }; ///end of raycasting
+    // function onDocumentClick(event) { // This is a function to run when we click; we get information about the event through the `event` parameter
+    //     // Set the x and y coordinates of our mouse vector to our pointer position, scaling for the width and height of our renderer (400 and 300, respectively)
+    //     var offsetX = renderer.domElement.offsetLeft * (2 / sceneWidth);
+    //     var offsetY = renderer.domElement.offsetTop * (2 / sceneHeight);
+    //     mouse.x = (event.clientX / sceneWidth) * 2 - 1 - offsetX;
+    //     mouse.y = -(event.clientY / sceneHeight) * 2 + 1 + offsetY;
+    //     // Tell our raycaster to cast from our mouse
+    //     raycaster.setFromCamera(mouse, camera);
+    //     // Construct the array of objects we want to check intersection with
+    //     var objects = [cube]; // objects to display when clicked
+    //     // Tell our raycaster to detect the intersection with that array of objects
+    //     var intersections = raycaster.intersectObjects(objects);;
+    //     if (intersections.length > 0) { // If we find any intersections
+    //         // Do stuff
+    //         console.log("Clicked");
+    //         cube2.visible = true;
+    //         // document.querySelector('cube2').style.visibility = 'visible';
+    //     }
+    //     var objects2 = [cube2]; // objects to display when clicked
+    //     // Tell our raycaster to detect the intersection with that array of objects
+    //     var intersections = raycaster.intersectObjects(objects2);;
+    //     if (intersections.length > 0) { // If we find any intersections
+    //         // Do stuff
+    //         console.log("Clicked");
+    //         document.querySelector('#toShow').style.visibility = 'visible';
+    //     }
+    // };
+     ///end of raycasting
     ///below is what happens as a result of raycasting, changing object color, knowing where the mouse is on clicks and intersecting objects
     // And then actually attach our onDocumentClick function as an event handler to when the canvas hears a `click`
     renderer.domElement.addEventListener('click', onDocumentClick, false);
@@ -94,9 +95,8 @@ var stuff = [];
         raycaster.setFromCamera(mouse, camera);
         var numObjects;
         // var numFaces = 0 ;
-        var intersections;
-        var objects = [cube, cube2]; //objects to change color from ray cast
-        var intersections = raycaster.intersectObjects(objects);
+        // var intersections;
+        var intersections = raycaster.intersectObjects(stuff, true);
         numObjects = objects.length;
         // numFaces = totalFaces;
         if (intersections.length > 0) {
@@ -118,6 +118,7 @@ var stuff = [];
         renderer.render(scene, camera);
         controls.update();
     };
+
     ///scene controls for mouse
     controls = new THREE.OrbitControls(camera, renderer.domElement);
     render();
