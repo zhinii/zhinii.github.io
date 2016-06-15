@@ -48,8 +48,8 @@ var stuff = [];
     });
 
    var screens = new THREE.MTLLoader();
-   screens.load('uprint/screen.mtl', function(material1) {
-        material1.preload();
+   screens.load('uprint/screen.mtl', function(material) {
+        material.preload();
         var loader = new THREE.OBJLoader();
         loader.setMaterials(material);
         loader.load('uprint/screen.obj',
@@ -61,8 +61,8 @@ var stuff = [];
     });
 
    var control = new THREE.MTLLoader();
-   control.load('uprint/control.mtl', function(material2) {
-        material2.preload();
+   control.load('uprint/control.mtl', function(material) {
+        material.preload();
         var loader = new THREE.OBJLoader();
         loader.setMaterials(material);
         loader.load('uprint/control.obj',
@@ -74,8 +74,8 @@ var stuff = [];
     });
 
    var door = new THREE.MTLLoader();
-   door.load('uprint/door.mtl', function(material3) {
-        material3.preload();
+   door.load('uprint/door.mtl', function(material) {
+        material.preload();
         var loader = new THREE.OBJLoader();
         loader.setMaterials(material);
         loader.load('uprint/door.obj',
