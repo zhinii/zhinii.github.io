@@ -17,7 +17,7 @@
         antialias: true
     });
     var sceneHeight = 253;
-    var sceneWidth = 450;
+    var sceneWidth = 400;
     renderer.setSize(sceneWidth, sceneHeight);
     document.body.appendChild(renderer.domElement);
     renderer.domElement.id = "context"
@@ -25,10 +25,10 @@
     var light = new THREE.DirectionalLight(0xffffff, 0.5);
     light.position.set(1, 1, 1);
     scene.add(light);
-    
+
         camera.position.z = 50;
-    camera.position.y = 100;
-    camera.lookAt(new THREE.Vector3(0,1000,0));
+    camera.position.y = 75;
+    camera.lookAt(new THREE.Vector3(0,-100,50));
     /////everything above this is needed for basic scene. includes lights, camera, setting scene size
 
     ///everything below is object in the scene, these can be changed
@@ -43,11 +43,48 @@ var stuff = [];
         loader.load('uprint/static.obj',
             function(object) {
                 scene.add(object);
+                
+            });
+    });
+
+   var screen = new THREE.MTLLoader();
+   screen.load('uprint/screen.mtl', function(material) {
+        material.preload();
+        var loader = new THREE.OBJLoader();
+        loader.setMaterials(material);
+        loader.load('uprint/screen.obj',
+            function(object) {
+                scene.add(object);
                 stuff.push(object);
                 
             });
     });
 
+   var control = new THREE.MTLLoader();
+   control.load('uprint/control.mtl', function(material) {
+        material.preload();
+        var loader = new THREE.OBJLoader();
+        loader.setMaterials(material);
+        loader.load('uprint/control.obj',
+            function(object) {
+                scene.add(object);
+                stuff.push(object);
+                
+            });
+    });
+
+   var door = new THREE.MTLLoader();
+   door.load('uprint/door.mtl', function(material) {
+        material.preload();
+        var loader = new THREE.OBJLoader();
+        loader.setMaterials(material);
+        loader.load('uprint/door.obj',
+            function(object) {
+                scene.add(object);
+                stuff.push(object);
+                
+            });
+    });
 
 
 
