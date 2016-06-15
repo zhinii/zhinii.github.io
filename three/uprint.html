@@ -16,8 +16,8 @@
     var renderer = new THREE.WebGLRenderer({
         antialias: true
     });
-    var sceneHeight = 380;
-    var sceneWidth = 600;
+    var sceneHeight = 253;
+    var sceneWidth = 400;
     renderer.setSize(sceneWidth, sceneHeight);
     document.body.appendChild(renderer.domElement);
     renderer.domElement.id = "context"
@@ -47,8 +47,8 @@ var stuff = [];
             });
     });
 
-   var screen = new THREE.MTLLoader();
-   screen.load('uprint/screen.mtl', function(material) {
+   var screens = new THREE.MTLLoader();
+   screens.load('uprint/screen.mtl', function(material) {
         material.preload();
         var loader = new THREE.OBJLoader();
         loader.setMaterials(material);
