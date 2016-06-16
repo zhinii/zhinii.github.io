@@ -6,12 +6,12 @@
    
     
     #scene {
-        position: center;
+        position: absolute;
    
     }
      #content {
         position: absolute;
-        left: 50%;
+     
         width: 600px;
     }
     
@@ -20,12 +20,19 @@
 
 <body>
     <div id='scene'>
+     </div>
+
+       <div id='content'>stuff</div>
+
+
+
      <script src="js/three.min.js"></script>
        <script src="js/three.js"></script>
     <script src="js/OrbitControls.js"></script>
     <script src="js/OBJLoader.js"></script>
     <script src="js/MTLLoader.js"></script>
     <script>
+
     var scene = new THREE.Scene();
     var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 500);
     var renderer = new THREE.WebGLRenderer({
@@ -169,9 +176,7 @@ var stuff = [];
     render();
     //end of controls
     </script>
-    </div>
-
-       <div id='content'>stuff</div>
+   
 </body>
 
 </html>
