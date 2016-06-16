@@ -1,26 +1,4 @@
-<html>
-
-<head>
-    <title>template</title>
-     <style>
-   
-    
-    #scene {
-        position: absolute;
-        left: 50%;
-    }
-     #content {
-        position: absolute;
-        left: 50%;
-        width: 600px;
-    }
-    
-    </style>
-</head>
-
-<body>
-<div id='scene'>
-     <script src="js/three.min.js"></script>
+ <script src="js/three.min.js"></script>
        <script src="js/three.js"></script>
     <script src="js/OrbitControls.js"></script>
     <script src="js/OBJLoader.js"></script>
@@ -40,16 +18,12 @@
     var light = new THREE.DirectionalLight(0xffffff, 0.5);
     light.position.set(1, 1, 1);
     scene.add(light);
-
         camera.position.z = 50;
     camera.position.y = 75;
     camera.lookAt(new THREE.Vector3(0,-100,50));
     /////everything above this is needed for basic scene. includes lights, camera, setting scene size
-
     ///everything below is object in the scene, these can be changed
-
 var stuff = [];
-
    var blank = new THREE.MTLLoader();
    blank.load('uprint/static.mtl', function(material) {
         material.preload();
@@ -61,10 +35,9 @@ var stuff = [];
                 
             });
     });
-
    var screens = new THREE.MTLLoader();
-   screens.load('uprint/screen.mtl', function(material1) {
-        material1.preload();
+   screens.load('uprint/screen.mtl', function(material) {
+        material.preload();
         var loader = new THREE.OBJLoader();
         loader.setMaterials(material);
         loader.load('uprint/screen.obj',
@@ -74,10 +47,9 @@ var stuff = [];
                 
             });
     });
-
    var control = new THREE.MTLLoader();
-   control.load('uprint/control.mtl', function(material2) {
-        material2.preload();
+   control.load('uprint/control.mtl', function(material) {
+        material.preload();
         var loader = new THREE.OBJLoader();
         loader.setMaterials(material);
         loader.load('uprint/control.obj',
@@ -87,10 +59,9 @@ var stuff = [];
                 
             });
     });
-
    var door = new THREE.MTLLoader();
-   door.load('uprint/door.mtl', function(material3) {
-        material3.preload();
+   door.load('uprint/door.mtl', function(material) {
+        material.preload();
         var loader = new THREE.OBJLoader();
         loader.setMaterials(material);
         loader.load('uprint/door.obj',
@@ -100,9 +71,6 @@ var stuff = [];
                 
             });
     });
-
-
-
     ///end objects in scene
     ///below is for raycasting
     var baseColor = 0xffffff;
@@ -139,10 +107,9 @@ var stuff = [];
     //     }
     // };
         // renderer.domElement.addEventListener('click', onDocumentClick, false);
-
+     ///end of raycasting
     ///below is what happens as a result of raycasting, changing object color, knowing where the mouse is on clicks and intersecting objects
     // And then actually attach our onDocumentClick function as an event handler to when the canvas hears a `click`
-
     function onDocumentMouseMove(event) {
         event.preventDefault();
         var offsetX = renderer.domElement.offsetLeft * (2 / sceneWidth);
@@ -175,16 +142,8 @@ var stuff = [];
         renderer.render(scene, camera);
         controls.update();
     };
-    ///end of raycasting
-
     ///scene controls for mouse
     controls = new THREE.OrbitControls(camera, renderer.domElement);
     render();
     //end of controls
     </script>
-    </div>
-
-    <div id='content'>stuff</div>
-</body>
-
-</html>
