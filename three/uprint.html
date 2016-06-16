@@ -2,7 +2,198 @@
 
 <head>
     <title>template</title>
+</head><html>
+
+<head>
+    <title>template</title>
+     <style>
+    body {
+        margin: 0;
+    }
+    
+    
+    #scene {
+        position: absolute;
+        left: 50%;
+    }
+     #content {
+        position: absolute;
+        left: 50%;
+    }
+    
+    </style>
 </head>
+
+<body>
+<div id='scene'>
+     <script src="js/three.min.js"></script>
+       <script src="js/three.js"></script>
+    <script src="js/OrbitControls.js"></script>
+    <script src="js/OBJLoader.js"></script>
+    <script src="js/MTLLoader.js"></script>
+    <script>
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 500);
+    var renderer = new THREE.WebGLRenderer({
+        antialias: true
+    });
+    var sceneHeight = 338;
+    var sceneWidth = 600;
+    renderer.setSize(sceneWidth, sceneHeight);
+    document.body.appendChild(renderer.domElement);
+    renderer.domElement.id = "context"
+    scene.add(new THREE.HemisphereLight(0xaaaaaa, 0x444444));
+    var light = new THREE.DirectionalLight(0xffffff, 0.5);
+    light.position.set(1, 1, 1);
+    scene.add(light);
+
+        camera.position.z = 50;
+    camera.position.y = 75;
+    camera.lookAt(new THREE.Vector3(0,-100,50));
+    /////everything above this is needed for basic scene. includes lights, camera, setting scene size
+
+    ///everything below is object in the scene, these can be changed
+
+var stuff = [];
+
+   var blank = new THREE.MTLLoader();
+   blank.load('uprint/static.mtl', function(material) {
+        material.preload();
+        var loader = new THREE.OBJLoader();
+        loader.setMaterials(material);
+        loader.load('uprint/static.obj',
+            function(object) {
+                scene.add(object);
+                
+            });
+    });
+
+   var screens = new THREE.MTLLoader();
+   screens.load('uprint/screen.mtl', function(material1) {
+        material1.preload();
+        var loader = new THREE.OBJLoader();
+        loader.setMaterials(material);
+        loader.load('uprint/screen.obj',
+            function(object) {
+                scene.add(object);
+                stuff.push(object);
+                
+            });
+    });
+
+   var control = new THREE.MTLLoader();
+   control.load('uprint/control.mtl', function(material2) {
+        material2.preload();
+        var loader = new THREE.OBJLoader();
+        loader.setMaterials(material);
+        loader.load('uprint/control.obj',
+            function(object) {
+                scene.add(object);
+                stuff.push(object);
+                
+            });
+    });
+
+   var door = new THREE.MTLLoader();
+   door.load('uprint/door.mtl', function(material3) {
+        material3.preload();
+        var loader = new THREE.OBJLoader();
+        loader.setMaterials(material);
+        loader.load('uprint/door.obj',
+            function(object) {
+                scene.add(object);
+                stuff.push(object);
+                
+            });
+    });
+
+
+
+    ///end objects in scene
+    ///below is for raycasting
+    var baseColor = 0xffffff;
+    var foundColor = 0x12C0E3;
+    var intersectColor = 0x00D66B;
+    var raycaster = new THREE.Raycaster();
+    var mouse = new THREE.Vector2();
+    var intersected;
+    // function onDocumentClick(event) { // This is a function to run when we click; we get information about the event through the `event` parameter
+    //     // Set the x and y coordinates of our mouse vector to our pointer position, scaling for the width and height of our renderer (400 and 300, respectively)
+    //     var offsetX = renderer.domElement.offsetLeft * (2 / sceneWidth);
+    //     var offsetY = renderer.domElement.offsetTop * (2 / sceneHeight);
+    //     mouse.x = (event.clientX / sceneWidth) * 2 - 1 - offsetX;
+    //     mouse.y = -(event.clientY / sceneHeight) * 2 + 1 + offsetY;
+    //     // Tell our raycaster to cast from our mouse
+    //     raycaster.setFromCamera(mouse, camera);
+    //     // Construct the array of objects we want to check intersection with
+    //     var objects = [cube]; // objects to display when clicked
+    //     // Tell our raycaster to detect the intersection with that array of objects
+    //     var intersections = raycaster.intersectObjects(objects);;
+    //     if (intersections.length > 0) { // If we find any intersections
+    //         // Do stuff
+    //         console.log("Clicked");
+    //         cube2.visible = true;
+    //         // document.querySelector('cube2').style.visibility = 'visible';
+    //     }
+    //     var objects2 = [cube2]; // objects to display when clicked
+    //     // Tell our raycaster to detect the intersection with that array of objects
+    //     var intersections = raycaster.intersectObjects(objects2);;
+    //     if (intersections.length > 0) { // If we find any intersections
+    //         // Do stuff
+    //         console.log("Clicked");
+    //         document.querySelector('#toShow').style.visibility = 'visible';
+    //     }
+    // };
+        // renderer.domElement.addEventListener('click', onDocumentClick, false);
+
+    ///below is what happens as a result of raycasting, changing object color, knowing where the mouse is on clicks and intersecting objects
+    // And then actually attach our onDocumentClick function as an event handler to when the canvas hears a `click`
+
+    function onDocumentMouseMove(event) {
+        event.preventDefault();
+        var offsetX = renderer.domElement.offsetLeft * (2 / sceneWidth);
+        var offsetY = renderer.domElement.offsetTop * (2 / sceneHeight);
+        mouse.x = (event.clientX / sceneWidth) * 2 - 1 - offsetX;
+        mouse.y = -(event.clientY / sceneHeight) * 2 + 1 + offsetY;
+        raycaster.setFromCamera(mouse, camera);
+        // var numObjects;
+        // var numFaces = 0 ;
+        // var intersections;
+        var intersections = raycaster.intersectObjects(stuff, true);
+        // numObjects = objects.length;
+        // numFaces = totalFaces;
+        if (intersections.length > 0) {
+            if (intersected != intersections[0].object) {
+                if (intersected) intersected.material.color.setHex(baseColor);
+                intersected = intersections[0].object;
+                intersected.material.color.setHex(intersectColor);
+            }
+            document.body.style.cursor = 'pointer';
+        } else if (intersected) {
+            intersected.material.color.setHex(baseColor);
+            intersected = null;
+            document.body.style.cursor = 'auto';
+        }
+    }
+    renderer.domElement.addEventListener('mousemove', onDocumentMouseMove, false);
+    var render = function() {
+        requestAnimationFrame(render);
+        renderer.render(scene, camera);
+        controls.update();
+    };
+    ///end of raycasting
+
+    ///scene controls for mouse
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
+    render();
+    //end of controls
+    </script>
+    </div>
+
+    <div id='content'>stuff</div>
+</body>
+
+</html>
 
 <body>
 <div id='scene'>
