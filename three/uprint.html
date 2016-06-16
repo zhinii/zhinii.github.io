@@ -5,6 +5,7 @@
 </head>
 
 <body>
+<div id='scene'>
      <script src="js/three.min.js"></script>
        <script src="js/three.js"></script>
     <script src="js/OrbitControls.js"></script>
@@ -48,8 +49,8 @@ var stuff = [];
     });
 
    var screens = new THREE.MTLLoader();
-   screens.load('uprint/screen.mtl', function(material) {
-        material.preload();
+   screens.load('uprint/screen.mtl', function(material1) {
+        material1.preload();
         var loader = new THREE.OBJLoader();
         loader.setMaterials(material);
         loader.load('uprint/screen.obj',
@@ -61,8 +62,8 @@ var stuff = [];
     });
 
    var control = new THREE.MTLLoader();
-   control.load('uprint/control.mtl', function(material) {
-        material.preload();
+   control.load('uprint/control.mtl', function(material2) {
+        material2.preload();
         var loader = new THREE.OBJLoader();
         loader.setMaterials(material);
         loader.load('uprint/control.obj',
@@ -74,8 +75,8 @@ var stuff = [];
     });
 
    var door = new THREE.MTLLoader();
-   door.load('uprint/door.mtl', function(material) {
-        material.preload();
+   door.load('uprint/door.mtl', function(material3) {
+        material3.preload();
         var loader = new THREE.OBJLoader();
         loader.setMaterials(material);
         loader.load('uprint/door.obj',
@@ -125,7 +126,6 @@ var stuff = [];
     // };
         // renderer.domElement.addEventListener('click', onDocumentClick, false);
 
-     ///end of raycasting
     ///below is what happens as a result of raycasting, changing object color, knowing where the mouse is on clicks and intersecting objects
     // And then actually attach our onDocumentClick function as an event handler to when the canvas hears a `click`
 
@@ -161,12 +161,16 @@ var stuff = [];
         renderer.render(scene, camera);
         controls.update();
     };
+    ///end of raycasting
 
     ///scene controls for mouse
     controls = new THREE.OrbitControls(camera, renderer.domElement);
     render();
     //end of controls
     </script>
+    </div>
+
+    <div id='content'>stuff</div>
 </body>
 
 </html>
