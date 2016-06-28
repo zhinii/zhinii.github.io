@@ -136,7 +136,7 @@ var stuffs = [];
         // var objects2 = [cube2]; // objects to display when clicked
         // // Tell our raycaster to detect the intersection with that array of objects
        
-        var intersections = raycaster.intersectObjects(stuff,stuffs, true);;
+        var intersections = raycaster.intersectObjects(stuff, true);;
         if (intersections.length > 0) { // If we find any intersections
             // Do stuff
             console.log("Clicked");
@@ -161,6 +161,7 @@ var stuffs = [];
         // var numFaces = 0 ;
         // var intersections;
         var intersections = raycaster.intersectObjects(stuff, true);
+         var intersections = raycaster.intersectObjects(stuffs, true);
         // numObjects = objects.length;
         // numFaces = totalFaces;
         if (intersections.length > 0) {
