@@ -24,7 +24,7 @@
      </div>
 
        <div id='content'>
-           <img src="uprint/img1.jpg">
+           <img src="uprint/img1.JPG">
        </div>
 
 
@@ -160,8 +160,8 @@ var stuffs = [];
         // var numObjects;
         // var numFaces = 0 ;
         // var intersections;
-        var intersections = raycaster.intersectObjects(stuff, true);
-         var intersections = raycaster.intersectObjects(stuffs, true);
+        var intersections = raycaster.intersectObjects([stuff, stuffs], true);
+
         // numObjects = objects.length;
         // numFaces = totalFaces;
         if (intersections.length > 0) {
