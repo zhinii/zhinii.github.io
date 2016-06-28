@@ -24,7 +24,7 @@
      </div>
 
        <div id='content'>
-           <img src="uprint/img1.JPG">
+           <img src="uprint/img1.jpg">
        </div>
 
 
@@ -55,7 +55,7 @@
     /////everything above this is needed for basic scene. includes lights, camera, setting scene size
     ///everything below is object in the scene, these can be changed
 var stuff = [];
-
+var stuffs = [];
 
    var blank = new THREE.MTLLoader();
    blank.load('uprint/static.mtl', function(material) {
@@ -88,7 +88,7 @@ var stuff = [];
         loader.load('uprint/control.obj',
             function(object) {
                 scene.add(object);
-                // stuff.push(object);
+                stuffs.push(object);
                 
             });
     });
@@ -136,7 +136,7 @@ var stuff = [];
         // var objects2 = [cube2]; // objects to display when clicked
         // // Tell our raycaster to detect the intersection with that array of objects
        
-        var intersections = raycaster.intersectObjects(stuff, true);;
+        var intersections = raycaster.intersectObjects(stuff,stuffs, true);;
         if (intersections.length > 0) { // If we find any intersections
             // Do stuff
             console.log("Clicked");
