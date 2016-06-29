@@ -56,7 +56,6 @@
     ///everything below is object in the scene, these can be changed
 var stuff = [];
 var stuffs = [];
-
    var blank = new THREE.MTLLoader();
    blank.load('uprint/static.mtl', function(material) {
         material.preload();
@@ -112,8 +111,6 @@ var stuffs = [];
     var raycaster = new THREE.Raycaster();
     var mouse = new THREE.Vector2();
     var intersected;
-
-
     function onDocumentClick(event) { // This is a function to run when we click; we get information about the event through the `event` parameter
         // Set the x and y coordinates of our mouse vector to our pointer position, scaling for the width and height of our renderer (400 and 300, respectively)
         var offsetX = renderer.domElement.offsetLeft * (2 / sceneWidth);
@@ -147,9 +144,6 @@ var stuffs = [];
      ///end of raycasting
     ///below is what happens as a result of raycasting, changing object color, knowing where the mouse is on clicks and intersecting objects
     // And then actually attach our onDocumentClick function as an event handler to when the canvas hears a `click`
-
-
-
     function onDocumentMouseMove(event) {
         event.preventDefault();
         var offsetX = renderer.domElement.offsetLeft * (2 / sceneWidth);
@@ -157,13 +151,9 @@ var stuffs = [];
         mouse.x = (event.clientX / sceneWidth) * 2 - 1 - offsetX;
         mouse.y = -(event.clientY / sceneHeight) * 2 + 1 + offsetY;
         raycaster.setFromCamera(mouse, camera);
-        // var numObjects;
-        // var numFaces = 0 ;
-        // var intersections;
-        var intersections = raycaster.intersectObjects([stuff, stuffs], true);
-
-        // numObjects = objects.length;
-        // numFaces = totalFaces;
+      
+        var intersections = raycaster.intersectObjects(stuff, true);
+        
         if (intersections.length > 0) {
             if (intersected != intersections[0].object) {
                 if (intersected) intersected.material.color.setHex(baseColor);
