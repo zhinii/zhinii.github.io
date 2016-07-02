@@ -55,7 +55,6 @@
     /////everything above this is needed for basic scene. includes lights, camera, setting scene size
     ///everything below is object in the scene, these can be changed
 var stuff = [];
-var stuffs = [];
    var blank = new THREE.MTLLoader();
    blank.load('uprint/static.mtl', function(material) {
         material.preload();
@@ -87,7 +86,7 @@ var stuffs = [];
         loader.load('uprint/control.obj',
             function(object) {
                 scene.add(object);
-                stuffs.push(object);
+                stuff.push(object);
                 
             });
     });
@@ -99,7 +98,7 @@ var stuffs = [];
         loader.load('uprint/door.obj',
             function(object) {
                 scene.add(object);
-                // stuff.push(object);
+                stuff.push(object);
                 
             });
     });
@@ -133,7 +132,7 @@ var stuffs = [];
         // var objects2 = [cube2]; // objects to display when clicked
         // // Tell our raycaster to detect the intersection with that array of objects
        
-        var intersections = raycaster.intersectObjects(stuff, true);;
+        var intersections = raycaster.intersectObjects(stuff, true);
         if (intersections.length > 0) { // If we find any intersections
             // Do stuff
             console.log("Clicked");
@@ -152,7 +151,7 @@ var stuffs = [];
         mouse.y = -(event.clientY / sceneHeight) * 2 + 1 + offsetY;
         raycaster.setFromCamera(mouse, camera);
       
-        var intersections = raycaster.intersectObjects(stuffs, true);
+        var intersections = raycaster.intersectObjects(stuff, true);
         
         if (intersections.length > 0) {
             if (intersected != intersections[0].object) {
