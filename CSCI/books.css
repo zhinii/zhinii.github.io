@@ -1,0 +1,55 @@
+body {
+	text-align: center;
+	color: orange;
+	background-color: purple;
+}
+
+li {
+	list-style: none;
+	overflow: auto;
+	text-align: left;
+}
+
+.bookcover {
+	float:  right;
+
+}
+
+ul {
+	margin: 30px;
+	background-color: white;
+
+}
+
+.date {
+	padding-top: 10px;
+}
+
+.date {
+	font-size: 80%;
+}
+
+.isbn {
+	font-size: 80%;
+}
+
+.publisher {
+	font-variant: small-caps;
+}
+
+.author {
+	font-style: italic;
+}
+
+a:link {
+	color:orange;
+}
+
+a:hover {
+	color:black;
+}
+
+a:visited {
+	color:pink;
+}
+
