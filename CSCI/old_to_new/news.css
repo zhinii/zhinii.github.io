@@ -4,7 +4,69 @@ body {
 	background: #3D4D7A;
 
 }
+ul {
+	background-color: white;
+margin-left: 100px;
+	margin-right: 100px;
+}
 
 li {
 	list-style: none;
+	padding-left: 10px;
+}
+
+h1 {
+	text-align: center;
+	background-color: blue;
+}
+
+.head {
+	background-color: #00207A;
+	color: white;
+	font-size: 200%;
+	text-align: center;
+	font-family: sans-serif;
+	font-weight: bold;
+}
+
+.potato {	background-color: #00207A;
+	color: white;
+	font-size: 100%;
+	font-style: italic;
+	font-family: sans-serif;
+	font-weight: bold;
+	padding-bottom: 10px;
+}
+
+.title {
+	color: #990000;
+font-family: sans-serif;
+	font-weight: bold;
+	font-size: 150%;
+	padding: 10px;
+}
+
+.brief {
+
+}
+
+.link {
+	padding-bottom: 10px;
+}
+
+.date {
+	font-size: 80%;
+	font-style: italic;
+	padding-bottom: 10px;
+}
+
+a:visited {
+	color:blue;
+}
+
+hr {
+	background-color: white;
+	margin-right: 60px;
+	margin-left: 60px;
+	margin-top: 10px;
 }
