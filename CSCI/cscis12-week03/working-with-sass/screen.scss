@@ -1,0 +1,35 @@
+// This is here to get you started
+
+// color #135b00
+// background #6FC559
+// hover background #50C531
+// hover color #135b00
+// current background
+// current color #6FC559
+nav {
+    width: 100%;
+}
+
+#sitenav {
+    font-weight: bold;
+    font-size: 135%;
+    ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        li {
+            float: left;
+            margin: 0;
+            padding: 0;
+            width: 12%;
+            a {
+                display: block;
+                text-align: center;
+                // nest selector for a:hover/active/visited here
+                // use the &:hover syntax -- the "&" will refer to the "a"
+            }
+        }
+        // nest select for #current here
+        
+    }
+}
