@@ -153,6 +153,24 @@ var showThree = [];
 
        
         // // Tell our raycaster to detect the intersection with that array of objects
+
+           var intersections = raycaster.intersectObjects(toHighlight, true);
+        if (intersections.length > 0) { // If we find any intersections
+            // Do stuff
+            console.log("Clicked");
+
+
+            // var thingsToHide = Array.from(document.querySelectorAll('.content'));
+            // thingsToHide.forEach(function(toHide) {
+            //     toHide.style.display = 'none';
+            // });
+                       
+
+
+            document.querySelector('.content').style.visibility = 'hidden';
+        }
+
+
        
 
    var intersections = raycaster.intersectObjects(showOne, true);
@@ -165,7 +183,6 @@ var showThree = [];
             // thingsToHide.forEach(function(toHide) {
             //     toHide.style.display = 'none';
             // });
-                        document.querySelector('.content').style.visibility = 'hidden';
 
 
             document.querySelector('#screenOne').style.visibility = 'visible';
@@ -184,7 +201,7 @@ var showThree = [];
             // thingsToHide.forEach(function(toHide) {
             //     toHide.style.display = 'none';
             // });
-                        document.querySelector('.content').style.visibility = 'hidden';
+          
 
 
             document.querySelector('#screenTwo').style.visibility = 'visible';
@@ -202,7 +219,7 @@ var showThree = [];
             // thingsToHide.forEach(function(toHide) {
             //     toHide.style.display = 'none';
             // });
-                        document.querySelector('.content').style.visibility = 'hidden';
+                       
 
 
             document.querySelector('#screenThree').style.visibility = 'visible';
