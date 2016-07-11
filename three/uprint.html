@@ -11,7 +11,7 @@
     }
      .content {
         position: absolute;
-        visibility: hidden;
+  display: none;
         width: 600px;
         top: 350px;
     }
@@ -159,7 +159,7 @@ var showThree = [];
             // Do stuff
             console.log("Clicked");
 
-            document.querySelector('.content').style.visibility = 'none';
+            document.querySelector('.content').style.display = 'none';
         }
 
 
@@ -170,7 +170,7 @@ var showThree = [];
             // Do stuff
             console.log("Clicked1");
 
-            document.querySelector('#screenOne').style.visibility = 'visible';
+            document.querySelector('#screenOne').style.display = 'block';
         }
 
 
@@ -181,7 +181,7 @@ var showThree = [];
             // Do stuff
             console.log("Clicked2");
 
-            document.querySelector('#screenTwo').style.visibility = 'visible';
+            document.querySelector('#screenTwo').style.display = 'block';
         }
 
 
@@ -191,7 +191,7 @@ var showThree = [];
             // Do stuff
             console.log("Clicked3");
 
-            document.querySelector('#screenThree').style.visibility = 'visible';
+            document.querySelector('#screenThree').style.display = 'block';
         }
 
 
