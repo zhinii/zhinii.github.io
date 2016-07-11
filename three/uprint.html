@@ -172,7 +172,10 @@ var showThree = [];
         }
     };
 
-        var intersections = raycaster.intersectObjects(showTwo, true);
+
+
+
+   var intersections = raycaster.intersectObjects(showTwo, true);
         if (intersections.length > 0) { // If we find any intersections
             // Do stuff
             console.log("Clicked");
@@ -189,22 +192,8 @@ var showThree = [];
         }
     };
 
-   var intersections = raycaster.intersectObjects(showThree, true);
-        if (intersections.length > 0) { // If we find any intersections
-            // Do stuff
-            console.log("Clicked");
+     
 
-
-            // var thingsToHide = Array.from(document.querySelectorAll('.content'));
-            // thingsToHide.forEach(function(toHide) {
-            //     toHide.style.display = 'none';
-            // });
-                        document.querySelector('.content').style.visibility = 'hidden';
-
-
-            document.querySelector('#screenThree').style.visibility = 'visible';
-        }
-    };
 
         renderer.domElement.addEventListener('click', onDocumentClick, false);
      ///end of raycasting
