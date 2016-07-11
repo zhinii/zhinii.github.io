@@ -5,10 +5,8 @@
      <style>
    
     
-    #scene {
-        position: absolute;
-   
-    }
+
+    
      .content {
         position: absolute;
   display: none;
@@ -20,8 +18,8 @@
 </head>
 
 <body>
-    <div id='scene'>
-     </div>
+    <div id='content'>
+   
 
        <div id='screenOne' class='content'>
            <img src="uprint/img1.JPG">
@@ -39,7 +37,7 @@
            <img src="uprint/img4.JPG">
        </div>
 
-
+  </div>
 
 
 
@@ -159,7 +157,7 @@ var showThree = [];
             // Do stuff
             console.log("Clicked");
 
-            document.querySelector('.content').style.display = 'none';
+            document.querySelector('#scene').style.display = 'none';
         }
 
 
