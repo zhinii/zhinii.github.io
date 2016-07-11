@@ -11,7 +11,7 @@
     }
      .content {
         position: absolute;
-        display: none;
+        visibility: hidden;
         width: 600px;
         top: 350px;
     }
@@ -151,6 +151,8 @@ var toHighlight = [];
             // thingsToHide.forEach(function(toHide) {
             //     toHide.style.display = 'none';
             // });
+                        document.querySelector('.content').style.visibility = 'hidden';
+
 
             document.querySelector('#screenOne').style.visibility = 'visible';
         }
