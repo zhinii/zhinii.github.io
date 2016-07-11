@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>template</title>
+    <title>Uprint Training</title>
      <style>
    
     
@@ -9,7 +9,7 @@
         position: absolute;
    
     }
-     #content {
+     .content {
         position: absolute;
         visibility: hidden;
         width: 600px;
@@ -23,9 +23,24 @@
     <div id='scene'>
      </div>
 
-       <div id='content'>
+       <div id='screenOne' class='content'>
            <img src="uprint/img1.JPG">
        </div>
+
+ <div class='content'>
+           <img src="uprint/img2.JPG">
+       </div>
+
+ <div class='content'>
+           <img src="uprint/img3.JPG">
+       </div>
+
+ <div class='content'>
+           <img src="uprint/img4.JPG">
+       </div>
+
+
+
 
 
 
@@ -130,7 +145,8 @@ var toHighlight = [];
         if (intersections.length > 0) { // If we find any intersections
             // Do stuff
             console.log("Clicked");
-            document.querySelector('#content').style.visibility = 'visible';
+
+            document.querySelector('#screenOne').style.visibility = 'visible';
         }
     };
         renderer.domElement.addEventListener('click', onDocumentClick, false);
