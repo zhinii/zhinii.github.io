@@ -11,7 +11,7 @@
     }
      .content {
         position: absolute;
-        visibility: hidden;
+        display: none;
         width: 600px;
         top: 350px;
     }
@@ -145,6 +145,12 @@ var toHighlight = [];
         if (intersections.length > 0) { // If we find any intersections
             // Do stuff
             console.log("Clicked");
+
+
+            var thingsToHide = Array.from(document.querySelectorAll('.content'));
+            thingsToHide.forEach(function(toHide) {
+                toHide.style.display = 'none';
+            });
 
             document.querySelector('#screenOne').style.visibility = 'visible';
         }
