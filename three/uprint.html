@@ -27,11 +27,11 @@
            <img src="uprint/img1.JPG">
        </div>
 
- <div class='content'>
+ <div id='screenTwo' class='content'>
            <img src="uprint/img2.JPG">
        </div>
 
- <div class='content'>
+ <div id='screenThree' class='content'>
            <img src="uprint/img3.JPG">
        </div>
 
@@ -72,6 +72,13 @@
 
 var toHighlight = [];
 
+var showOne = [];
+
+var showTwo = [];
+
+
+var showThree = [];
+
 
    var blank = new THREE.MTLLoader();
    blank.load('uprint/static.mtl', function(material) {
@@ -93,6 +100,7 @@ var toHighlight = [];
             function(object) {
                 scene.add(object);
                 toHighlight.push(object);
+                showOne.push(object);
                 
             });
     });
@@ -105,6 +113,7 @@ var toHighlight = [];
             function(object) {
                 scene.add(object);
                 toHighlight.push(object);
+                showTwo.push(object);
                 
             });
     });
@@ -117,6 +126,7 @@ var toHighlight = [];
             function(object) {
                 scene.add(object);
                 toHighlight.push(object);
+                showThree.push(object);
                 
             });
     });
@@ -129,6 +139,9 @@ var toHighlight = [];
     var mouse = new THREE.Vector2();
     var intersected;
     
+
+     var clickedId = event.target.id;
+
     function onDocumentClick(event) { // This is a function to run when we click; we get information about the event through the `event` parameter
         // Set the x and y coordinates of our mouse vector to our pointer position, scaling for the width and height of our renderer (400 and 300, respectively)
         var offsetX = renderer.domElement.offsetLeft * (2 / sceneWidth);
@@ -141,7 +154,8 @@ var toHighlight = [];
        
         // // Tell our raycaster to detect the intersection with that array of objects
        
-        var intersections = raycaster.intersectObjects(toHighlight, true);
+
+   var intersections = raycaster.intersectObjects(showOne, true);
         if (intersections.length > 0) { // If we find any intersections
             // Do stuff
             console.log("Clicked");
@@ -157,14 +171,48 @@ var toHighlight = [];
             document.querySelector('#screenOne').style.visibility = 'visible';
         }
     };
+
+        var intersections = raycaster.intersectObjects(showTwo, true);
+        if (intersections.length > 0) { // If we find any intersections
+            // Do stuff
+            console.log("Clicked");
+
+
+            // var thingsToHide = Array.from(document.querySelectorAll('.content'));
+            // thingsToHide.forEach(function(toHide) {
+            //     toHide.style.display = 'none';
+            // });
+                        document.querySelector('.content').style.visibility = 'hidden';
+
+
+            document.querySelector('#screenTwo').style.visibility = 'visible';
+        }
+    };
+
+   var intersections = raycaster.intersectObjects(showThree, true);
+        if (intersections.length > 0) { // If we find any intersections
+            // Do stuff
+            console.log("Clicked");
+
+
+            // var thingsToHide = Array.from(document.querySelectorAll('.content'));
+            // thingsToHide.forEach(function(toHide) {
+            //     toHide.style.display = 'none';
+            // });
+                        document.querySelector('.content').style.visibility = 'hidden';
+
+
+            document.querySelector('#screenThree').style.visibility = 'visible';
+        }
+    };
+
         renderer.domElement.addEventListener('click', onDocumentClick, false);
      ///end of raycasting
     ///below is what happens as a result of raycasting, changing object color, knowing where the mouse is on clicks and intersecting objects
     // And then actually attach our onDocumentClick function as an event handler to when the canvas hears a `click`
     function onDocumentMouseMove(event) {
         event.preventDefault();
-        var offsetX = renderer.domElement.offsetLeft * (2 / sceneWidth);
-        var offsetY = renderer.domElement.offsetTop * (2 / sceneHeight);
+        var offsetX = renderer.domElement.offsetLeft * (2 / sceneWidth);        var offsetY = renderer.domElement.offsetTop * (2 / sceneHeight);
         mouse.x = (event.clientX / sceneWidth) * 2 - 1 - offsetX;
         mouse.y = -(event.clientY / sceneHeight) * 2 + 1 + offsetY;
         raycaster.setFromCamera(mouse, camera);
