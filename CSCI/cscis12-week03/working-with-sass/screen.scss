@@ -16,7 +16,7 @@ nav {
  
 #sitenav {
     font-weight: bold;
-    font-size: 135%;
+    font-size: 125%;
     color: #135b00;
     background-color: #6fc559;
     ul {
@@ -31,10 +31,15 @@ nav {
             padding: 0;
             width: 12%;
             background-color: #6fc559;
-            color: #135b00;
+            
             a {
-                display: block;
-                text-align: center;
+              color: #135b00;
+    background-color: #6fc559;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    padding-top: 10px;
+    padding-bottom: 10px;
                 
                 &:hover {
                   color: #135b00;
