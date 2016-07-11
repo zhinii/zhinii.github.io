@@ -170,7 +170,6 @@ var showThree = [];
 
             document.querySelector('#screenOne').style.visibility = 'visible';
         }
-    };
 
 
 
@@ -190,7 +189,31 @@ var showThree = [];
 
             document.querySelector('#screenTwo').style.visibility = 'visible';
         }
+
+
+
+   var intersections = raycaster.intersectObjects(showThree, true);
+        if (intersections.length > 0) { // If we find any intersections
+            // Do stuff
+            console.log("Clicked");
+
+
+            // var thingsToHide = Array.from(document.querySelectorAll('.content'));
+            // thingsToHide.forEach(function(toHide) {
+            //     toHide.style.display = 'none';
+            // });
+                        document.querySelector('.content').style.visibility = 'hidden';
+
+
+            document.querySelector('#screenThree').style.visibility = 'visible';
+        }
+
+
     };
+
+
+
+
 
      
 
