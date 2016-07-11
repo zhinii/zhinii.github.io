@@ -1,5 +1,9 @@
-// This is here to get you started
+// ----
+// libsass (v3.2.5)
+// ----
 
+// This is here to get you started
+ 
 // color #135b00
 // background #6FC559
 // hover background #50C531
@@ -9,27 +13,57 @@
 nav {
     width: 100%;
 }
-
+ 
 #sitenav {
     font-weight: bold;
     font-size: 135%;
+    color: #135b00;
+    background-color: #6fc559;
     ul {
         list-style: none;
         margin: 0;
         padding: 0;
+    
         li {
+          display: inline-block;
             float: left;
             margin: 0;
             padding: 0;
             width: 12%;
+            background-color: #6fc559;
+            color: #135b00;
             a {
                 display: block;
                 text-align: center;
+                
+                &:hover {
+                  color: #135b00;
+                  background-color: #50dd31;
+                  text-decoration: underline;
+                }
+                &:active {
+                  color: #135b00;
+                   background-color: #6fc559;
+                }
+                
                 // nest selector for a:hover/active/visited here
                 // use the &:hover syntax -- the "&" will refer to the "a"
             }
         }
         // nest select for #current here
+        #current {
+          a {
+            &:link, &:visited, &:hover, &:active {
+                  background-color: #135b00;
+    color: #6fc559;
+    text-decoration: none;
+
+            }
+          }
+      
+            
+          
+        }
         
     }
 }
