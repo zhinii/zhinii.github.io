@@ -159,8 +159,10 @@ var showThree = [];
             // Do stuff
             console.log("Clicked1");
 
-          
-                       document.querySelectorAll('#screenTwo, #screenThree').style.display = 'none';
+            var toHide = document.querySelectorAll('#screenTwo, #screenThree');
+
+
+                        toHide.style.display = 'none';
 
             document.querySelector('#screenOne').style.display = 'block';
         }
@@ -172,10 +174,10 @@ var showThree = [];
             // Do stuff
             console.log("Clicked2");
 
-      
+            var toHide = document.querySelectorAll('#screenOne, #screenThree');
 
 
-                       document.querySelectorAll('#screenOne, #screenThree').style.display = 'none';
+                        toHide.style.display = 'none';
 
 
             document.querySelector('#screenTwo').style.display = 'block';
@@ -187,8 +189,10 @@ var showThree = [];
             // Do stuff
             console.log("Clicked3");
 
-          
-                       document.querySelectorAll('#screenTwo, #screenOne').style.display = 'none';
+              var toHide = document.querySelectorAll('#screenOne, #screenTwo');
+
+
+                        toHide.style.display = 'none';
 
 
             document.querySelector('#screenThree').style.display = 'block';
