@@ -152,8 +152,8 @@ var showThree = [];
        
         // // Tell our raycaster to detect the intersection with that array of objects
 
-           var intersections = raycaster.intersectObjects(toHighlight, true);
-        if (intersections.length > 0) { // If we find any intersections
+           var intersectionsAll = raycaster.intersectObjects(toHighlight, true);
+        if (intersectionsAll.length > 0) { // If we find any intersections
             // Do stuff
             console.log("Clicked");
 
@@ -163,8 +163,8 @@ var showThree = [];
 
        
 
-   var intersections = raycaster.intersectObjects(showOne, true);
-        if (intersections.length > 0) { // If we find any intersections
+   var intersectionsOne = raycaster.intersectObjects(showOne, true);
+        if (intersectionsOne.length > 0) { // If we find any intersections
             // Do stuff
             console.log("Clicked1");
 
@@ -174,8 +174,8 @@ var showThree = [];
 
 
 
-   var intersections = raycaster.intersectObjects(showTwo, true);
-        if (intersections.length > 0) { // If we find any intersections
+   var intersectionsTwo = raycaster.intersectObjects(showTwo, true);
+        if (intersectionsTwo.length > 0) { // If we find any intersections
             // Do stuff
             console.log("Clicked2");
 
@@ -184,8 +184,8 @@ var showThree = [];
 
 
 
-   var intersections = raycaster.intersectObjects(showThree, true);
-        if (intersections.length > 0) { // If we find any intersections
+   var intersectionsThree = raycaster.intersectObjects(showThree, true);
+        if (intersectionsThree.length > 0) { // If we find any intersections
             // Do stuff
             console.log("Clicked3");
 
