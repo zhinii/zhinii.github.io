@@ -139,89 +139,6 @@ var showThree = [];
     
 
 
-    function onDocumentClick(eventHide) { // This is a function to run when we click; we get information about the event through the `event` parameter
-        // Set the x and y coordinates of our mouse vector to our pointer position, scaling for the width and height of our renderer (400 and 300, respectively)
-        var offsetX = renderer.domElement.offsetLeft * (2 / sceneWidth);
-        var offsetY = renderer.domElement.offsetTop * (2 / sceneHeight);
-        mouse.x = (event.clientX / sceneWidth) * 2 - 1 - offsetX;
-        mouse.y = -(event.clientY / sceneHeight) * 2 + 1 + offsetY;
-        // Tell our raycaster to cast from our mouse
-        raycaster.setFromCamera(mouse, camera);
-
-       
-        // // Tell our raycaster to detect the intersection with that array of objects
-
-           var intersectionsAll = raycaster.intersectObjects(toHighlight, true);
-        if (intersectionsAll.length > 0) { // If we find any intersections
-            // Do stuff
-            console.log("Clicked");
-
-            document.querySelector('.content').style.display = 'none';
-        }
- };
-        renderer.domElement.addEventListener('click', onDocumentClick, false);
-
-
-
-
-    function onDocumentClick(eventShowone) { // This is a function to run when we click; we get information about the event through the `event` parameter
-        // Set the x and y coordinates of our mouse vector to our pointer position, scaling for the width and height of our renderer (400 and 300, respectively)
-        var offsetX = renderer.domElement.offsetLeft * (2 / sceneWidth);
-        var offsetY = renderer.domElement.offsetTop * (2 / sceneHeight);
-        mouse.x = (event.clientX / sceneWidth) * 2 - 1 - offsetX;
-        mouse.y = -(event.clientY / sceneHeight) * 2 + 1 + offsetY;
-        // Tell our raycaster to cast from our mouse
-        raycaster.setFromCamera(mouse, camera);
-
-       
-        // // Tell our raycaster to detect the intersection with that array of objects
-
-    
-       
-
-   var intersectionsOne = raycaster.intersectObjects(showOne, true);
-        if (intersectionsOne.length > 0) { // If we find any intersections
-            // Do stuff
-            console.log("Clicked1");
-
-            document.querySelector('#screenOne').style.display = 'block';
-        }
-
-
-    };
-
-            renderer.domElement.addEventListener('click', onDocumentClick, false);
-
-
-    function onDocumentClick(eventShowtwo) { // This is a function to run when we click; we get information about the event through the `event` parameter
-        // Set the x and y coordinates of our mouse vector to our pointer position, scaling for the width and height of our renderer (400 and 300, respectively)
-        var offsetX = renderer.domElement.offsetLeft * (2 / sceneWidth);
-        var offsetY = renderer.domElement.offsetTop * (2 / sceneHeight);
-        mouse.x = (event.clientX / sceneWidth) * 2 - 1 - offsetX;
-        mouse.y = -(event.clientY / sceneHeight) * 2 + 1 + offsetY;
-        // Tell our raycaster to cast from our mouse
-        raycaster.setFromCamera(mouse, camera);
-
-       
-        // // Tell our raycaster to detect the intersection with that array of objects
-
-    
-   var intersectionsTwo = raycaster.intersectObjects(showTwo, true);
-        if (intersectionsTwo.length > 0) { // If we find any intersections
-            // Do stuff
-            console.log("Clicked2");
-
-            document.querySelector('#screenTwo').style.display = 'block';
-        }
-       
-
-
-
-    };
-            renderer.domElement.addEventListener('click', onDocumentClick, false);
-
-
-
     function onDocumentClick(eventShowthree) { // This is a function to run when we click; we get information about the event through the `event` parameter
         // Set the x and y coordinates of our mouse vector to our pointer position, scaling for the width and height of our renderer (400 and 300, respectively)
         var offsetX = renderer.domElement.offsetLeft * (2 / sceneWidth);
@@ -234,7 +151,33 @@ var showThree = [];
        
         // // Tell our raycaster to detect the intersection with that array of objects
 
+        var intersectionsAll = raycaster.intersectObjects(toHighlight, true);
+        if (intersectionsAll.length > 0) { // If we find any intersections
+            // Do stuff
+            console.log("Clicked");
+
+            document.querySelector('.content').style.display = 'none';
+        }
+
+
+   var intersectionsOne = raycaster.intersectObjects(showOne, true);
+        if (intersectionsOne.length > 0) { // If we find any intersections
+            // Do stuff
+            console.log("Clicked1");
+
+            document.querySelector('#screenOne').style.display = 'block';
+        }
+
     
+
+   var intersectionsTwo = raycaster.intersectObjects(showTwo, true);
+        if (intersectionsTwo.length > 0) { // If we find any intersections
+            // Do stuff
+            console.log("Clicked2");
+
+            document.querySelector('#screenTwo').style.display = 'block';
+        }
+
 
    var intersectionsThree = raycaster.intersectObjects(showThree, true);
         if (intersectionsThree.length > 0) { // If we find any intersections
