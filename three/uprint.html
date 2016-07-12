@@ -33,7 +33,9 @@
            <img src="uprint/img3.JPG">
        </div>
 
-
+ <div class='content'>
+           <img src="uprint/img4.JPG">
+       </div>
 
   </div>
 
@@ -170,15 +172,6 @@ var showThree = [];
         }
 
 
-       var intersections = raycaster.intersectObjects(toHighlight, true);
-        if (intersections.length > 0) { // If we find any intersections
-            // Do stuff
-            console.log("Clicked");
-
-            document.querySelector('.content').style.display = 'none';
-        }
-
-
 
 
    var intersections = raycaster.intersectObjects(showTwo, true);
@@ -188,15 +181,6 @@ var showThree = [];
 
             document.querySelector('#screenTwo').style.display = 'block';
         }
-
-               var intersections = raycaster.intersectObjects(toHighlight, true);
-        if (intersections.length > 0) { // If we find any intersections
-            // Do stuff
-            console.log("Clicked");
-
-            document.querySelector('.content').style.display = 'none';
-        }
-
 
 
 
