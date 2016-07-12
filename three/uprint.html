@@ -225,7 +225,7 @@ var showThree = [];
         mouse.y = -(event.clientY / sceneHeight) * 2 + 1 + offsetY;
         raycaster.setFromCamera(mouse, camera);
       
-        var intersections = raycaster.intersectObjects(toHighlight, true);
+        var intersections = raycaster.intersectObjects(toHighlight);
         
         if (intersections.length > 0) {
             if (intersected != intersections[0].object) {
