@@ -159,9 +159,10 @@ var showThree = [];
             // Do stuff
             console.log("Clicked1");
 
-            var toHide = Array.from(document.querySelector('.content'));
-
-
+            var thingsToHide = Array.from(document.querySelectorAll('.content'));
+            thingsToHide.forEach(function(toHide) {
+                toHide.style.display = 'none';
+            });
                         toHide.style.display = 'none';
 
             document.querySelector('#screenOne').style.display = 'block';
@@ -174,7 +175,11 @@ var showThree = [];
             // Do stuff
             console.log("Clicked2");
 
-            var toHide = Array.from(document.querySelector('.content'));
+            
+            var thingsToHide = Array.from(document.querySelectorAll('.content'));
+            thingsToHide.forEach(function(toHide) {
+                toHide.style.display = 'none';
+            });
 
 
                         toHide.style.display = 'none';
@@ -189,7 +194,11 @@ var showThree = [];
             // Do stuff
             console.log("Clicked3");
 
-            var toHide = Array.from(document.querySelector('.content'));
+       
+            var thingsToHide = Array.from(document.querySelectorAll('.content'));
+            thingsToHide.forEach(function(toHide) {
+                toHide.style.display = 'none';
+            });
 
 
                         toHide.style.display = 'none';
