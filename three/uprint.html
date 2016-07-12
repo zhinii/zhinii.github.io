@@ -159,7 +159,10 @@ var showThree = [];
             // Do stuff
             console.log("Clicked1");
 
-                        document.querySelector('.content').style.display = 'none';
+            var toHide = document.querySelector('.content');
+
+
+                        toHide.style.display = 'none';
 
             document.querySelector('#screenOne').style.display = 'block';
         }
@@ -170,7 +173,11 @@ var showThree = [];
         if (intersectionsTwo.length > 0) { // If we find any intersections
             // Do stuff
             console.log("Clicked2");
-            document.querySelector('.content').style.display = 'none';
+            var toHide = document.querySelector('.content');
+
+
+                        toHide.style.display = 'none';
+
 
             document.querySelector('#screenTwo').style.display = 'block';
         }
@@ -180,7 +187,12 @@ var showThree = [];
         if (intersectionsThree.length > 0) { // If we find any intersections
             // Do stuff
             console.log("Clicked3");
-            document.querySelector('.content').style.display = 'none';
+            
+              var toHide = document.querySelector('.content');
+
+
+                        toHide.style.display = 'none';
+
 
             document.querySelector('#screenThree').style.display = 'block';
         }
