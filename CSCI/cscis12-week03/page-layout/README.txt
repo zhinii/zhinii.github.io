@@ -1,13 +1,10 @@
-In one sentence of less, describe what approach you used
-(e.g. Do-it-Yourself, Unsemantic, Skeleton, other):
+did it myself
+
+chrome:
+The "User-Agent" string of the browser you are using is:
+Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36
 
 
-
-
-List "user-agent" string of the two browsers you used to test your work
-(see:  http://cscie12.dce.harvard.edu/browser.html):
-
-1.
-2. 
-
-
+IE
+The "User-Agent" string of the browser you are using is:
+ Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko 
