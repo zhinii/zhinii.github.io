@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<head>
+<style>
+
+/*div {
+	position: relative;
+	display: inline;
+}
+*/
+
+body {
+		font-family: sans-serif;
+
+}
+
+#gund {
+	position: absolute;
+	left:0;
+	top:0;
+	z-index: -1;
+
+}
+
+#wire {
+	z-index: 1.5;
+	position: absolute;
+	left: 0;
+	top: 0;
+}
+
+
+.op {
+	z-index: 1.5;
+	position: absolute;
+	left: 0;
+	top: 0;
+	opacity: 0;
+}
+
+#gundb:hover {
+	opacity: 1 !important;
+	cursor: pointer;
+}
+
+ul {
+	list-style: none;
+}
+
+#names {
+	position:absolute;
+	display: inline;
+	padding-left: 375px;
+
+}
+
+a {
+	color: black;
+	text-decoration: none;
+}
+
+a:hover {
+	background-color: yellow;
+}
+
+
+
+</style>
+
+
+<script>
+
+function mouseon5() {
+    document.getElementById("gund5").style.opacity = "1";
+}
+function mouseoff5() {
+    document.getElementById("gund5").style.opacity = "0";
+}
+
+function mouseon4() {
+    document.getElementById("gund4").style.opacity = "1";
+}
+function mouseoff4() {
+    document.getElementById("gund4").style.opacity = "0";
+}
+
+function mouseon3() {
+    document.getElementById("gund3").style.opacity = "1";
+}
+function mouseoff3() {
+    document.getElementById("gund3").style.opacity = "0";
+}
+
+function mouseon2() {
+    document.getElementById("gund2").style.opacity = "1";
+}
+function mouseoff2() {
+    document.getElementById("gund2").style.opacity = "0";
+}
+
+function mouseon1() {
+    document.getElementById("gund1").style.opacity = "1";
+}
+function mouseoff1() {
+    document.getElementById("gund1").style.opacity = "0";
+}
+
+function mouseonb() {
+    document.getElementById("gundb").style.opacity = "1";
+}
+function mouseoffb() {
+    document.getElementById("gundb").style.opacity = "0";
+}
+</script>
+</head>
+
+<body>
+
+<div id='map'>
+
+<img src="https://fablab.gsd.harvard.edu/wp-content/uploads/2016/07/gund.jpg" id='gund'>
+<img src="https://fablab.gsd.harvard.edu/wp-content/uploads/2016/07/gund5.png" id='gund5' class='op' >
+<img src="https://fablab.gsd.harvard.edu/wp-content/uploads/2016/07/gund4.png" id='gund4' class='op'>
+<img src="https://fablab.gsd.harvard.edu/wp-content/uploads/2016/07/gund3.png" id='gund3' class='op'>
+<img src="https://fablab.gsd.harvard.edu/wp-content/uploads/2016/07/gund2.png" id='gund2' class='op'>
+<img src="https://fablab.gsd.harvard.edu/wp-content/uploads/2016/07/gund1.png" id='gund1' class='op'>
+<img src="https://fablab.gsd.harvard.edu/wp-content/uploads/2016/07/gundb.png" id='gundb' class='op'>
+<img src="https://fablab.gsd.harvard.edu/wp-content/uploads/2016/07/gundwire.png" id='wire'>
+
+</div>
+
+<div id='names'>
+<ul>
+<li id='fifth' onmouseover="mouseon5()" onmouseout="mouseoff5()" ><a href="#">Fifth Floor Tray
+<li id='fourth' onmouseover="mouseon4()" onmouseout="mouseoff4()" > <a href="#">Fourth Floor Tray
+<li id='third' onmouseover="mouseon3()" onmouseout="mouseoff3()" > <a href="#">Third Floor Tray
+<li id='second' onmouseover="mouseon2()" onmouseout="mouseoff2()" > <a href="#">Second Floor Tray
+<li id='ground' onmouseover="mouseon1()" onmouseout="mouseoff1()" > <a href="#">Ground Floor
+<li id='basement' onmouseover="mouseonb()" onmouseout="mouseoffb()"><a href="#">Basement
+</div>
+
+</body>
+</html>
