@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Week 05 form</title>
+    <meta charset="utf-8" />
+    <script type="text/javascript" src="js/jquery-3.1.0.min.js">
+    </script>
+    <script type="text/javascript"
+    src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js">
+</script>
+<script type="text/javascript">
+$(document).ready(function(){
+    $("#form").validate();
+});
+</script>
+</head>
+<body>
+  <form  id="form" method="post"
+    action="http://cscie12.dce.harvard.edu/echo">
+    <fieldset>
+      <legend>Week 05 Form validation</legend>
+      <p>
+        <label for="name">Name</label> <em>(Required)</em>
+        <br/>
+        <input id="name" name="name" size="25" class="required"/> </p>
+      <p>
+        <label for="email">Email Address</label> <em>(Required)</em>
+        <br/>
+        <input id="email" name="email" size="25" class="required email"/> </p>
+      <p>
+        <label for="comments">Comments</label> <em>(Required)</em>
+        <br/>
+        <input id="comments" name="comments" size="25" class="required"/> </p>
+      <p>
+        <input class="submit" type="submit" value="Submit Form"/> </p>
+    </fieldset>
+  </form>
+</body>
+</html>
