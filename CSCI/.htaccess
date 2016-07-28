@@ -1,0 +1,24 @@
+
+ErrorDocument 404 http://cs12students.dce.harvard.edu/~chansen/404page.html
+
+
+ExpiresActive On
+
+ExpiresByType text/css   A604800
+# HTML expires in 1 hour
+
+ExpiresByType application/javascript   A604800   
+# HTML expires in 1 hour
+
+ExpiresByType image/jpeg A604800
+# JPEG expires in 30 days
+
+ExpiresByType image/gif  A604800
+# JPEG expires in 30 days
+
+ExpiresByType image/png  A604800
+# JPEG expires in 30 days
+
+AddOutputFilterByType DEFLATE text/html
+AddOutputFilterByType DEFLATE text/css
+AddOutputFilterByType DEFLATE application/javascript
