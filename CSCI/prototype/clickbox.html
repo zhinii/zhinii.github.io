@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    
+       <link rel="stylesheet" href="./css/mid.css">
+
+</head>
+
+<body>
+    
+    <ul>
+        <li><div  id='a'>a</div></li>
+        <li><div  id='a1'>a1</div></li>
+</ul>
+
+    <!-- Start out a bunch of the boxes invisible -->
+    <div class='middle invisible' id='a2'><div id='test'>a2</div>
+    <div id='test2'>test2</div></div>
+    <div class='middle invisible' id='b'>b</div>
+   
+    <script>
+    var clickMap = { // This is a series of dictionaries enumerating what should happen when I click on different elements
+        '#a': {
+            'show': ['#a2'], // What to show when I click on #a
+            'hide': ['#b'], // hide
+            'toggle': [] // toggle
+        },
+        '#a1': {
+            'show': ['#b'],
+            'hide': ['#a2'],
+            'toggle': []
+        }
+    };
+
+   for (selector in clickMap) { // Go through every key in clickMap (i.e. #a, #a1, etc.)
+        var element = document.querySelector(selector); // For a given selector, go get the element associated with it
+        // Get the list of selectors we want to show when we click `element`
+        var selectorsToShow = clickMap[selector].show;
+        // Transform that list using `map` (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map) into a list of actual _elements_ to show
+        var elementsToShow = selectorsToShow.map(function(s) {
+            return document.querySelector(s);
+        });
+        // Go through that list and run a function for each one of them, using `forEach` (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach)
+        elementsToShow.forEach(function(e) {
+            // That function adds an eventListener to the element
+            element.addEventListener('click', function() { // Which when it's clicked
+                e.classList.remove('invisible'); // Removes the `invisible` class
+            });
+        });
+        // We would still need to implement something analogous for hide and toggle
+    }
+    for (selector in clickMap) { // Go through every key in clickMap (i.e. #a, #a1, etc.)
+        var element = document.querySelector(selector); // For a given selector, go get the element associated with it
+        // Get the list of selectors we want to show when we click `element`
+        var selectorsToToggle = clickMap[selector].toggle;
+        // Transform that list using `map` (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map) into a list of actual _elements_ to show
+        var elementsToToggle = selectorsToToggle.map(function(s) {
+            return document.querySelector(s);
+        });
+        // Go through that list and run a function for each one of them, using `forEach` (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach)
+        elementsToToggle.forEach(function(e) {
+            // That function adds an eventListener to the element
+            element.addEventListener('click', function() { // Which when it's clicked
+                e.classList.toggle('invisible'); // toggles the `invisible` class
+            });
+        });
+        // We would still need to implement something analogous for hide and toggle
+    }
+    for (selector in clickMap) { // Go through every key in clickMap (i.e. #a, #a1, etc.)
+        var element = document.querySelector(selector); // For a given selector, go get the element associated with it
+        // Get the list of selectors we want to show when we click `element`
+        var selectorsToHide = clickMap[selector].hide;
+        // Transform that list using `map` (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map) into a list of actual _elements_ to show
+        var elementsToHide = selectorsToHide.map(function(s) {
+            return document.querySelector(s);
+        });
+        // Go through that list and run a function for each one of them, using `forEach` (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach)
+        elementsToHide.forEach(function(e) {
+            // That function adds an eventListener to the element
+            element.addEventListener('click', function() { // Which when it's clicked
+                e.classList.add('invisible'); // adds the `invisible` class
+            });
+        });
+        // We would still need to implement something analogous for hide and toggle
+    }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,109 @@
+
+
+
+<html>
+<head>
+
+	<link rel='stylesheet' href='css/font-awesome.css'>
+
+	<link rel="stylesheet" href="css/collapse.css">
+
+		<link rel="stylesheet" href="css/menu.css">
+
+</head>
+
+<body>
+
+
+<a href="javascript: void(0)" onclick="toggle_visibility('menu');">
+<i id='myButton' class="fa fa-expand fa-2x"></i>
+
+</a>
+
+    <div id="menu" style="display:visible">
+   
+   <ul id="menu">
+   <li>
+   <a href="javascript: void(0)" id="images/21.JPG" onclick="changeImage(this.id)">Step 1</a></li>
+   <li><a href="javascript: void(0)" id="images/22.JPG" onclick="changeImage(this.id)">Step 2</a></li>
+   <li><a href="javascript: void(0)" id="images/23.jps" onclick="changeImage(this.id)">Step 3</a></li>
+</ul>  
+   
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<center><div class="button" id="step1">
+<a style="position: absolute; top: 65px; left: 882px; width: 38px; height: 34px;"  alt="" title="" <a href="javascript: void(0)" onclick="toggle_visibility('menu');" target="" ><i class="fa fa-eye fa-2x"></i><em></em></a>
+
+<div id="menu" style="display:none">
+
+<a style="position: absolute; top: 95px; left: 882px; width: 38px; height: 50px;"  alt="" title="" <a href="javascript: void(0)" onclick="toggle_visibility('menu');" target="" ><em><div style="width:45px; height:100px; background-color:white; color:black;">text goes here</div></em></a></div>
+
+
+<a style="position: absolute; top: 91px; left: 638px; width: 37px; height: 37px;"  alt="" title="" href="#" target="" ><i class="fa fa-camera-retro fa-2x"></i><em></em></a>
+
+<a style="position: absolute; top: 144px; left: 734px; width: 49px; height: 36px;"  alt="" title="" href="#" target="" ><i class="fa fa-camera-retro fa-2x"></i><em></em></a>
+
+<a style="position: absolute; top: 267px; left: 252px; width: 43px; height: 33px;"  alt="" title="" href="#" target="" ><i class="fa fa-camera-retro fa-2x"></i><em></em></a>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<script type="text/javascript">
+        function toggle_visibility(id) {
+           var e = document.getElementById(id);
+           if(e.style.display == 'block')
+              e.style.display = 'none';
+           else
+              e.style.display = 'block';
+        }
+ </script>
+
+
+
+
+
+<script>
+						var myButton = document.querySelector('#myButton');
+						myButton.addEventListener('click', function() {
+						myButton.classList.toggle('fa-expand');
+						myButton.classList.toggle('fa-compress');
+						});
+</script> 
+
+<script>
+function changeImage(img){
+    document.body.style.backgroundImage = 'url('+img+')';
+}
+</script>
+
+
+
+
+</body>
+
+</html>

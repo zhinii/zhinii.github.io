@@ -1,0 +1,74 @@
+<html>
+<head>
+
+
+	<link rel='stylesheet' href='css/font-awesome.css'>
+
+
+		<link rel="stylesheet" href="css/menu.css">
+
+</head>
+
+<body>
+
+
+<div id="clickers">
+<a href="javascript: void(0)" onclick="toggle_visibility('menu');">
+<i id='myButton' class="fa fa-expand fa-2x"></i>
+
+</a>
+</div>
+
+
+    <div id='hider'>
+
+   <ul id="menu">
+   <li>
+   <a href="javascript: void(0)" id="images/21.JPG" onclick="changeImage(this.id)">Step 1</a></li>
+   <li><a href="javascript: void(0)" id="images/22.JPG" onclick="changeImage(this.id)">Step 2</a></li>
+   <li><a href="javascript: void(0)" id="images/23.JPG" onclick="changeImage(this.id)">Step 3</a></li>
+</ul>  
+   
+    </div>
+
+
+
+
+ <script type="text/javascript">
+    var x = document.querySelector('#clickers');
+var y = document.querySelector('#hider');
+x.addEventListener('click', function(event) {
+  y.classList.toggle('invisible');
+});
+ </script>
+
+
+
+
+<script>
+
+						var myButton = document.querySelector('#myButton');
+						myButton.addEventListener('click', function() {
+						myButton.classList.toggle('fa-expand');
+						myButton.classList.toggle('fa-compress');
+						});
+</script> 
+
+
+<script>
+function changeImage(img){
+
+    document.body.style.backgroundImage = 'url('+img+')';
+
+}
+</script>
+
+
+
+
+
+
+
+</body>
+
+</html>
