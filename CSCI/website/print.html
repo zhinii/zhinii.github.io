@@ -76,8 +76,7 @@
         camera.position.z = 50;
     camera.position.y = 75;
     camera.lookAt(new THREE.Vector3(0,-100,50));
-    /////everything above this is needed for basic scene. includes lights, camera, setting scene size
-    ///everything below is object in the scene, these can be changed
+
 
 var toHighlight = [];
 
@@ -139,8 +138,7 @@ var showThree = [];
                 
             });
     });
-    ///end objects in scene
-    ///below is for raycasting
+  
     var baseColor = 0xffffff;
     var foundColor = 0x12C0E3;
     var intersectColor = 0x00D66B;
@@ -150,31 +148,25 @@ var showThree = [];
     
 
 
-    function onDocumentClick(eventShowthree) { // This is a function to run when we click; we get information about the event through the `event` parameter
-        // Set the x and y coordinates of our mouse vector to our pointer position, scaling for the width and height of our renderer (400 and 300, respectively)
+    function onDocumentClick(eventShowthree) { 
         var offsetX = renderer.domElement.offsetLeft * (2 / sceneWidth);
         var offsetY = renderer.domElement.offsetTop * (2 / sceneHeight);
         mouse.x = (event.clientX / sceneWidth) * 2 - 1 - offsetX;
         mouse.y = -(event.clientY / sceneHeight) * 2 + 1 + offsetY;
-        // Tell our raycaster to cast from our mouse
+        
         raycaster.setFromCamera(mouse, camera);
 
-       
-        // Tell our raycaster to detect the intersection with that array of objects
-
-   
+      
 
 
    var intersectionsOne = raycaster.intersectObjects(showOne, true);
-        if (intersectionsOne.length > 0) { // If we find any intersections
-            // Do stuff
+        if (intersectionsOne.length > 0) { 
             console.log("Clicked1");
 
             var thingsToHide = Array.from(document.querySelectorAll('.content'));
             thingsToHide.forEach(function(toHide) {
                 toHide.style.display = 'none';
             });
-                        // toHide.style.display = 'none';
 
             document.querySelector('#screenOne').style.display = 'block';
         }
@@ -182,8 +174,7 @@ var showThree = [];
     
 
    var intersectionsTwo = raycaster.intersectObjects(showTwo, true);
-        if (intersectionsTwo.length > 0) { // If we find any intersections
-            // Do stuff
+        if (intersectionsTwo.length > 0) { 
             console.log("Clicked2");
 
             
@@ -193,7 +184,7 @@ var showThree = [];
             });
 
 
-                        // toHide.style.display = 'none';
+                        
 
 
             document.querySelector('#screenTwo').style.display = 'block';
@@ -201,8 +192,7 @@ var showThree = [];
 
 
    var intersectionsThree = raycaster.intersectObjects(showThree, true);
-        if (intersectionsThree.length > 0) { // If we find any intersections
-            // Do stuff
+        if (intersectionsThree.length > 0) { 
             console.log("Clicked3");
 
        
@@ -211,8 +201,6 @@ var showThree = [];
                 toHide.style.display = 'none';
             });
 
-
-                        // toHide.style.display = 'none';
 
 
             document.querySelector('#screenThree').style.display = 'block';
@@ -224,11 +212,7 @@ var showThree = [];
 
 
         renderer.domElement.addEventListener('click', onDocumentClick, false);
-     ///end of raycasting
-
-
-    ///below is what happens as a result of raycasting, changing object color, knowing where the mouse is on clicks and intersecting objects
-    // And then actually attach our onDocumentClick function as an event handler to when the canvas hears a `click`
+     
     function onDocumentMouseMove(event) {
         event.preventDefault();
         var offsetX = renderer.domElement.offsetLeft * (2 / sceneWidth);        var offsetY = renderer.domElement.offsetTop * (2 / sceneHeight);
@@ -257,10 +241,10 @@ var showThree = [];
         renderer.render(scene, camera);
         controls.update();
     };
-    ///scene controls for mouse
+
     controls = new THREE.OrbitControls(camera, renderer.domElement);
     render();
-    //end of controls
+   
     </script>
 
      <div id='screenOne' class='content'>
