@@ -1,53 +1,123 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<style>
-
-body {
-	background-image: url(images/hammer.png);
-}
-ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #333;
-}
-
-li {
-    float: left;
-}
-
-li a {
-    display: block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-}
-
-li a:hover {
-    background-color: white;
-    color: black;
+    <style>
+    body {
+        background-image: url(images/hammer.png);
     }
-
-
-
-
-</style>
+    
+    ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background-color: #333;
+    }
+    
+    li {
+        float: left;
+    }
+    
+    li a {
+        display: block;
+        color: white;
+        text-align: center;
+        padding: 14px 16px;
+        text-decoration: none;
+    }
+    
+    li a:hover {
+        background-color: white;
+        color: black;
+    }
+    
+    img {
+        position: absolute;
+    }
+    /*#picturetable{
+	position: absolute;
+	padding-left: 200px;
+}
+*/
+    
+    #laser {
+        position: absolute;
+        padding-left: 375px;
+        z-index: 3
+    }
+    
+    #robot {
+        position: absolute;
+        padding-top: 50px;
+        padding-left: 550px;
+    }
+    
+    #cnc {
+        position: absolute;
+        padding-left: 200px;
+        padding-top: 50px;
+        z-index: 5;
+    }
+    
+    #metal {
+        position: absolute;
+        padding-left: 200px;
+        padding-top: 200px;
+        z-index: 4;
+    }
+    
+    #scan {
+        position: absolute;
+        padding-top: 350px;
+        padding-left: 316px;
+    }
+    
+    #wood {
+        position: absolute;
+        padding-left: 533px;
+        padding-top: 350px;
+    }
+    
+    #threedp {
+        position: absolute;
+        padding-left: 550px;
+        padding-top: 200px;
+    }
+    
+    .pbox {
+        position: absolute;
+        padding-top: 100px;
+        padding-left: 300px;
+        opacity: 0;
+    }
+    </style>
+    <script src='js/box.js'>
+    </script>
 </head>
+
 <body>
-
-<ul>
-  <li><a href="index.html">Home</a></li>
-  <li><a href="#vendors">Vendors</a></li>
-  <li><a href="#contact">Contact</a></li>
-</ul>
-
-<div id='picturebox'>
-<img src="">
-</div>
-
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="#vendors">Vendors</a></li>
+        <li><a href="contact.html">Contact</a></li>
+    </ul>
+    <div id='picturetable'>
+        <img class='pbox' id='woodbox' src='images/wood.png'>
+        <img class='pbox' id='metalbox' src='images/metal.png'>
+        <img class='pbox' id='cncbox' src='images/cnc.png'>
+        <img class='pbox' id='laserbox' src='images/laser.png'>
+        <img class='pbox' id='printbox' src='images/3dp.png'>
+        <img class='pbox' id='robotbox' src='images/robot.png'>
+        <img class='pbox' id='scanbox' src='images/scan.png'>
+        <span id='laser'><img onmouseover="mouseonlaser()" onmouseout="mouseofflaser()" src='images/lasers.png'></span>
+        <span id='threedp'><a href='print.html'><img onmouseover="mouseonprint()" onmouseout="mouseoffprint()" src='images/3dps.png'></a></span>
+        <span id='robot'> <img onmouseover="mouseonrobot()" onmouseout="mouseoffrobot()" src='images/robots.png'></span>
+        <span id='cnc'><img onmouseover="mouseoncnc()" onmouseout="mouseoffcnc()" src='images/cncs.png'></span>
+        <span id='wood'><img onmouseover="mouseonwood()" onmouseout="mouseoffwood()" src='images/woods.png'></span>
+        <span id='metal'><img onmouseover="mouseonmetal()" onmouseout="mouseoffmetal()" src='images/metals.png'></span>
+        <span id='scan'><img onmouseover="mouseonscan()" onmouseout="mouseoffscan()" src='images/scans.png'></span>
+    </div>
 </body>
-</html>
 
+</html>
