@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<head>
+<style>
+
+
+.cat {
+	position: absolute;
+}
+
+.hidden{
+	display: none;
+}
+
+.highlight {
+	opacity: .2;
+	z-index: 2;
+}
+
+#layer{
+	z-index: 5;
+}
+
+#scale{
+	left: 500px;
+	top: 500px;
+}
+
+
+</style>
+
+
+<script>
+    // function mouseonlayer() {
+    //     document.getElementById("layer").style.opacity = "1";
+    // }
+
+    // function mouseofflayer() {
+    //     document.getElementById("layer").style.opacity = "0.2";
+    // }
+
+        function mouseonlayer() {
+        document.getElementById("scale").style.opacity = "1";
+    }
+
+    function mouseofflayer() {
+        document.getElementById("scale").style.opacity = "0.2";
+    }
+
+
+
+
+
+
+
+</script>
+</head>
+
+<body>
+
+<div id='catalyst'>
+
+<div id='gen'>
+<img src="general.jpg" class='cat'>
+<img  src="genlayer.png" id='layer' class='cat highlight'  >
+
+<img src="geninterior.png" id='interior' class='cat highlight'>
+<img src="gensupport.png" id='support' class='cat highlight'>
+<img src="gencopies.png" id='copies' class='cat highlight'>
+<img src="genunits.png" id='units' class='cat highlight'>
+<img onmouseover='mouseonlayer()' onmouseout='mouseofflayer()' src="scale.jpg" id='scale' class='cat highlight' >
+<!-- <map name="general">
+  <area shape="rect" coords="509,294,797,324" onmouseover='mouseonlayer()' onmouseout='mouseofflayer()'>
+
+</map> -->
+</div>
+
+<div id='orient'>
+<img src="orientation.jpg"  class='cat hidden'>
+
+
+
+</div>
+
+<div id='pck' class='cat hidden'>
+<img src="pack.jpg"  class='cat hidden'>
+</div>
+
+
+</div>
+
+</body>
+</html>
