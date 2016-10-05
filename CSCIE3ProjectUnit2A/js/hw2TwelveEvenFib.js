@@ -27,14 +27,39 @@ getFibSum.onclick = function(){
   *            @returns {integer} The sum of the first 12 even Fibonacci numbers
   */
 
+
+
+//30 min into lecture
+
+  var nums = 31;
+  var a = 0;
+  var b = 1;
+
+// console.log(a);
+// console.log(b);
+
+if (nums <= 1){
+// } else if (nums == 2){
+// 	console.log(a);
+// 	console.log(b);
+} else {
+	console.log(a);
+	console.log(b);
+
+  var counter = 0;
+  while (counter < nums - 2){
+  	var sum = a + b
+  	if (sum % 2 == 0){
+  		console.log(sum);
+  	}
+  	a = b;
+  	b = sum;
+  	counter++;
+
+  }
+  
+}
+	
  function twelveEvenFibonacciSum(){
- 	var a = 0, b = 1, f = 0;
- 	for(var i = 0; i <= 22; i++){
- 		f = a + b;
- 		a = b;
- 		b = f;	
- 	}
-return f;
 
  } 
-
