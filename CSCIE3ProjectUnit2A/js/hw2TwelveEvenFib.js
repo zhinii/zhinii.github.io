@@ -29,11 +29,10 @@ getFibSum.onclick = function(){
 
 
 
-//30 min into lecture
-
   var nums = 31;
   var a = 0;
   var b = 1;
+  var array = [1];
 
 // console.log(a);
 // console.log(b);
@@ -51,15 +50,22 @@ if (nums <= 1){
   	var sum = a + b
   	if (sum % 2 == 0){
   		console.log(sum);
+  		array.push(sum);  
   	}
   	a = b;
   	b = sum;
-  	counter++;
-
-  }
-  
+	counter++;
 }
-	
+
+}
+function getSum(total, num) {
+    return total + num;
+}
+
+
  function twelveEvenFibonacciSum(){
 
+
+
+return array.reduce(getSum);
  } 
