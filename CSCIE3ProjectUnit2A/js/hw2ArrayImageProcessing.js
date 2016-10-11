@@ -51,7 +51,18 @@
  **/
 function makeBlue(original, output){
       // YOUR CODE GOES HERE
+      output=original
+          console.log(output)
+          console.log(original)
+
+      // for (var i = 0; i < original.length; i++){
+      //   if ([i]/4 % 2){output[i] = 0};
+      //     console.log(output);
+
+      // }
 }
+
+
 
 /*
  * makeReverse - Reads data from an image bitmap array and writes new image data to another array object
