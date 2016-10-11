@@ -55,11 +55,11 @@ function makeBlue(original, output){
           console.log(output)
           console.log(original)
 
-      // for (var i = 0; i < original.length; i++){
-      //   if ([i]/4 % 2){output[i] = 0};
-      //     console.log(output);
+ for (var i = 0; i < original.length; i++){
+        if ([i]%4 > 2){output[i] = 0};
+          console.log(output);
 
-      // }
+      }
 }
 
 
