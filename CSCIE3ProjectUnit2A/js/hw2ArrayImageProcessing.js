@@ -56,7 +56,7 @@ function makeBlue(original, output){
           console.log(original)
 
  for (var i = 0; i < original.length; i++){
-        if (4%[i] > 2){output[i] = 0};
+        if (4%[i] < 2){output[i] = 0};
           console.log(output);
 
       }
