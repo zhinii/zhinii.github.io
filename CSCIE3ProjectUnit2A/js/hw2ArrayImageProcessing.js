@@ -56,11 +56,12 @@ function makeBlue(original, output){
           console.log(original)
 
  for (var i = 0; i < original.length; i++){
-         if ([i]%4 < 2){copy[i] = 0};
+         if ([i]%4 < 2){output[i] = 0}; 
           // console.log(copy);
       // return output;
       }
-output = copy;
+  else{output[i]=original[i];}
+// output = copy;
 console.log(output);
       return output;
 }
