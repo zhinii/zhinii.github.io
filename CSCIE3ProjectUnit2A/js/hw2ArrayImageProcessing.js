@@ -51,7 +51,7 @@
  **/
 function makeBlue(original, output){
       // YOUR CODE GOES HERE
-      copy=original
+    output=original
           console.log(copy)
           console.log(original)
 
