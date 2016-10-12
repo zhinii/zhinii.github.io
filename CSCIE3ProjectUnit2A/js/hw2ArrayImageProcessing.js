@@ -60,7 +60,7 @@ function makeBlue(original, output){
           // console.log(copy);
       // return output;
       }
-  else{output[i]=original[i];}
+  else{output[i]=original[i]};
 // output = copy;
 console.log(output);
       return output;
