@@ -86,7 +86,7 @@ function makeReverse(original, output){
  //     output=original
           console.log(output)
           console.log(original)
-var inverse = 255-original[i];
+var inverse = original[i]-255;
           
  for (var i = 0; i < original.length; i++){
          if ([i]%4 < 3){output[i] = inverse;}
