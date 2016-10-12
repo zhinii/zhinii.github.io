@@ -51,15 +51,18 @@
  **/
 function makeBlue(original, output){
       // YOUR CODE GOES HERE
-      output=original
-          console.log(output)
+      copy=original
+          console.log(copy)
           console.log(original)
 
  for (var i = 0; i < original.length; i++){
-        if ([i]%4 < 2){output[i] = 0};
-          console.log(output);
-      return output;
+         if ([i]%4 < 2){copy[i] = 0};
+          // console.log(copy);
+      // return output;
       }
+output = copy;
+console.log(output);
+      return output;
 }
 
 
