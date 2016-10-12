@@ -113,7 +113,22 @@ console.log(output);
  **/
 
 function makeTransparent(original,output){
-      // YOUR CODE GOES HERE
+       // YOUR CODE GOES HERE
+ //     output=original
+          console.log(output)
+          console.log(original)
+
+          
+ for (var i = 0; i < original.length; i++){
+         if ([i]%4 < 3){output[i] = 255-original[i];}
+          // console.log(copy);
+      // return output;
+    else {output[i]=original[i];}
+      }
+
+// output = copy;
+console.log(output);
+      return output;
 }
 
 /*
