@@ -120,7 +120,8 @@ function makeTransparent(original,output){
 
           
  for (var i = 0; i < original.length; i++){
-         if ([i] = 4){output[i] = 127;}
+  var val = original[i];
+         if (val == 255){output[i] = 127;}
           // console.log(copy);
       // return output;
     else {output[i]=original[i];}
