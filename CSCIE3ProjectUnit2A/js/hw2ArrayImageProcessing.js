@@ -59,8 +59,9 @@ function makeBlue(original, output){
          if ([i]%4 < 2){output[i] = 0;}
           // console.log(copy);
       // return output;
+    else {output[i]=original[i];}
       }
-  else {output[i]=original[i];}
+
 // output = copy;
 console.log(output);
       return output;
