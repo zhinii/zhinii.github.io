@@ -52,7 +52,7 @@
 function makeBlue(original, output){
       // YOUR CODE GOES HERE
     output=original
-          console.log(copy)
+          console.log(output)
           console.log(original)
 
  for (var i = 0; i < original.length; i++){
