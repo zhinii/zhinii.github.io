@@ -50,7 +50,7 @@
  *
  **/
 function makeBlue(original, output){
-        // YOUR CODE GOES HERE
+      // YOUR CODE GOES HERE
 //     output=original
           console.log(output)
           console.log(original)
@@ -82,13 +82,14 @@ console.log(output);
  *
  **/
 function makeReverse(original, output){
-       // YOUR CODE GOES HERE
-//     output=original
+      // YOUR CODE GOES HERE
+ //     output=original
           console.log(output)
           console.log(original)
 
+          
  for (var i = 0; i < original.length; i++){
-         if ([i]%4 < 3){output[i] = 255-original[i];}
+         if ([i]%4 < 3){output[i] = 255-output[i];}
           // console.log(copy);
       // return output;
     else {output[i]=original[i];}
@@ -112,21 +113,7 @@ console.log(output);
  **/
 
 function makeTransparent(original,output){
-           // YOUR CODE GOES HERE
-//     output=original
-          console.log(output)
-          console.log(original)
-
- for (var i = 0; i < original.length; i++){
-         if ([i]%4 = 0){output[i] = original[i]/2;}
-          // console.log(copy);
-      // return output;
-    else {output[i]=original[i];}
-      }
-
-// output = copy;
-console.log(output);
-      return output;
+      // YOUR CODE GOES HERE
 }
 
 /*
