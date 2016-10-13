@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<head>
+<style>
+
+
+.cat {
+	position: absolute;
+}
+
+.hidden{
+	display: none;
+}
+
+.highlight {
+	opacity: .0;
+	z-index: 2;
+}
+
+#layer{
+	z-index: 5;
+}
+
+#scale{
+	left: 505px;
+	top: 297px;
+}
+
+
+</style>
+
+
+<script>
+    // function mouseonlayer() {
+    //     document.getElementById("layer").style.opacity = "1";
+    // }
+
+    // function mouseofflayer() {
+    //     document.getElementById("layer").style.opacity = "0.2";
+    // }
+
+        function mouseonlayer() {
+        document.getElementById("scale").style.opacity = "1";
+    }
+
+    function mouseofflayer() {
+        document.getElementById("scale").style.opacity = "0.0";
+    }
+
+
+
+
+
+
+
+</script>
+</head>
+
+<body>
+
+<div id='catalyst'>
+
+<div id='gen'>
+<img src="general.jpg" class='cat'>
+
+<img onmouseover='mouseonlayer()' onmouseout='mouseofflayer()' src="scale.png" id='scale' class='cat highlight' >
+<!-- <map name="general">
+  <area shape="rect" coords="509,294,797,324" onmouseover='mouseonlayer()' onmouseout='mouseofflayer()'>
+
+</map> -->
+</div>
+
+<div id='orient'>
+<img src="orientation.jpg"  class='cat hidden'>
+
+
+
+</div>
+
+<div id='pck' class='cat hidden'>
+<img src="pack.jpg"  class='cat hidden'>
+</div>
+
+
+</div>
+
+</body>
+</html>

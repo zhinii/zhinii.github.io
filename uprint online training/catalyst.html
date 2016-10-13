@@ -1,28 +1,100 @@
 <!DOCTYPE html>
 <head>
 <style>
-
+.tab{
+	position:absolute;
+	z-index: 2;
+}
 
 .cat {
 	position: absolute;
+	
 }
 
-.hidden{
+.invis{
 	display: none;
 }
 
 .highlight {
-	opacity: .2;
-	z-index: 2;
+	opacity: .0;
+	z-index: 4;
 }
 
-#layer{
-	z-index: 5;
+
+
+#gentab{
+	left: 23px;
+	top: 106px;
 }
 
+#orientab{
+	left:116px;
+	top:106px;
+}
+
+#packtab{
+	left:220px;
+	top:106px;
+}
+
+#statustab{
+	left:284px;
+	top:106px;
+}
+
+#resolution{
+	left: 505px;
+	top: 297px;
+}
+
+#interior{
+	left: 505px;
+	top: 329px;
+}
 #scale{
-	left: 500px;
-	top: 500px;
+	left:505px;
+	top:453px;
+}
+#support{
+	left: 505px;
+	top:361px;
+}
+#copies{
+	left:505px;
+	top: 393px;
+}
+#units{
+	left:505px;
+	top:423px;
+}
+
+#auto{
+    left: 620px;
+    top: 142px;
+}
+#srforient{
+    left: 620px;
+    top: 211px;
+
+}
+#alignorient{
+      left: 620px;
+      top: 299px;
+}
+#vieworient{
+  left: 620px;
+  top: 423px;
+}
+#undorestore{
+  left: 620px;
+  top: 492px;
+}
+
+.content{
+	position: absolute;
+	left:830px;
+	top: 360px;
+	z-index: 3;
 }
 
 
@@ -30,63 +102,421 @@
 
 
 <script>
-    // function mouseonlayer() {
-    //     document.getElementById("layer").style.opacity = "1";
-    // }
-
-    // function mouseofflayer() {
-    //     document.getElementById("layer").style.opacity = "0.2";
-    // }
-
+ 
         function mouseonlayer() {
         document.getElementById("scale").style.opacity = "1";
     }
 
     function mouseofflayer() {
-        document.getElementById("scale").style.opacity = "0.2";
+        document.getElementById("scale").style.opacity = "0.0";
+    }
+
+      function mouseoninterior() {
+        document.getElementById("interior").style.opacity = "1";
+    }
+
+    function mouseoffinterior() {
+        document.getElementById("interior").style.opacity = "0.0";
     }
 
 
 
+      function mouseonresolution() {
+        document.getElementById("resolution").style.opacity = "1";
+    }
+
+    function mouseoffresolution() {
+        document.getElementById("resolution").style.opacity = "0.0";
+    }
 
 
+     function mouseonsupport() {
+        document.getElementById("support").style.opacity = "1";
+    }
+
+    function mouseoffsupport() {
+        document.getElementById("support").style.opacity = "0.0";
+    }
+
+     function mouseoncopies() {
+        document.getElementById("copies").style.opacity = "1";
+    }
+
+    function mouseoffcopies() {
+        document.getElementById("copies").style.opacity = "0.0";
+    }
+
+     function mouseonunits() {
+        document.getElementById("units").style.opacity = "1";
+    }
+
+    function mouseoffunits() {
+        document.getElementById("units").style.opacity = "0.0";
+    }
+
+     function mouseonscale() {
+        document.getElementById("scale").style.opacity = "1";
+    }
+
+    function mouseoffscale() {
+        document.getElementById("scale").style.opacity = "0.0";
+    }
+
+     function mouseongentab() {
+        document.getElementById("gentab").style.opacity = "1";
+    }
+
+    function mouseoffgentab() {
+        document.getElementById("gentab").style.opacity = "0.0";
+    }
+     function mouseonorientab() {
+        document.getElementById("orientab").style.opacity = "1";
+    }
+
+    function mouseofforientab() {
+        document.getElementById("orientab").style.opacity = "0.0";
+    }
+
+    function mouseonpacktab() {
+        document.getElementById("packtab").style.opacity = "1";
+    }
+
+    function mouseoffpacktab() {
+        document.getElementById("packtab").style.opacity = "0.0";
+    }
+
+    function mouseonstatustab() {
+        document.getElementById("statustab").style.opacity = "1";
+    }
+
+    function mouseoffstatustab() {
+        document.getElementById("statustab").style.opacity = "0.0";
+    }
+
+    function mouseonauto() {
+        document.getElementById("auto").style.opacity = "1";
+    }
+
+    function mouseoffauto() {
+        document.getElementById("auto").style.opacity = "0.0";
+    }
+
+ function mouseonsrf() {
+        document.getElementById("srforient").style.opacity = "1";
+    }
+
+    function mouseoffsrf() {
+        document.getElementById("srforient").style.opacity = "0.0";
+    }
+
+     function mouseonalign() {
+        document.getElementById("alignorient").style.opacity = "1";
+    }
+
+    function mouseoffalign() {
+        document.getElementById("alignorient").style.opacity = "0.0";
+    }
+
+ function mouseonview() {
+        document.getElementById("vieworient").style.opacity = "1";
+    }
+
+    function mouseoffview() {
+        document.getElementById("vieworient").style.opacity = "0.0";
+    }
+ function mouseonundo() {
+        document.getElementById("undorestore").style.opacity = "1";
+    }
+
+    function mouseoffundo() {
+        document.getElementById("undorestore").style.opacity = "0.0";
+    }
 
 
 </script>
+
+
+
+
 </head>
 
 <body>
 
+
 <div id='catalyst'>
 
+<img onmouseover='mouseongentab()' onmouseout='mouseoffgentab()' src="gentab.png" id='gentab' class='tab highlight' >
+
+<img onmouseover='mouseonorientab()' onmouseout='mouseofforientab()' src="orientab.png" id='orientab' class='tab highlight' >
+
+<img onmouseover='mouseonpacktab()' onmouseout='mouseoffpacktab()' src="packtab.png" id='packtab' class='tab highlight' >
+
+<img onmouseover='mouseonstatustab()' onmouseout='mouseoffstatustab()' src="statustab.png" id='statustab' class='tab highlight' >
+
+
 <div id='gen'>
+
+  
 <img src="general.jpg" class='cat'>
-<img  src="genlayer.png" id='layer' class='cat highlight'  >
 
-<img src="geninterior.png" id='interior' class='cat highlight'>
-<img src="gensupport.png" id='support' class='cat highlight'>
-<img src="gencopies.png" id='copies' class='cat highlight'>
-<img src="genunits.png" id='units' class='cat highlight'>
-<img onmouseover='mouseonlayer()' onmouseout='mouseofflayer()' src="scale.jpg" id='scale' class='cat highlight' >
-<!-- <map name="general">
-  <area shape="rect" coords="509,294,797,324" onmouseover='mouseonlayer()' onmouseout='mouseofflayer()'>
+<img onmouseover='mouseonscale()' onmouseout='mouseoffscale()' src="scale.png" class='cat highlight' id='scale'  >
 
-</map> -->
+<img onmouseover='mouseoninterior()' onmouseout='mouseoffinterior()' src="interior.png" id='interior' class='cat highlight' >
+
+<img onmouseover='mouseonresolution()' onmouseout='mouseoffresolution()' src="resolution.png" id='resolution' class='cat highlight' >
+
+<img onmouseover='mouseonsupport()' onmouseout='mouseoffsupport()' src="support.png" id='support' class='cat highlight' >
+
+<img onmouseover='mouseoncopies()' onmouseout='mouseoffcopies()' src="copies.png" id='copies' class='cat highlight' >
+
+<img onmouseover='mouseonunits()' onmouseout='mouseoffunits()' src="units.png" id='units' class='cat highlight' >
+
+
+
+
+<div id='generaltext' class='content'>
+
+
+
+<!-- text for general tab -->
+<div id='restext' class='invis'> <!-- create unique id for each div you are creating -->
+<img src="images/general_1.png" >   <!-- // image to use insert location -->
+<p>
+The higher the resolution, the quicker it prints, lower the resolution the finer the detail</p>
+</div>
+<!-- end of code for an object. copy and past block of code for each new object added belwo this-->
+    
+<!-- this is beginning of a group of code for each item -->
+<div id='interiortext' class='invis'> <!-- create unique id for each div you are creating -->
+<img src="Images/general_2.png" >   <!-- // image to use insert location -->
+<p>
+Sparse Interior will reduce cost and print. Solid Interior will result in a more durable part. </p>
+</div>
+<!-- end of code for an object. copy and past block of code for each new object added belwo this-->
+    
+<!-- this is beginning of a group of code for each item -->
+<div id='supptext' class='invis'> <!-- create unique id for each div you are creating -->
+<img src="images/general_3.png" >   <!-- // image to use insert location -->
+<p>
+Sparse will reduce print time and cost, but often results in failed prints and is recommended only for advanced users. Basic is similar to sparse. Recommended only for advanced users. SMART is the recommended setting, will calculate where more support is needed and use less support where it is not needed. Surround will completely surround the model with support material. This will increase print cost and time, but will ensure the highest probability of a successful build. Recommended for use with models that have highly intricate/delicate features.</p>
+</div>
+<!-- end of code for an object. copy and past block of code for each new object added belwo this-->
+    
+<!-- this is beginning of a group of code for each item -->
+<div id='copiestext' class='invis'> <!-- create unique id for each div you are creating -->
+<img src="images/general_4.png" >   <!-- // image to use insert location -->
+<p>
+Specify the amount of copies of the part to be printed. The size of the number of copies cannot exceed the build volume. </p>
+</div>
+<!-- end of code for an object. copy and past block of code for each new object added belwo this-->
+    
+<!-- this is beginning of a group of code for each item -->
+<div id='unitstext' class='invis'> <!-- create unique id for each div you are creating -->
+<img src="images/general_5.png" >   <!-- // image to use insert location -->
+<p>
+It is important to select the units the .stl file was modeled in. If the file appears extremely small, select inches. If the file is extremely large, select mm. </p>
+</div>
+<!-- end of code for an object. copy and past block of code for each new object added belwo this-->
+    
+<!-- this is beginning of a group of code for each item -->
+<div id='scaletext' class='invis'> <!-- create unique id for each div you are creating -->
+<img src="images/general_6.png" >   <!-- // image to use insert location -->
+<p>
+If the file is slightly too large, it can be scaled to fit. </p>
+</div>
 </div>
 
-<div id='orient'>
-<img src="orientation.jpg"  class='cat hidden'>
+
+</div>
+
+
+
+
+
+<div id='orient' class='invis' >
+<img src="orientation.jpg"  class='cat'>
+<img onmouseover='mouseonauto()' onmouseout='mouseoffauto()' src="auto.png" class='cat highlight' id='auto'  >
+<img onmouseover='mouseonsrf()' onmouseout='mouseoffsrf()' src="srforient.png" class='cat highlight' id='srforient'  >
+<img onmouseover='mouseonalign()' onmouseout='mouseoffalign()' src="alignorient.png" class='cat highlight' id='alignorient'  >
+<img onmouseover='mouseonview()' onmouseout='mouseoffview()' src="vieworient.png" class='cat highlight' id='vieworient'  >
+<img onmouseover='mouseonundo()' onmouseout='mouseoffundo()' src="undorestore.png" class='cat highlight' id='undorestore'  >
+
+
+
+
+<div id='generaltext' class='content'>
+
+
+
+<!-- text for orientation tab -->
+
+<div id='autotext' class='invis'> <!-- create unique id for each div you are creating -->
+<img src="images/orient_1.png" >   <!-- // image to use insert location -->
+<p>
+Auto Orient: The software will automatically orient your file to optimize print speed, cost, and strength. Choose between three options: A, B, and C. </p>
+</div>
+
+<!-- end of code for an object. copy and past block of code for each new object added belwo this-->
+    
+<!-- this is beginning of a group of code for each item -->
+<div id='srftext' class='invis'> <!-- create unique id for each div you are creating -->
+<img src="Images/orient_2.png" >   <!-- // image to use insert location -->
+<p>
+Orient your model by aligning a specified surface to a chosen direction. Select the orientation (bottom, top, front) and then select the surface you want to be oriented in that direction. </p>
+</div>
+
+<!-- end of code for an object. copy and past block of code for each new object added belwo this-->
+    
+<!-- this is beginning of a group of code for each item -->
+<div id='aligntext' class='invis'> <!-- create unique id for each div you are creating -->
+<img src="images/orient_3.png" >   <!-- // image to use insert location -->
+<p>
+Degrees: Choose the degree of rotation <br>
+Rotate: Axis around which the rotation will occur <br>
+STL scale: If the file is slightly too large, it can be scaled to fit. </p>
+</div>
+
+<!-- end of code for an object. copy and past block of code for each new object added belwo this-->
+    
+<!-- this is beginning of a group of code for each item -->
+<div id='viewtext' class='invis'> <!-- create unique id for each div you are creating -->
+<img src="images/orient_4.png" >   <!-- // image to use insert location -->
+<p>
+Allows you to view your model from various perspectives. </p>
+</div>
+
+<!-- end of code for an object. copy and past block of code for each new object added belwo this-->
+    
+<!-- this is beginning of a group of code for each item -->
+<div id='undorestoretext' class='invis'> <!-- create unique id for each div you are creating -->
+<img src="images/orient_5.png" >   <!-- // image to use insert location -->
+<p>
+Undo any changes made or reset to the original orientation. </p>
+</div>
+
+<!-- end of code for an object. copy and past block of code for each new object added belwo this-->
+
+</div>
 
 
 
 </div>
 
-<div id='pck' class='cat hidden'>
-<img src="pack.jpg"  class='cat hidden'>
+<div id='pck' class='invis'>
+<img src="pack.jpg"  class='cat'>
 </div>
 
 
+
+
+
+
 </div>
+
+
+
+
+ <script>
+
+  
+   var clickMap = { // This is a series of dictionaries enumerating what should happen when I click on different elements
+        '#resolution': {
+            'show': ['#restext', ], // What to show when I click on #a
+            'hide': ['#supptext', '#copiestext','#unitstext','#scaletext', '#interiortext'] // hide
+        },
+        '#support': {
+            'show': ['#supptext'],
+            'hide': ['#restext', '#copiestext','#unitstext','#scaletext', '#interiortext'] 
+        },
+        '#interior': {
+            'show': ['#interiortext'],
+            'hide': ['#restext', '#supptext', '#copiestext','#unitstext','#scaletext']
+        },
+          '#copies': {
+            'show': ['#copiestext'],
+            'hide': ['#restext', '#supptext', '#interiortext', '#unitstext', '#scaletext']
+        },
+          '#units': {
+            'show': ['#unitstext'],
+            'hide': ['#restext', '#supptext', '#interiortext', '#copiestext', '#scaletext']
+        },
+          '#scale': {
+            'show': ['#scaletext'],
+            'hide': ['#restext', '#supptext', '#interiortext', '#copiestext', '#unitstext']
+        },
+          '#gentab': {
+            'show': ['#gen'],
+            'hide': ['#pck', '#orient'] 
+        },
+          '#packtab': {
+            'show': ['#pck'],
+            'hide': ['#gen', '#orient'] 
+        },
+          '#orientab': {
+            'show': ['#orient'],
+            'hide': ['#gen', '#pck'] 
+        },
+         '#auto': {
+            'show': ['#autotext'],
+            'hide': ['#srftext', '#aligntext', '#viewtext', '#undorestoretext']  
+        },
+          '#srforient': {
+            'show': ['#srftext'],
+            'hide': ['#autotext', '#aligntext', '#viewtext', '#undorestoretext']
+        },
+          '#alignorient': {
+            'show': ['#aligntext'],
+            'hide': ['#autotext', '#srftext', '#viewtext', '#undorestoretext']
+        },
+          '#vieworient': {
+            'show': ['#viewtext'],
+            'hide': ['#autotext', '#srftext', '#aligntext', '#undorestoretext']
+        },
+          '#undorestore': {
+            'show': ['#undorestoretext'],
+            'hide': ['#autotext', '#srftext', '#aligntext', '#viewtext']
+        },
+
+
+    };
+    for (selector in clickMap) { // Go through every key in clickMap (i.e. #a, #a1, etc.)
+        var element = document.querySelector(selector); // For a given selector, go get the element associated with it
+        // Get the list of selectors we want to show when we click `element`
+        var selectorsToShow = clickMap[selector].show;
+        // Transform that list using `map` (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map) into a list of actual _elements_ to show
+        var elementsToShow = selectorsToShow.map(function(s) {
+            return document.querySelector(s);
+        });
+        // Go through that list and run a function for each one of them, using `forEach` (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach)
+        elementsToShow.forEach(function(e) {
+            // That function adds an eventListener to the element
+            element.addEventListener('click', function() { // Which when it's clicked
+                e.classList.remove('invis'); // Removes the `text` class
+                console.log('click');
+            });
+        });
+        // We would still need to implement something analogous for hide and toggle
+    }
+
+    for (selector in clickMap) { // Go through every key in clickMap (i.e. #a, #a1, etc.)
+        var element = document.querySelector(selector); // For a given selector, go get the element associated with it
+        // Get the list of selectors we want to show when we click `element`
+        var selectorsToShow = clickMap[selector].hide;
+        // Transform that list using `map` (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map) into a list of actual _elements_ to show
+        var elementsToShow = selectorsToShow.map(function(s) {
+            return document.querySelector(s);
+        });
+        // Go through that list and run a function for each one of them, using `forEach` (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach)
+        elementsToShow.forEach(function(e) {
+            // That function adds an eventListener to the element
+            element.addEventListener('click', function() { // Which when it's clicked
+                e.classList.add('invis'); // adds the `text` class
+                console.log('clickhide');
+            });
+        });
+        // We would still need to implement something analogous for hide and toggle
+    }
+    </script>
 
 </body>
 </html>
