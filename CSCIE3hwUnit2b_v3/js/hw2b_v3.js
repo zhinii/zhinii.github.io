@@ -92,9 +92,10 @@
 
 
         var contacts = JSON.parse(window.localStorage.getItem('persondata'));
+        
         if (contacts){
             for (var i = 0; i<contacts.length; i++){
-                writeRowToPage(d[i], output);
+                writeRowToPage(contacts[i], output);
             }
         }
 
