@@ -13,9 +13,15 @@
         width: 600px;
         top: 350px;
     }
+         
+         .scene{
+             position:absolute;
+         }
+         
     #uprintscene {
         left: 700px;
          }
+         
     </style>
 </head>
 
@@ -41,7 +47,7 @@
 
  
 
-<div id='uprintscene' class='content'>
+<div id='uprintscene' class='scene'>
 
 
      <script src="js/three.min.js"></script>
@@ -57,6 +63,7 @@
     });
     var sceneHeight = 338;
     var sceneWidth = 600;
+        
     renderer.setSize(sceneWidth, sceneHeight);
     document.body.appendChild(renderer.domElement);
     renderer.domElement.id = "context"
