@@ -52,10 +52,14 @@
 
         // Step#4 - Store your object in localStorage (preserving data
         //          that's already in there from prior submissions!) 
-        array.push(person);
         // console.log(array);
+     
+                array.push(person);
+             window.localStorage.setItem('persondata', JSON.stringify(array));
 
-       window.localStorage.setItem('persondata', JSON.stringify(array));
+     
+
+       // window.localStorage.setItem('persondata', JSON.stringify(array));
         
     }
 
@@ -101,17 +105,7 @@
 
          console.log(contacts);
 
-            // var person = new AddrBookEntry(d.name, d.address, d.email);
-            // var array = [];
- //            function AddrBookEntry(n, a, e){
- //                this.name = n;
- //                this.addr=a;
- //                this.email=e;
-               
-        
- //               }
-
- // writeRowToPage(d, output);
+         
 
 
      }
