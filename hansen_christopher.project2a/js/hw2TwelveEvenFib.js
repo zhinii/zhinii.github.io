@@ -26,13 +26,7 @@ getFibSum.onclick = function(){
   *
   *            @returns {integer} The sum of the first 12 even Fibonacci numbers
   */
-
-
-
- 
-
- function twelveEvenFibonacciSum(){
- var nums = 31;
+var nums = 31;
   var a = 0;
   var b = 1;
   var array = [1];
@@ -60,6 +54,12 @@ if (nums <= 1){
 	counter++;
 }
 
+
+
+ 
+
+ function twelveEvenFibonacciSum(){
+ 
 }
 function getSum(total, num) {
     return total + num;
