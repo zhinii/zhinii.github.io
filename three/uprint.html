@@ -35,7 +35,43 @@
        </div>
 
  <div id='screenThree' class='content'>
-           <img src="uprint/img3.jpg">
+         <div id='vid' class='cat'>
+<video id='tray' width='700' height='450'>
+<source src='images/tray.mp4' type='video/mp4'>
+</video>
+<button onclick='installBuild()' type='button'>How to install build tray</button>
+<button onclick='remBuild()' type='button'>How to remove build tray</button>
+
+<script>
+var vid = document.getElementById('tray');
+
+var pausing = function(){
+	if(vid.currentTime >= 15){
+		vid.pause();
+	}
+}
+
+vid.addEventListener('timeupdate', pausing);
+
+function remBuild(){
+	vid.currentTime=0;
+	vid.addEventListener('timeupdate', pausing);
+	vid.play();
+}
+
+function installBuild(){
+	vid.currentTime=16;
+	vid.removeEventListener('timeupdate', pausing);
+	vid.play();
+}
+
+
+
+
+
+</script>
+
+</div>
        </div>
 
  <div class='content' class='content'>
