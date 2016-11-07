@@ -107,7 +107,7 @@ function installBuild(){
     camera.position.z = 25;
       camera.position.y = 75;
   	    camera.position.x = 0;
-//     camera.lookAt(screens);
+    camera.lookAt(screens.position);
     /////everything above this is needed for basic scene. includes lights, camera, setting scene size
     ///everything below is object in the scene, these can be changed
 
@@ -285,7 +285,7 @@ var showThree = [];
     }
     renderer.domElement.addEventListener('mousemove', onDocumentMouseMove, false);
     var render = function() {
-	    camera.lookAt(screens.position);
+	    
         requestAnimationFrame(render);
         renderer.render(scene, camera);
         controls.update();
