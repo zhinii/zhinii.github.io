@@ -293,6 +293,8 @@ var showThree = [];
     };
     ///scene controls for mouse
     controls = new THREE.OrbitControls(camera, renderer.domElement);
+	    controls.target.set( 0,55,0 );
+
     render();
     //end of controls
     </script>
