@@ -13,6 +13,19 @@
          .scene{
              position:absolute;
          }
+
+         .catOne {
+    position: absolute;
+    max-width: 600px;
+}
+
+.invis{
+    display: none;
+}
+.imgStart {
+    color: red;
+    cursor: hand;
+}
         
     </style>
 </head>
@@ -27,7 +40,49 @@
        </div>
 
  <div id='screenTwo' class='content'>
-           <img src="uprint/img2.jpg">
+         
+
+<div id = 'controlPic' class='catOne'>
+<p >
+Select the Image the correspondes with what is displayed.</p>
+<img id='twoIdlewait' src='control/2idlewait.jpg'>
+<img id='oneIdlestart' src='control/1idlestart.jpg'>
+<br>
+<img id='oneStandbye' src='control/1standby.jpg'>
+<img id='oneCompleted' src='control/1completed.jpg'>
+</div>
+
+<div id='idleWait' class='catOne invis'>
+<img src='control/2idlewait.jpg'>
+<p>
+The printer is waiting for a part to be sent. Open catalyst and send a file to print.</p>
+<p id='imgStartone' class='imgStart'>
+Go back to main selection menu</p>
+</div>
+
+<div id='idlePrint' class='catOne invis'>
+<img src='control/1idlestart.jpg'>
+<p>
+Press the 'print' selection to start the print. Ensure that a build plate is in the machine before starting the print.</p>
+<p id='imgStarttwo' class='imgStart'>
+Go back to main selection menu</p>
+</div>
+
+<div id='standy' class='catOne invis'>
+<img src='control/1standby.jpg'>
+<p>
+The print is in stanby mode. Select 'resume' to view your options. If the print is finished, remove it from the printer.</p>
+<p id='imgStartthree' class='imgStart'>
+Go back to main selection menu</p>
+</div>
+
+<div id='complete' class='catOne invis'>
+<img src='control/1completed.jpg'>
+<p>
+The print has completed printing. Remove the print and replace the build tray. When the print has been removed from the machine, indicate on the panel by selecting 'yes' that the part has been removed.</p>
+<p id='imgStartfour' class='imgStart'>
+Go back to main selection menu</p>
+</div>
        </div>
 
  <div id='screenThree' class='content'>
@@ -37,6 +92,7 @@
 </video>
 <button onclick='installBuild()' type='button'>How to install build tray</button>
 <button onclick='remBuild()' type='button'>How to remove build tray</button>
+
 
 <script>
 var vid = document.getElementById('tray');
@@ -248,7 +304,77 @@ var showThree = [];
     render();
     //end of controls
     </script>
+<script>
+var clickMap = { // This is a series of dictionaries enumerating what should happen when I click on different elements
+        '#twoIdlewait': {
+            'show': [ '#idleWait',], 
+            'hide': [ '#controlPic', ] 
+        },
+             '#oneIdlestart': {
+            'show': [ '#idlePrint'], 
+            'hide': [ '#controlPic' ] 
+        },
+             '#oneStandbye': {
+            'show': [ '#standy'], 
+            'hide': [  '#controlPic' ] 
+        },
+             '#oneCompleted': {
+            'show': [ '#complete'], 
+            'hide': [ '#controlPic'  ] 
+        },
+             '#imgStartone': {
+            'show': [ '#controlPic'], 
+            'hide': [ '#complete', '#standy', '#idlePrint', '#idleWait' ] 
+        },
+           '#imgStarttwo': {
+            'show': [ '#controlPic'], 
+            'hide': [ '#complete', '#standy', '#idlePrint', '#idleWait' ] 
+        },
+           '#imgStartthree': {
+            'show': [ '#controlPic'], 
+            'hide': [ '#complete', '#standy', '#idlePrint', '#idleWait' ] 
+        },
+           '#imgStartfour': {
+            'show': [ '#controlPic'], 
+            'hide': [ '#complete', '#standy', '#idlePrint', '#idleWait' ] 
+        },
+};
 
+for (selector in clickMap) { // Go through every key in clickMap (i.e. #a, #a1, etc.)
+        var element = document.querySelector(selector); // For a given selector, go get the element associated with it
+        // Get the list of selectors we want to show when we click `element`
+        var selectorsToShow = clickMap[selector].show;
+        // Transform that list using `map` (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map) into a list of actual _elements_ to show
+        var elementsToShow = selectorsToShow.map(function(s) {
+            return document.querySelector(s);
+        });
+        // Go through that list and run a function for each one of them, using `forEach` (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach)
+        elementsToShow.forEach(function(e) {
+            // That function adds an eventListener to the element
+            element.addEventListener('click', function() { // Which when it's clicked
+                e.classList.remove('invis'); // Removes the `text` class
+                console.log('click');
+            });
+        });
+    }
+
+    for (selector in clickMap) { // Go through every key in clickMap (i.e. #a, #a1, etc.)
+        var element = document.querySelector(selector); // For a given selector, go get the element associated with it
+        // Get the list of selectors we want to show when we click `element`
+        var selectorsToShow = clickMap[selector].hide;
+        // Transform that list using `map` (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/map) into a list of actual _elements_ to show
+        var elementsToShow = selectorsToShow.map(function(s) {
+            return document.querySelector(s);
+        });
+        elementsToShow.forEach(function(e) {
+            // That function adds an eventListener to the element
+            element.addEventListener('click', function() { // Which when it's clicked
+                e.classList.add('invis'); // adds the `invis` class
+                console.log('clickhide');
+            });
+        });
+    }
+</script>
    
 </body>
 
