@@ -109,24 +109,22 @@
 
                 // YOUR for() loop or transcriptElements.each() goes here...
                 // YOUR CODE TO ADD #3
-    $(this).addClass('hilite');
 
                 transcriptElements.each( function() {;
-                console.log($(this));
-                console.log('data-start = ' + $(this).attr('data-start'));
-                console.log('data-dur = '   + $(this).attr('data-dur'));
+        
+               
                          var dataStart = $(this).attr('data-start');
                          var dataDur = $(this).attr('data-dur');
-                         var dur = (dataStart + dataDur);
-                         // if (time >= dataStart){
-                         //    $(this).addClass('hilite');
-                         // }
-                         // else if (time <= dur){
-                         //    $(this).removeClass('hilite');
-                         // }
-                         if (time <= dur){
+                         var sum = (dataStart + dataDur);
+                         console.log(sum);
+                        
+                      //this doesn't work. i don't know why. Basing it on the psuedo code
+                         if (time >= dataStart && time <= sum){
+                            $(this).addClass('hilite');
+                             }
+                        else {
                             $(this).removeClass('hilite');
-                         }
+                        }
 
             });
        
