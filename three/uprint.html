@@ -36,7 +36,302 @@
 		     display: inline;
 	     }
         
+	     
+.tab{
+	position:absolute;
+	z-index: 2;
+}
+
+.cat {
+	position: absolute;
+    left: 620px;
+	
+}
+
+
+
+.highlight {
+    
+	opacity: .0;
+	z-index: 4;
+   
+}
+
+
+ 
+#gentab{
+	left: 633px;
+	top: 106px;
+}
+
+#orientab{
+	left:726px;
+	top:106px;
+}
+
+#packtab{
+	left:830px;
+	top:106px;
+}
+
+#statustab{
+	left:894px;
+	top:106px;
+}
+
+#resolution{
+	left: 1115px;
+	top: 297px;
+}
+
+#interior{
+	left: 1115px;
+	top: 329px;
+}
+#scale{
+	left:1115px;
+	top:453px;
+}
+#support{
+	left: 1115px;
+	top:361px;
+}
+#copies{
+	left:1115px;
+	top: 393px;
+}
+#units{
+	left:1115px;
+	top:423px;
+}
+
+#auto{
+    left: 1230px;
+    top: 142px;
+}
+#srforient{
+    left: 1230px;
+    top: 211px;
+
+}
+#alignorient{
+      left: 1230px;
+      top: 299px;
+}
+#vieworient{
+  left: 1230px;
+  top: 423px;
+}
+#undorestore{
+  left: 1230px;
+  top: 492px;
+}
+
+#packoptions{
+    left: 1073px;
+    top: 255px;
+
+}
+#clearpack{
+    left: 1073px;
+    top: 541px;
+
+}
+#packdetails{
+    left: 1219px;
+    top: 231px;
+
+}
+#print{
+    left:1244px;
+    top: 617px;
+
+}
+#preview{
+    left: 634px;
+    top:231px;
+
+}
+
+.contentcat{
+	position: absolute;
+	left:10px;
+	top: 350px;
+	z-index: 3;
+    max-width: 590px;
+}
     </style>
+	
+	
+<script>
+ 
+        function mouseonlayer() {
+        document.getElementById("scale").style.opacity = "1";
+    }
+
+    function mouseofflayer() {
+        document.getElementById("scale").style.opacity = "0.0";
+    }
+
+      function mouseoninterior() {
+        document.getElementById("interior").style.opacity = "1";
+    }
+
+    function mouseoffinterior() {
+        document.getElementById("interior").style.opacity = "0.0";
+    }
+
+
+
+      function mouseonresolution() {
+        document.getElementById("resolution").style.opacity = "1";
+    }
+
+    function mouseoffresolution() {
+        document.getElementById("resolution").style.opacity = "0.0";
+    }
+
+
+     function mouseonsupport() {
+        document.getElementById("support").style.opacity = "1";
+    }
+
+    function mouseoffsupport() {
+        document.getElementById("support").style.opacity = "0.0";
+    }
+
+     function mouseoncopies() {
+        document.getElementById("copies").style.opacity = "1";
+    }
+
+    function mouseoffcopies() {
+        document.getElementById("copies").style.opacity = "0.0";
+    }
+
+     function mouseonunits() {
+        document.getElementById("units").style.opacity = "1";
+    }
+
+    function mouseoffunits() {
+        document.getElementById("units").style.opacity = "0.0";
+    }
+
+     function mouseonscale() {
+        document.getElementById("scale").style.opacity = "1";
+    }
+
+    function mouseoffscale() {
+        document.getElementById("scale").style.opacity = "0.0";
+    }
+
+     function mouseongentab() {
+        document.getElementById("gentab").style.opacity = "1";
+    }
+
+    function mouseoffgentab() {
+        document.getElementById("gentab").style.opacity = "0.0";
+    }
+     function mouseonorientab() {
+        document.getElementById("orientab").style.opacity = "1";
+    }
+
+    function mouseofforientab() {
+        document.getElementById("orientab").style.opacity = "0.0";
+    }
+
+    function mouseonpacktab() {
+        document.getElementById("packtab").style.opacity = "1";
+    }
+
+    function mouseoffpacktab() {
+        document.getElementById("packtab").style.opacity = "0.0";
+    }
+
+    function mouseonstatustab() {
+        document.getElementById("statustab").style.opacity = "1";
+    }
+
+    function mouseoffstatustab() {
+        document.getElementById("statustab").style.opacity = "0.0";
+    }
+
+    function mouseonauto() {
+        document.getElementById("auto").style.opacity = "1";
+    }
+
+    function mouseoffauto() {
+        document.getElementById("auto").style.opacity = "0.0";
+    }
+
+ function mouseonsrf() {
+        document.getElementById("srforient").style.opacity = "1";
+    }
+
+    function mouseoffsrf() {
+        document.getElementById("srforient").style.opacity = "0.0";
+    }
+
+     function mouseonalign() {
+        document.getElementById("alignorient").style.opacity = "1";
+    }
+
+    function mouseoffalign() {
+        document.getElementById("alignorient").style.opacity = "0.0";
+    }
+
+ function mouseonview() {
+        document.getElementById("vieworient").style.opacity = "1";
+    }
+
+    function mouseoffview() {
+        document.getElementById("vieworient").style.opacity = "0.0";
+    }
+ function mouseonundo() {
+        document.getElementById("undorestore").style.opacity = "1";
+    }
+
+    function mouseoffundo() {
+        document.getElementById("undorestore").style.opacity = "0.0";
+    }
+function mouseonpackO() {
+        document.getElementById("packoptions").style.opacity = "1";
+    }
+
+    function mouseoffpackO() {
+        document.getElementById("packoptions").style.opacity = "0.0";
+    }
+ function mouseonclearP() {
+        document.getElementById("clearpack").style.opacity = "1";
+    }
+
+    function mouseoffclearP() {
+        document.getElementById("clearpack").style.opacity = "0.0";
+    }
+ function mouseonpackD() {
+        document.getElementById("packdetails").style.opacity = "1";
+    }
+
+    function mouseoffpackD() {
+        document.getElementById("packdetails").style.opacity = "0.0";
+    }
+     function mouseonprint() {
+        document.getElementById("print").style.opacity = "1";
+    }
+
+    function mouseoffprint() {
+        document.getElementById("print").style.opacity = "0.0";
+    }
+ function mouseonpreview() {
+        document.getElementById("preview").style.opacity = "1";
+    }
+
+    function mouseoffpreview() {
+        document.getElementById("preview").style.opacity = "0.0";
+    }
+
+
+
+</script>
 </head>
 
 <body>
@@ -44,7 +339,236 @@
 
     
        <div id='screenOne' class='content'>
-           <img src="uprint/img1.JPG">
+         
+<div id='catalyst'>
+
+<img onmouseover='mouseongentab()' onmouseout='mouseoffgentab()' src="images/gentab.png" id='gentab' class='tab highlight' >
+
+<img onmouseover='mouseonorientab()' onmouseout='mouseofforientab()' src="images/orientab.png" id='orientab' class='tab highlight' >
+
+<img onmouseover='mouseonpacktab()' onmouseout='mouseoffpacktab()' src="images/packtab.png" id='packtab' class='tab highlight' >
+
+<img onmouseover='mouseonstatustab()' onmouseout='mouseoffstatustab()' src="images/statustab.png" id='statustab' class='tab highlight' >
+
+
+<div id='gen'>
+
+  
+<img src="images/general.jpg" class='cat'>
+
+<img onmouseover='mouseonscale()' onmouseout='mouseoffscale()' src="images/scale.png" class='cat highlight' id='scale'  >
+
+<img onmouseover='mouseoninterior()' onmouseout='mouseoffinterior()' src="images/interior.png" id='interior' class='cat highlight' >
+
+<img onmouseover='mouseonresolution()' onmouseout='mouseoffresolution()' src="images/resolution.png" id='resolution' class='cat highlight' >
+
+<img onmouseover='mouseonsupport()' onmouseout='mouseoffsupport()' src="images/support.png" id='support' class='cat highlight' >
+
+<img onmouseover='mouseoncopies()' onmouseout='mouseoffcopies()' src="images/copies.png" id='copies' class='cat highlight' >
+
+<img onmouseover='mouseonunits()' onmouseout='mouseoffunits()' src="images/units.png" id='units' class='cat highlight' >
+
+
+
+
+<div id='generaltext' class='contentcat'>
+
+
+
+<!-- text for general tab -->
+<div id='restext' class='invis'> <!-- create unique id for each div you are creating -->
+<img src="images/general_1.png" >   <!-- // image to use insert location -->
+<p>
+The higher the resolution, the quicker it prints, lower the resolution the finer the detail</p>
+</div>
+<!-- end of code for an object. copy and past block of code for each new object added belwo this-->
+    
+<!-- this is beginning of a group of code for each item -->
+<div id='interiortext' class='invis'> <!-- create unique id for each div you are creating -->
+<img src="images/general_2.png" >   <!-- // image to use insert location -->
+<p>
+Sparse Interior will reduce cost and print. Solid Interior will result in a more durable part. </p>
+</div>
+<!-- end of code for an object. copy and past block of code for each new object added belwo this-->
+    
+<!-- this is beginning of a group of code for each item -->
+<div id='supptext' class='invis'> <!-- create unique id for each div you are creating -->
+<img src="images/general_3.png" >   <!-- // image to use insert location -->
+<p>
+Sparse will reduce print time and cost, but often results in failed prints and is recommended only for advanced users. Basic is similar to sparse. Recommended only for advanced users. SMART is the recommended setting, will calculate where more support is needed and use less support where it is not needed. Surround will completely surround the model with support material. This will increase print cost and time, but will ensure the highest probability of a successful build. Recommended for use with models that have highly intricate/delicate features.</p>
+</div>
+<!-- end of code for an object. copy and past block of code for each new object added belwo this-->
+    
+<!-- this is beginning of a group of code for each item -->
+<div id='copiestext' class='invis'> <!-- create unique id for each div you are creating -->
+<img src="images/general_4.png" >   <!-- // image to use insert location -->
+<p>
+Specify the amount of copies of the part to be printed. The size of the number of copies cannot exceed the build volume. </p>
+</div>
+<!-- end of code for an object. copy and past block of code for each new object added belwo this-->
+    
+<!-- this is beginning of a group of code for each item -->
+<div id='unitstext' class='invis'> <!-- create unique id for each div you are creating -->
+<img src="images/general_5.png" >   <!-- // image to use insert location -->
+<p>
+It is important to select the units the .stl file was modeled in. If the file appears extremely small, select inches. If the file is extremely large, select mm. </p>
+</div>
+<!-- end of code for an object. copy and past block of code for each new object added belwo this-->
+    
+<!-- this is beginning of a group of code for each item -->
+<div id='scaletext' class='invis'> <!-- create unique id for each div you are creating -->
+<img src="images/general_6.png" >   <!-- // image to use insert location -->
+<p>
+If the file is slightly too large, it can be scaled to fit. </p>
+</div>
+</div>
+
+
+</div>
+
+
+
+
+
+<div id='orient' class='invis' >
+<img src="images/orientation.jpg"  class='cat'>
+<img onmouseover='mouseonauto()' onmouseout='mouseoffauto()' src="images/auto.png" class='cat highlight' id='auto'  >
+<img onmouseover='mouseonsrf()' onmouseout='mouseoffsrf()' src="images/srforient.png" class='cat highlight' id='srforient'  >
+<img onmouseover='mouseonalign()' onmouseout='mouseoffalign()' src="images/alignorient.png" class='cat highlight' id='alignorient'  >
+<img onmouseover='mouseonview()' onmouseout='mouseoffview()' src="images/vieworient.png" class='cat highlight' id='vieworient'  >
+<img onmouseover='mouseonundo()' onmouseout='mouseoffundo()' src="images/undorestore.png" class='cat highlight' id='undorestore'  >
+
+
+
+
+<div id='generaltext' class='contentcat'>
+
+
+
+<!-- text for orientation tab -->
+
+<div id='autotext' class='invis'> <!-- create unique id for each div you are creating -->
+<img src="images/orient_1.png" >   <!-- // image to use insert location -->
+<p>
+Auto Orient: The software will automatically orient your file to optimize print speed, cost, and strength. Choose between three options: A, B, and C. </p>
+</div>
+
+<!-- end of code for an object. copy and past block of code for each new object added belwo this-->
+    
+<!-- this is beginning of a group of code for each item -->
+<div id='srftext' class='invis'> <!-- create unique id for each div you are creating -->
+<img src="images/orient_2.png" >   <!-- // image to use insert location -->
+<p>
+Orient your model by aligning a specified surface to a chosen direction. Select the orientation (bottom, top, front) and then select the surface you want to be oriented in that direction. </p>
+</div>
+
+<!-- end of code for an object. copy and past block of code for each new object added belwo this-->
+    
+<!-- this is beginning of a group of code for each item -->
+<div id='aligntext' class='invis'> <!-- create unique id for each div you are creating -->
+<img src="images/orient_3.png" >   <!-- // image to use insert location -->
+<p>
+Degrees: Choose the degree of rotation <br>
+Rotate: Axis around which the rotation will occur <br>
+STL scale: If the file is slightly too large, it can be scaled to fit. </p>
+</div>
+
+<!-- end of code for an object. copy and past block of code for each new object added belwo this-->
+    
+<!-- this is beginning of a group of code for each item -->
+<div id='viewtext' class='invis'> <!-- create unique id for each div you are creating -->
+<img src="images/orient_4.png" >   <!-- // image to use insert location -->
+<p>
+Allows you to view your model from various perspectives. </p>
+</div>
+
+<!-- end of code for an object. copy and past block of code for each new object added belwo this-->
+    
+<!-- this is beginning of a group of code for each item -->
+<div id='undorestoretext' class='invis'> <!-- create unique id for each div you are creating -->
+<img src="images/orient_5.png" >   <!-- // image to use insert location -->
+<p>
+Undo any changes made or reset to the original orientation. </p>
+</div>
+
+<!-- end of code for an object. copy and past block of code for each new object added belwo this-->
+
+</div>
+
+
+
+</div>
+
+<div id='pck' class='invis'>
+<img src="images/pack.jpg"  class='cat'>
+<img onmouseover='mouseonpackO()' onmouseout='mouseoffpackO()' src="images/packoptions.png" class='cat highlight' id='packoptions'  >
+<img onmouseover='mouseonclearP()' onmouseout='mouseoffclearP()' src="images/clearpack.png" class='cat highlight' id='clearpack'  >
+<img onmouseover='mouseonpackD()' onmouseout='mouseoffpackD()' src="images/packdetails.png" class='cat highlight' id='packdetails'  >
+<img onmouseover='mouseonprint()' onmouseout='mouseoffprint()' src="images/print.png" class='cat highlight' id='print'  >
+<img onmouseover='mouseonpreview()' onmouseout='mouseoffpreview()' src="images/preview.png" class='cat highlight' id='preview'  >
+ 
+<div id='generaltext' class='contentcat'>
+   
+<!-- this is beginning of a group of code for each item -->
+<div id='previewpack' class='invis'> <!-- create unique id for each div you are creating -->
+<img src="images/pack_1.png" >   <!-- // image to use insert location -->
+<p>
+Preview your pack (print layout) here. </p>
+</div>
+
+<!-- end of code for an object. copy and past block of code for each new object added belwo this-->    
+
+<!-- this is beginning of a group of code for each item -->
+<div id='detailspack' class='invis'> <!-- create unique id for each div you are creating -->
+<img src="images/pack_2.png" >   <!-- // image to use insert location -->
+<p>
+Inserts your prepared print into the pack (build area). If you selected ‘Add to Pack’ on a previous tab, the CMB file will already have been inserted. </div>
+
+<!-- end of code for an object. copy and past block of code for each new object added belwo this-->
+    
+<!-- this is beginning of a group of code for each item -->
+<div id='optionspack' class='invis'> <!-- create unique id for each div you are creating -->
+<img src="images/pack_3.png">   <!-- // image to use insert location -->
+<p>
+orient, copy, remove your model.</p>
+</div>
+
+
+<!-- end of code for an object. copy and past block of code for each new object added belwo this-->
+    
+<!-- this is beginning of a group of code for each item -->
+<div id='packclear' class='invis'> <!-- create unique id for each div you are creating -->
+<img src="images/pack_4.png" >   <!-- // image to use insert location -->
+<p>
+Removes all inserted files from the pack </p>
+</div>
+
+<!-- end of code for an object. copy and past block of code for each new object added belwo this-->
+    
+<!-- this is beginning of a group of code for each item -->
+<div id='printpack' class='invis'> <!-- create unique id for each div you are creating -->
+<img src="images/pack_5.png" >   <!-- // image to use insert location -->
+<p>
+Sends your pack/job to the printer.</p>
+</div>
+
+
+
+
+
+</div>
+
+
+</div>
+
+<div id='status' class='invis'>
+<img src="images/status.jpg"  class='cat'>
+
+<div id='generaltext' class='contentcat'>
+The printer status tab will have info on the print queue, what job is printing and jobs waiting to be printed.
+It also has estimated finish times if jobs are switched promptly upon completion.
+</div>
+</div>
        </div>
 
  <div id='screenTwo' class='content'>
@@ -347,6 +871,86 @@ var clickMap = { // This is a series of dictionaries enumerating what should hap
             'show': [ '#controlPic'], 
             'hide': [ '#complete', '#standy', '#idlePrint', '#idleWait' ] 
         },
+	 '#resolution': {
+            'show': ['#restext', ], // What to show when I click on #a
+            'hide': ['#supptext', '#copiestext','#unitstext','#scaletext', '#interiortext'] // hide
+        },
+        '#support': {
+            'show': ['#supptext'],
+            'hide': ['#restext', '#copiestext','#unitstext','#scaletext', '#interiortext'] 
+        },
+        '#interior': {
+            'show': ['#interiortext'],
+            'hide': ['#restext', '#supptext', '#copiestext','#unitstext','#scaletext']
+        },
+          '#copies': {
+            'show': ['#copiestext'],
+            'hide': ['#restext', '#supptext', '#interiortext', '#unitstext', '#scaletext']
+        },
+          '#units': {
+            'show': ['#unitstext'],
+            'hide': ['#restext', '#supptext', '#interiortext', '#copiestext', '#scaletext']
+        },
+          '#scale': {
+            'show': ['#scaletext'],
+            'hide': ['#restext', '#supptext', '#interiortext', '#copiestext', '#unitstext']
+        },
+          '#gentab': {
+            'show': ['#gen'],
+            'hide': ['#pck', '#orient', '#status'] 
+        },
+          '#packtab': {
+            'show': ['#pck'],
+            'hide': ['#gen', '#orient', '#status'] 
+        },
+          '#orientab': {
+            'show': ['#orient'],
+            'hide': ['#gen', '#pck', '#status'] 
+        },
+           '#statustab': {
+            'show': ['#status'],
+            'hide': ['#gen', '#pck', '#orient'] 
+        },
+         '#auto': {
+            'show': ['#autotext'],
+            'hide': ['#srftext', '#aligntext', '#viewtext', '#undorestoretext']  
+        },
+          '#srforient': {
+            'show': ['#srftext'],
+            'hide': ['#autotext', '#aligntext', '#viewtext', '#undorestoretext']
+        },
+          '#alignorient': {
+            'show': ['#aligntext'],
+            'hide': ['#autotext', '#srftext', '#viewtext', '#undorestoretext']
+        },
+          '#vieworient': {
+            'show': ['#viewtext'],
+            'hide': ['#autotext', '#srftext', '#aligntext', '#undorestoretext']
+        },
+          '#undorestore': {
+            'show': ['#undorestoretext'],
+            'hide': ['#autotext', '#srftext', '#aligntext', '#viewtext']
+        },
+        '#packoptions':{
+              'show': ['#optionspack'],
+            'hide': ['#previewpack', '#detailspack', '#packclear', '#printpack']
+        },
+        '#clearpack':{
+              'show': ['#packclear'],
+            'hide': ['#optionspack', '#previewpack', '#detailspack', '#printpack']
+        },
+            '#packdetails':{
+             'show': ['#detailspack'],
+             'hide': ['#optionspack', '#previewpack', '#printpack', '#packclear']
+        },
+            '#print':{
+             'show': ['#printpack'],
+            'hide': ['#optionspack', '#detailspack', '#previewpack', '#packclear']
+        },
+        '#preview':{
+            'show': ['#previewpack'],
+            'hide': ['#detailspack', '#optionspack', '#packclear', '#printpack']
+        }
 };
 
 for (selector in clickMap) { // Go through every key in clickMap (i.e. #a, #a1, etc.)
