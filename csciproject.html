@@ -1,43 +1,64 @@
 <html>
+
 <head>
-<style>
+    <style>
 
-</style>
-
-
+    </style>
 </head>
 
 <body>
-<canvas id='artboard' width='400' height='400' style ='border: 2px solid red;'>
+    <canvas id='artboard' width='400' height='400' style='border: 2px solid red;'>
+        <script>
+        var canvas = document.getElementById('artboard');
+        //if there is questions as to the legitimacy of this, contact Alec Resnic
+        //create drawing elements in canvas i.e. line color, width
+        var ctx = canvas.getContext('2d');
+            ctx.fillStyle = "#000000";
+            ctx.lineWidth = 2;
 
-<script>
+         // var for mouse down or up
+        var isMousedown = false;
+        //empty var for point location
+        var lastPoint = {
+            x: null,
+            y: null
+        };
 
-var canvas = document.getElementById('artboard');
-canvas.addEventListener('mousedown', draw)
+        //create eventlistener for mousdown and tracks the coordinates of this event
+        canvas.addEventListener('mousedown', function(event) {
+            isMousedown = true;
+            lastPoint.x = event.x;
+            lastPoint.y = event.y;
+        });
+        //event listener for mouse up
+        canvas.addEventListener('mouseup', function() {
+            isMousedown = false;
+        });
 
-//create function to execute on mouse click
-function draw(){
-console.log('canvas click');
-//create drawing elements in canvas i.e. line color, width
-var ctx = canvas.getContext('2d');
-ctx.fillStyle = "#000000";
- ctx.lineWidth = 2;
-//get mouse coordinates in canvas
-var x = event.clientX;
-var y = event.clientY;
-console.log('mouse x location '+ x);
-console.log('mouse y location'+ y);
-//use those coordinate to draw a line
-var lastx = x;
-var lasty = y;
-ctx.beginPath();
-ctx.moveTo(lastx, lasty);
-ctx.lineTo(x, y);
-ctx.closePath();
-ctx.stroke();
+        //event listener for mouse move and drawing on the move
+        canvas.addEventListener('mousemove', function(event) {
+            //if mousdown is true
+            if (isMousedown) {
+                console.log(event.x, event.y);
 
-}
+                //use those coordinate to draw a line
 
-</script>
+                ctx.beginPath();
+                ctx.moveTo(lastPoint.x, lastPoint.y);
+                ctx.lineTo(event.x, event.y);
+                ctx.closePath();
+                ctx.stroke();
+                //create and place coordinate of each 'stroke'
+                lastPoint.x = event.x;
+                lastPoint.y = event.y;
+            }
+        });
+
+       
+
+
+    
+        </script>
 </body>
+
 </html>
