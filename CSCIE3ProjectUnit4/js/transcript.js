@@ -1,6 +1,6 @@
 /* transcript.js */
 
-(function($){
+(function($) {
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      *          NOTE - READ THIS ENTIRE FILE BEFORE YOU START DOING ANYTHING
@@ -49,7 +49,7 @@
      *
      *
      */
-    $.fn.playerConnect = function(player){
+    $.fn.playerConnect = function(player) {
 
         // Here, 'this' is the collection selected by jQuery. Let's
         //  assign it to a local variable so we have access to it
@@ -61,73 +61,72 @@
         //  updates its "position" property. 'onTime' is an event that is triggered
         //  by the player continually as the video plays. This will happen many times
         //  per second while the video is playing.
-        player.onTime(function(evt){
+        player.onTime(function(evt) {
 
-                /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-                 *
-                 *  Follow the prompts in these comments to structure your code. Read them carefully.
-                 */
+            /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+             *
+             *  Follow the prompts in these comments to structure your code. Read them carefully.
+             */
 
-                 /* Get the current time of the video playback and assign it to the variable 'time'.
-                  *  It is a property of the player's evt object. Refer to the classroom lecture, or use the
-                  *  documentation of onTime at
-                  *     http://support.jwplayer.com/customer/portal/articles/1413089-javascript-api-reference#seek
-                  *  to see the properties available within this event object. (Note that the 'duration' property
-                  *  of the JWPlayer onTime event is not related to the duration described by the transcript element
-                  *  in our HTML, and you will not need to use it.)
-                  *
-                  * */
-                var time =  player.getPosition(); //YOUR CODE TO ADD #2 - replace the empty quotes with your code
-                console.log(time);       // see if it's working
+            /* Get the current time of the video playback and assign it to the variable 'time'.
+             *  It is a property of the player's evt object. Refer to the classroom lecture, or use the
+             *  documentation of onTime at
+             *     http://support.jwplayer.com/customer/portal/articles/1413089-javascript-api-reference#seek
+             *  to see the properties available within this event object. (Note that the 'duration' property
+             *  of the JWPlayer onTime event is not related to the duration described by the transcript element
+             *  in our HTML, and you will not need to use it.)
+             *
+             * */
+            var time = player.getPosition(); //YOUR CODE TO ADD #2 - replace the empty quotes with your code
+            //console.log(time);       // see if it's working
 
 
-                /*  Next you need to iterate over the transcriptElements (using a 'for' loop or
-                 *   transcriptElements.each()), and for each one, see if the 'time' is greater
-                 *   than the element's data-start and less than the end
-                 *   ('end' being equal to data-start plus data-dur).  The jquery .attr() function
-                 *   will be useful here.
-                 *
-                 *  If the player time is in range use jQuery's addClass() to add the "hilite" class
-                 *   to the element. Otherwise, use removeClass() to remove it. ".hilite" is already defined
-                 *   in the stylesheet, so you don't have to manipulate the element styles themselves.
-                 *
-                 *  Remember that the attribute values are going to come to you as Strings
-                 *   and you'll need to change them into Floats or Integers (parseFloat(), parseInt()).
-                 *   Don't worry about non-numeric data or missing attributes - it's OK to assume that
-                 *   the data in the HTML is valid.
-                 *
-                 *   in pseudo-code it's something like this:
-                 *      for each transcript element
-                 *          if (time >= element_start_time && time <=element_end_time)
-                 *             add "hilight" class
-                 *          else
-                 *             remove "hilite" class
-                 *
-                 *   Note that the 'transcriptElements' array variable is already defined (line 43) and
-                 *   contains the array of <SPAN> elements. You just have to iterate and do the rest
-                 */
+            /*  Next you need to iterate over the transcriptElements (using a 'for' loop or
+             *   transcriptElements.each()), and for each one, see if the 'time' is greater
+             *   than the element's data-start and less than the end
+             *   ('end' being equal to data-start plus data-dur).  The jquery .attr() function
+             *   will be useful here.
+             *
+             *  If the player time is in range use jQuery's addClass() to add the "hilite" class
+             *   to the element. Otherwise, use removeClass() to remove it. ".hilite" is already defined
+             *   in the stylesheet, so you don't have to manipulate the element styles themselves.
+             *
+             *  Remember that the attribute values are going to come to you as Strings
+             *   and you'll need to change them into Floats or Integers (parseFloat(), parseInt()).
+             *   Don't worry about non-numeric data or missing attributes - it's OK to assume that
+             *   the data in the HTML is valid.
+             *
+             *   in pseudo-code it's something like this:
+             *      for each transcript element
+             *          if (time >= element_start_time && time <=element_end_time)
+             *             add "hilight" class
+             *          else
+             *             remove "hilite" class
+             *
+             *   Note that the 'transcriptElements' array variable is already defined (line 43) and
+             *   contains the array of <SPAN> elements. You just have to iterate and do the rest
+             */
 
-                // YOUR for() loop or transcriptElements.each() goes here...
-                // YOUR CODE TO ADD #3
+            // YOUR for() loop or transcriptElements.each() goes here...
+            // YOUR CODE TO ADD #3
 
-                transcriptElements.each( function() {;
-        
-               
-                         var dataStart = $(this).attr('data-start');
-                         var dataDur = $(this).attr('data-dur');
-                         var sum = (dataStart + dataDur);
-                         console.log(sum);
-                        
-                      //this doesn't work. i don't know why. Basing it on the psuedo code
-                         if (time >= dataStart && time <= sum){
-                            $(this).addClass('hilite');
-                             }
-                        else {
-                            $(this).removeClass('hilite');
-                        }
+            transcriptElements.each(function() {;
+
+
+                var dataStart = $(this).attr('data-start');
+                var dataDur = $(this).attr('data-dur');
+                var sum = (parseInt(dataStart) + parseInt(dataDur));
+
+                console.log(sum);
+
+                if (time >= dataStart && time <= sum) {
+                    $(this).addClass('hilite');
+                } else {
+                    $(this).removeClass('hilite');
+                }
 
             });
-       
+
 
         });
 
@@ -138,23 +137,23 @@
          *
          * And of course we return it, so our plugin is chainable
          * */
-        return this.click(function(evt){
+        return this.click(function(evt) {
 
-                // YOUR CODE TO ADD #4
-                //   Get the value of the data-start attribute (the jQuery .attr() function could help here)
-                //   and call player.seek([your value goes here])
-         var dataStart = $(this).attr('data-start');
+            // YOUR CODE TO ADD #4
+            //   Get the value of the data-start attribute (the jQuery .attr() function could help here)
+            //   and call player.seek([your value goes here])
+            var dataStart = $(this).attr('data-start');
             player.seek(dataStart);
 
-       });
-   };
+        });
+    };
 
 })(jQuery);
 
 
 // We always use $(document).ready() to be sure the DOM has loaded
 //  before we execute any JS that references the DOM
-$(document).ready(function(){
+$(document).ready(function() {
 
     /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
      *  YOUR CODE TO ADD #1
@@ -173,18 +172,18 @@ $(document).ready(function(){
      *
      * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
-   //add the media player
-   //  YOUR CODE TO ADD #1 (already done for you)
-   var player = jwplayer("playerDiv").setup({
-                    file: "http://www.people.fas.harvard.edu/~lbouthillier/nasa-spinoffs.mp4",
-                    height: 360,
-                    width: 640,
-                    controls:true,
-                });
+    //add the media player
+    //  YOUR CODE TO ADD #1 (already done for you)
+    var player = jwplayer("playerDiv").setup({
+        file: "http://www.people.fas.harvard.edu/~lbouthillier/nasa-spinoffs.mp4",
+        height: 360,
+        width: 640,
+        controls: true,
+    });
 
     // Like with $(document).ready(), we use player.onReady to be sure the
     //   player is loaded before we try to do anything with it
-   player.onReady(function(){
+    player.onReady(function() {
 
         //  Here we call our jQuery plugin, playerConnect, which expects the
         //   collection of HTML elements that contains the transcript. In this
