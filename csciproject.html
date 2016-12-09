@@ -1,0 +1,43 @@
+<html>
+<head>
+<style>
+
+</style>
+
+
+</head>
+
+<body>
+<canvas id='artboard' width='400' height='400' style ='border: 2px solid red;'>
+
+<script>
+
+var canvas = document.getElementById('artboard');
+canvas.addEventListener('mousedown', draw)
+
+//create function to execute on mouse click
+function draw(){
+console.log('canvas click');
+//create drawing elements in canvas i.e. line color, width
+var ctx = canvas.getContext('2d');
+ctx.fillStyle = "#000000";
+ ctx.lineWidth = 2;
+//get mouse coordinates in canvas
+var x = event.clientX;
+var y = event.clientY;
+console.log('mouse x location '+ x);
+console.log('mouse y location'+ y);
+//use those coordinate to draw a line
+var lastx = x;
+var lasty = y;
+ctx.beginPath();
+ctx.moveTo(lastx, lasty);
+ctx.lineTo(x, y);
+ctx.closePath();
+ctx.stroke();
+
+}
+
+</script>
+</body>
+</html>
