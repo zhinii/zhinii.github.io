@@ -1,0 +1,115 @@
+
+<html>
+
+<head>
+    <style>
+    #pictures {
+        position: absolute;
+        left: 420px;
+        top: 10px;
+    }
+    </style>
+</head>
+
+<body>
+    <canvas id='artboard' width='400' height='400' style='border: 2px solid red;'></canvas>
+    <br>
+    Click on images to place in canvas and draw on.
+    <p>
+    <div id='pictures'>
+    <img src = 'larry.jpg' id='larry' ></img>
+    <img src = 'arthur.jpg' id='arthur'></img>
+
+    <br>
+    <img src = 'mike.jpg' id='mike'></img>
+        <img src = 'alain.jpg' id='alain'></img>
+    <br>
+    <img src = 'mine.jpg' id='mine'></img>
+    <img src = 'jazahn.jpg' id='jazahn'></img>
+</div>
+
+
+
+
+        <script>
+        var canvas = document.getElementById('artboard');
+        //if there is questions as to the legitimacy of this, contact Alec Resnic
+        //create drawing elements in canvas i.e. line color, width
+        var ctx = canvas.getContext('2d');
+            ctx.fillStyle = "#000000";
+            ctx.lineWidth = 2;
+         // var for mouse down or up
+        var isMousedown = false;
+        //empty var for point location
+        var lastPoint = {
+            x: null,
+            y: null
+        };
+        //create eventlistener for mousdown and tracks the coordinates of this event
+        canvas.addEventListener('mousedown', function(event) {
+            isMousedown = true;
+            lastPoint.x = event.x;
+            lastPoint.y = event.y;
+        });
+        //event listener for mouse up
+        canvas.addEventListener('mouseup', function() {
+            isMousedown = false;
+        });
+        //event listener for mouse move and drawing on the move
+        canvas.addEventListener('mousemove', function(event) {
+            //if mousdown is true
+            if (isMousedown) {
+                console.log(event.x, event.y);
+                //use those coordinate to draw a line
+                ctx.beginPath();
+                ctx.moveTo(lastPoint.x, lastPoint.y);
+                ctx.lineTo(event.x, event.y);
+                ctx.closePath();
+                ctx.stroke();
+                //create and place coordinate of each 'stroke'
+                lastPoint.x = event.x;
+                lastPoint.y = event.y;
+            }
+        });
+
+        // create array of names of the ids for each image
+        // var photos = [
+        //             'larry', 
+        //                 'arthur',
+        //                  'alain', 
+        //                  'mike', 
+        //                  'mine', 
+        //                  'jazahn'];
+
+        //add event listener to the images
+        // pictures.addEventListener('click', drawImage, true);
+
+        //function that will iterate through the array and call the id and display the id clicked on canvas
+        // function drawImage (){
+        //     for (var i = 0; i<= photos.length; i++){
+        //         console.log(photos[i]);
+        //         var addPhoto = document.getElementById(photos[i]);
+        //             ctx.drawImage(addPhoto, 50, 50);
+        //         }
+        //     }
+//https://www.kirupa.com/html5/handling_events_for_many_elements.htm
+
+var photosToShow = document.querySelector('#pictures');
+
+photosToShow.addEventListener('click', photoClicked, false);
+
+function photoClicked(e){
+    if( e.target !== e.currentTarget){
+        var pClicked = e.target.id;
+         ctx.drawImage(pClicked, 50, 50);
+    }
+    e.stopPropagation();
+}
+
+
+
+        </script>
+
+</body>
+
+</html>
