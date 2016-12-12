@@ -7,7 +7,12 @@
         position: absolute;
         left: 420px;
         top: 10px;
+        cursor: pointer;
     }
+    #artboard{
+        cursor: crosshair;
+    }
+
     </style>
 </head>
 
@@ -32,8 +37,9 @@
 
 
         <script>
+       //assign canvas to var
         var canvas = document.getElementById('artboard');
-        //if there is questions as to the legitimacy of this, contact Alec Resnic
+       
         //create drawing elements in canvas i.e. line color, width
         var ctx = canvas.getContext('2d');
             ctx.fillStyle = "#000000";
@@ -90,7 +96,10 @@ function photoClicked(e){
         var imageDraw = document.getElementById(pClicked);
         console.log(pClicked);
         //draw picture clicked to canvas
-         ctx.drawImage(imageDraw, 50, 50);
+        var width = 300;
+        var height = 300;
+         ctx.drawImage(imageDraw, 50, 50, width, height);
+         ctx.strokeStyle = '#ff0000';
     }
     e.stopPropagation();
 }
