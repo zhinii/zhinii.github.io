@@ -1,4 +1,3 @@
-
 <html>
 
 <head>
@@ -9,105 +8,116 @@
         top: 10px;
         cursor: pointer;
     }
-    #artboard{
+    
+    #artboard {
         cursor: crosshair;
     }
-
     </style>
 </head>
 
 <body>
     <canvas id='artboard' width='400' height='400' style='border: 2px solid red;'></canvas>
-    <br>
-    Click on images to place in canvas and draw on.
+    <br> Click on images to place in canvas and draw on.
     <p>
-    <div id='pictures'>
-    <img id='larry' src = 'larry.jpg'  ></img>
-    <img  id='arthur' src = 'arthur.jpg' ></img>
+        Select Color to Draw with.
+        <p>
+            <span id='colorChange'>
+            <button  type='button' id='red' data-color='ff0000'>Red</button>
+            <button   type='button' id='blue' data-color='0000ff'>Blue</button>
+            <button  type='button' id='green' data-color='00ff00'>Green</button>
+            <button  type='button' id='black' data-color='000000'>Black</button>
+            </span>
+            <p>
+                <div id='pictures'>
+                    <img id='larry' src='larry.jpg'></img>
+                    <img id='arthur' src='arthur.jpg'></img>
+                    <br>
+                    <img id='mike' src='mike.jpg'></img>
+                    <img id='alain' src='alain.jpg'></img>
+                    <br>
+                    <img id='mine' src='mine.jpg'></img>
+                    <img id='jazahn' src='jazahn.jpg'></img>
+                </div>
+                <script>
+                //assign canvas to var
+                var canvas = document.getElementById('artboard');
 
-    <br>
-    <img id='mike' src = 'mike.jpg' ></img>
-        <img id='alain' src = 'alain.jpg' ></img>
-    <br>
-    <img id='mine' src = 'mine.jpg' ></img>
-    <img id='jazahn' src = 'jazahn.jpg' ></img>
-</div>
-
-
-
-
-        <script>
-       //assign canvas to var
-        var canvas = document.getElementById('artboard');
-       
-        //create drawing elements in canvas i.e. line color, width
-        var ctx = canvas.getContext('2d');
-            ctx.fillStyle = "#000000";
-            ctx.lineWidth = 2;
-         // var for mouse down or up
-        var isMousedown = false;
-        //empty var for point location
-        var lastPoint = {
-            x: null,
-            y: null
-        };
-        //create eventlistener for mousdown and tracks the coordinates of this event
-        canvas.addEventListener('mousedown', function(event) {
-            isMousedown = true;
-            lastPoint.x = event.x;
-            lastPoint.y = event.y;
-        });
-        //event listener for mouse up
-        canvas.addEventListener('mouseup', function() {
-            isMousedown = false;
-        });
-        //event listener for mouse move and drawing on the move
-        canvas.addEventListener('mousemove', function(event) {
-            //if mousdown is true
-            if (isMousedown) {
-                console.log(event.x, event.y);
-                //use those coordinate to draw a line
-                ctx.beginPath();
-                ctx.moveTo(lastPoint.x, lastPoint.y);
-                ctx.lineTo(event.x, event.y);
-                ctx.closePath();
-                ctx.stroke();
-                //create and place coordinate of each 'stroke'
-                lastPoint.x = event.x;
-                lastPoint.y = event.y;
-            }
-        });
-
-  
-
-//https://www.kirupa.com/html5/handling_events_for_many_elements.htm - used as guide for below code
-
-//add event listener to the #pictures div
-var photosToShow = document.querySelector('#pictures');
-
-photosToShow.addEventListener('click', photoClicked, false);
-// function to run when mouseclick occurs on images
-function photoClicked(e){
-    //check whhich image was clicked
-    if( e.target !== e.currentTarget){
-        //put the id of image clicked to a var
-        var pClicked = e.target.id;
-        //get the id of image clicked
-        var imageDraw = document.getElementById(pClicked);
-        console.log(pClicked);
-        //draw picture clicked to canvas
-        var width = 300;
-        var height = 300;
-         ctx.drawImage(imageDraw, 50, 50, width, height);
-         ctx.strokeStyle = '#ff0000';
-    }
-    e.stopPropagation();
-}
+                //create drawing elements in canvas i.e. line color, width
+                var ctx = canvas.getContext('2d');
+                ctx.fillStyle = "#000000";
+                ctx.lineWidth = 2;
+                // var for mouse down or up
+                var isMousedown = false;
+                //empty var for point location
+                var lastPoint = {
+                    x: null,
+                    y: null
+                };
+                //create eventlistener for mousdown and tracks the coordinates of this event
+                canvas.addEventListener('mousedown', function(event) {
+                    isMousedown = true;
+                    lastPoint.x = event.x;
+                    lastPoint.y = event.y;
+                });
+                //event listener for mouse up
+                canvas.addEventListener('mouseup', function() {
+                    isMousedown = false;
+                });
+                //event listener for mouse move and drawing on the move
+                canvas.addEventListener('mousemove', function(event) {
+                    //if mousdown is true
+                    if (isMousedown) {
+                        console.log(event.x, event.y);
+                        //use those coordinate to draw a line
+                        ctx.beginPath();
+                        ctx.moveTo(lastPoint.x, lastPoint.y);
+                        ctx.lineTo(event.x, event.y);
+                        ctx.closePath();
+                        ctx.stroke();
+                        //create and place coordinate of each 'stroke'
+                        lastPoint.x = event.x;
+                        lastPoint.y = event.y;
+                    }
+                });
 
 
 
-        </script>
+                //https://www.kirupa.com/html5/handling_events_for_many_elements.htm - used as guide for below code
 
+                //add event listener to the #pictures div
+                var photosToShow = document.querySelector('#pictures');
+
+                photosToShow.addEventListener('click', photoClicked, false);
+                // function to run when mouseclick occurs on images
+                function photoClicked(e) {
+                    //check whhich image was clicked
+                    if (e.target !== e.currentTarget) {
+                        //put the id of image clicked to a var
+                        var pClicked = e.target.id;
+                        //get the id of image clicked
+                        var imageDraw = document.getElementById(pClicked);
+                        console.log(pClicked);
+                        //clear and draw picture clicked to canvas
+                        var width = 300;
+                        var height = 300;
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        ctx.drawImage(imageDraw, 50, 50, width, height);
+
+                    }
+                    e.stopPropagation();
+                }
+
+                colorChange.addEventListener('click', changeStroke, false);
+
+                function changeStroke(c) {
+                    if (c.target !== c.currentTarget) {
+                        var colorClicked = c.target.getAttribute('data-color');
+                        var newColor = parseInt(colorClicked, 16);
+                        console.log(newColor);
+                        ctx.fillStyle = newColor;
+                    }
+                }
+                </script>
 </body>
 
 </html>
