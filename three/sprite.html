@@ -1,57 +1,197 @@
-<body></body>
-   <script src="js/three.min.js"></script>
+<html>
+
+<head>
+    <title>template</title>
+</head>
+
+<body>
+    <script src="js/three.min.js"></script>
     <script src="js/OrbitControls.js"></script>
-<!--     <script src="http://gamingJS.com/ChromeFixes.js"></script>
- --><script src="http://mrdoob.github.com/three.js/examples/fonts/helvetiker_regular.typeface.js"></script>
-<script>
-  // This is where stuff in our game will happen:
-  var scene = new THREE.Scene();
+    <script src="js/Sprite.js"></script>
+    <script>
+    var scene = new THREE.Scene();
+    var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 500);
+    var renderer = new THREE.WebGLRenderer({
+        antialias: true
+    });
 
-  // This is what sees the stuff:
-  var aspect_ratio = window.innerWidth / window.innerHeight;
-  var camera = new THREE.PerspectiveCamera(75, aspect_ratio, 1, 10000);
-  camera.position.z = 500;
-  scene.add(camera);
 
-  // This will draw what the camera sees onto the screen:
-  var renderer = new THREE.WebGLRenderer();
-  // var renderer = new THREE.CanvasRenderer();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  document.body.appendChild(renderer.domElement);
+    var sceneHeight = 300;
+    var sceneWidth = 400;
+    renderer.setSize(sceneWidth, sceneHeight);
+    document.body.appendChild(renderer.domElement);
+    renderer.domElement.id = "context"
 
-  var canvas = document.createElement('canvas');
-  var size = 250;
-  canvas.width = size;
-  canvas.height = size;
-  var context = canvas.getContext('2d');
-  context.textAlign = 'center';
-  context.font = '24px Arial';
-  context.fillText("Game Over", size/2, size/2);
+    scene.add(new THREE.HemisphereLight(0xaaaaaa, 0x444444));
+    var light = new THREE.DirectionalLight(0xffffff, 0.5);
+    light.position.set(1, 1, 1);
+    scene.add(light);
+    /////everything above this is needed for basic scene. includes lights, camera, setting scene size
 
-  var texture = new THREE.Texture(canvas);
-  texture.needsUpdate = true;
-  var sprite = new THREE.Sprite({
-    map: texture,
-    transparent: true,
-    useScreenCoordinates: false
-  });
-  scene.add(sprite);  
+    ///everything below is object in the scene, these can be changed
 
-  sprite.position.set(0,100,0);
-  
-  var wrapper = new THREE.MeshNormalMaterial();
-  var shape = new THREE.SphereGeometry(100);
-  var center_marker = new THREE.Mesh(shape, wrapper);
-  scene.add(center_marker);
+    var geometry = new THREE.BoxGeometry(2, 2, 2);
+    var material = new THREE.MeshStandardMaterial({
+        color: 0xffffff,
+        roughness: 0.5,
+        metalness: 0,
+        shading: THREE.FlatShading
 
-  // var shape = new THREE.TextGeometry("Game Over", {font: 'helvetiker'});
-  var wrapper = new THREE.MeshNormalMaterial({color: 0x00ff00});
-  // var words = new THREE.Mesh(shape, wrapper);
-  //scene.add(words);
-  
-  // Now, show what the camera sees on the screen:
-  renderer.render(scene, camera);
-  
-      controls = new THREE.OrbitControls(camera, renderer.domElement);
+    });
+
+
+    var geometry2 = new THREE.BoxGeometry(5, 1, 5);
+    var material2 = new THREE.MeshStandardMaterial({
+        color: 0x000000,
+        roughness: 0.5,
+        metalness: 0,
+        shading: THREE.FlatShading
+    });
+
+
+    var ground = new THREE.BoxGeometry(50, .5, 50);
+    var groundmat = new THREE.MeshLambertMaterial({
+        color: 0x00ff00
+    });
+
+    var groundplane = new THREE.Mesh(ground, groundmat);
+    scene.add(groundplane);
+    groundplane.position.y = -1;
+
+
+    var cube2 = new THREE.Mesh(geometry2, material2);
+    scene.add(cube2);
+    cube2.position.z = 5;
+    cube2.position.y = -.5;
+
+    cube2.visible = false;
+
+
+
+    var cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
+    cube.position.z = -5;
+    camera.position.x = 10;
+    camera.position.y = 10;
+
+    //this is a sprite object
+
+    //  var canvas = document.createElement('canvas');
+    // canvas.width = 400;///create canvas same size of scene
+    //  canvas.height = 300;
+    //      var context = canvas.getContext('2d');
+
+    //  context.font = '48px Arial';
+    //  context.fillText('GAME OVER' ,0 ,0);
+    //  // g.fillStyle = 'whi
+    //  var text = new THREE.Texture(context);
+    //  var textmaterial = new THREE.SpriteMaterial({map:text
+    //  }
+    //  );
+    //  var spritetext = new THREE.Sprite(textmaterial);
+    //  scene.add(spritetext);
+
+
+    var map = new THREE.TextureLoader().load("dog.jpg");
+    var material = new THREE.SpriteMaterial({
+        map: map,
+        color: 0xffffff,
+        fog: true
+    });
+    var sprite = new THREE.Sprite(material);
+    scene.add(sprite);
+
+    ///end objects in scene
+
+    ///below is for raycasting
+
+    var baseColor = 0xffffff;
+    var foundColor = 0x12C0E3;
+    var intersectColor = 0x00D66B;
+    var raycaster = new THREE.Raycaster();
+    var mouse = new THREE.Vector2();
+    var intersected;
+
+
+    function onDocumentClick(event) { // This is a function to run when we click; we get information about the event through the `event` parameter
+
+
+        // Set the x and y coordinates of our mouse vector to our pointer position, scaling for the width and height of our renderer (400 and 300, respectively)
+        var offsetX = renderer.domElement.offsetLeft * (2 / sceneWidth);
+        var offsetY = renderer.domElement.offsetTop * (2 / sceneHeight);
+        mouse.x = (event.clientX / sceneWidth) * 2 - 1 - offsetX;
+        mouse.y = -(event.clientY / sceneHeight) * 2 + 1 + offsetY;
+
+        // Tell our raycaster to cast from our mouse
+        raycaster.setFromCamera(mouse, camera);
+        // Construct the array of objects we want to check intersection with
+        var objects = [cube]; // objects to display when clicked
+        // Tell our raycaster to detect the intersection with that array of objects
+        var intersections = raycaster.intersectObjects(objects);;
+        if (intersections.length > 0) { // If we find any intersections
+            // Do stuff
+            console.log("Clicked");
+            cube2.visible = true;
+            // document.querySelector('cube2').style.visibility = 'visible';
+        }
+
+        var objects2 = [cube2]; // objects to display when clicked
+        // Tell our raycaster to detect the intersection with that array of objects
+        var intersections = raycaster.intersectObjects(objects2);;
+        if (intersections.length > 0) { // If we find any intersections
+            // Do stuff
+            console.log("Clicked");
+            document.querySelector('#toShow').style.visibility = 'visible';
+        }
+    }; ///end of raycasting
+
+
+
+    ///below is what happens as a result of raycasting, changing object color, knowing where the mouse is on clicks and intersecting objects
+    // And then actually attach our onDocumentClick function as an event handler to when the canvas hears a `click`
+    renderer.domElement.addEventListener('click', onDocumentClick, false);
+
+    function onDocumentMouseMove(event) {
+        event.preventDefault();
+        var offsetX = renderer.domElement.offsetLeft * (2 / sceneWidth);
+        var offsetY = renderer.domElement.offsetTop * (2 / sceneHeight);
+        mouse.x = (event.clientX / sceneWidth) * 2 - 1 - offsetX;
+        mouse.y = -(event.clientY / sceneHeight) * 2 + 1 + offsetY;
+        raycaster.setFromCamera(mouse, camera);
+        var numObjects;
+        // var numFaces = 0 ;
+        var intersections;
+        var objects = [cube, cube2]; //objects to change color from ray cast
+        var intersections = raycaster.intersectObjects(objects);
+        numObjects = objects.length;
+        // numFaces = totalFaces;
+        if (intersections.length > 0) {
+            if (intersected != intersections[0].object) {
+                if (intersected) intersected.material.color.setHex(baseColor);
+                intersected = intersections[0].object;
+                intersected.material.color.setHex(intersectColor);
+            }
+            document.body.style.cursor = 'pointer';
+        } else if (intersected) {
+            intersected.material.color.setHex(baseColor);
+            intersected = null;
+            document.body.style.cursor = 'auto';
+        }
+    }
+    renderer.domElement.addEventListener('mousemove', onDocumentMouseMove, false);
+
+    var render = function() {
+        requestAnimationFrame(render);
+        renderer.render(scene, camera);
+        controls.update();
+    };
+
+
+    ///scene controls for mouse
+    controls = new THREE.OrbitControls(camera, renderer.domElement);
     render();
-</script>
+    //end of controls
+    </script>
+</body>
+
+</html>
