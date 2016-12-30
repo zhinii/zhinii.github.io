@@ -124,25 +124,7 @@
 
         // Tell our raycaster to cast from our mouse
         raycaster.setFromCamera(mouse, camera);
-        // Construct the array of objects we want to check intersection with
-        var objects = [cube]; // objects to display when clicked
-        // Tell our raycaster to detect the intersection with that array of objects
-        var intersections = raycaster.intersectObjects(objects);;
-        if (intersections.length > 0) { // If we find any intersections
-            // Do stuff
-            console.log("Clicked");
-            cube2.visible = true;
-            // document.querySelector('cube2').style.visibility = 'visible';
-        }
-
-        var objects2 = [cube2]; // objects to display when clicked
-        // Tell our raycaster to detect the intersection with that array of objects
-        var intersections = raycaster.intersectObjects(objects2);;
-        if (intersections.length > 0) { // If we find any intersections
-            // Do stuff
-            console.log("Clicked");
-            document.querySelector('#toShow').style.visibility = 'visible';
-        }
+       
     }; ///end of raycasting
 
 
