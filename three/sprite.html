@@ -93,8 +93,8 @@
 
 
     var map = new THREE.TextureLoader().load("dog.jpg");
-    map.width = 50;
-    map.height = 50;
+    map.scale.x = 50;
+    map.scale.y = 50;
     var material = new THREE.SpriteMaterial({
         map: map,
         color: 0xffffff,
