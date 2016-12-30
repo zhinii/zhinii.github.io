@@ -30,23 +30,7 @@
 
     ///everything below is object in the scene, these can be changed
 
-    var geometry = new THREE.BoxGeometry(2, 2, 2);
-    var material = new THREE.MeshStandardMaterial({
-        color: 0xffffff,
-        roughness: 0.5,
-        metalness: 0,
-        shading: THREE.FlatShading
-
-    });
-
-
-    var geometry2 = new THREE.BoxGeometry(5, 1, 5);
-    var material2 = new THREE.MeshStandardMaterial({
-        color: 0x000000,
-        roughness: 0.5,
-        metalness: 0,
-        shading: THREE.FlatShading
-    });
+   
 
 
     var ground = new THREE.BoxGeometry(50, .5, 50);
@@ -59,20 +43,6 @@
     groundplane.position.y = -1;
 
 
-    var cube2 = new THREE.Mesh(geometry2, material2);
-    scene.add(cube2);
-    cube2.position.z = 5;
-    cube2.position.y = -.5;
-
-    cube2.visible = false;
-
-
-
-    var cube = new THREE.Mesh(geometry, material);
-    scene.add(cube);
-    cube.position.z = -5;
-    camera.position.x = 10;
-    camera.position.y = 10;
 
     //this is a sprite object
 
