@@ -10,6 +10,7 @@ button.accordion {
     outline: none;
     transition: 0.4s;
     border-radius: 12px;
+    position: absolute;
 }
 
 
@@ -22,10 +23,12 @@ button.accordion.active, button.accordion:hover {
 div.panel {
     padding: 0 18px;
     display: none;
+    position: absolute;
 }
 
 li{
    list-style-type: none;
     margin: 5px;
+    position: absolute;
 }
 
