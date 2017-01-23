@@ -3,8 +3,9 @@
     var renderer = new THREE.WebGLRenderer({
         antialias: true
     });
- 
-         
+  camera.position.z = 20;
+      camera.position.y = 70;
+  	    camera.position.x = 0;
     renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
     renderer.domElement.id = "context"
