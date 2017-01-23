@@ -30,6 +30,6 @@ var scene = new THREE.Scene();
 			};
 
 			 controls = new THREE.OrbitControls(camera, renderer.domElement);
-	   controls.target.set( 0,55,0 );
+	   controls.target.set( 0,20,0 );
 
 			render();
