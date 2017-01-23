@@ -35,6 +35,6 @@
     };
     ///scene controls for mouse
     controls = new THREE.OrbitControls(camera, renderer.domElement);
-	    controls.target.set( 0,100,0 );
+	    controls.target.set( 0,30,0 );
     render();
     //end of controls
