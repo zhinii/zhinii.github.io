@@ -7,16 +7,18 @@ var scene = new THREE.Scene();
 			document.body.appendChild( renderer.domElement );
 
 
-			var lasermodel = new THREE.MTLLodaer();
-			lasermodel.load('models/pls.mtl', function(material)){
+			
+			var lasermodel = new THREE.MTLLoader();
+			lasermodel.load('models/pls.mtl', function(material){
 				material.preload();
 				var loader = new THREE.OBJLoader();
 				loader.setMaterials(material);
 				loader.load('models/pls.obj', function(object){
 					scene.add(object);
 
-				})
-			}
+				});
+			});
+
 
 			
 			camera.position.z = 15;
