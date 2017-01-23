@@ -5,7 +5,7 @@
     });
  
          
-    renderer.setSize(sceneWidth, sceneHeight);
+ renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
     renderer.domElement.id = "context"
     scene.add(new THREE.HemisphereLight(0xaaaaaa, 0x444444));
