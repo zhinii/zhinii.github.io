@@ -8,7 +8,7 @@ var scene = new THREE.Scene();
 
 
 			var lasermodel = new THREE.MTLLodaer();
-			lasermondel.load('models/pls.mtl', function(material)){
+			lasermodel.load('models/pls.mtl', function(material)){
 				material.preload();
 				var loader = new THREE.OBJLoader();
 				loader.setMaterials(material);
