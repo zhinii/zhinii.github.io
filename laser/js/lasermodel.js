@@ -3,9 +3,9 @@
     var renderer = new THREE.WebGLRenderer({
         antialias: true
     });
- var controls;
+ 
          
- renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
     renderer.domElement.id = "context"
     scene.add(new THREE.HemisphereLight(0xaaaaaa, 0x444444));
@@ -35,6 +35,5 @@
     ///scene controls for mouse
     controls = new THREE.OrbitControls(camera, renderer.domElement);
 	    controls.target.set( 0,100,0 );
-
     render();
     //end of controls
