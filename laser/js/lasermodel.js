@@ -6,7 +6,10 @@ var scene = new THREE.Scene();
 			renderer.setSize( window.innerWidth, window.innerHeight );
 			document.body.appendChild( renderer.domElement );
 
-
+			    scene.add(new THREE.HemisphereLight(0xaaaaaa, 0x444444));
+    var light = new THREE.DirectionalLight(0xffffff, 0.5);
+    light.position.set(1, 1, 1);
+    scene.add(light);
 			
 			var lasermodel = new THREE.MTLLoader();
 			lasermodel.load('models/pls.mtl', function(material){
