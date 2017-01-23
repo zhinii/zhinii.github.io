@@ -3,7 +3,7 @@
     var renderer = new THREE.WebGLRenderer({
         antialias: true
     });
- 
+ var controls;
          
  renderer.setSize(window.innerWidth, window.innerHeight);
     document.body.appendChild(renderer.domElement);
@@ -35,5 +35,6 @@
     ///scene controls for mouse
     controls = new THREE.OrbitControls(camera, renderer.domElement);
 	    controls.target.set( 0,100,0 );
+controls.addEventListener( 'change', render );
     render();
     //end of controls
