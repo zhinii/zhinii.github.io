@@ -20,8 +20,8 @@
 				var loader = new THREE.OBJLoader();
 				loader.setMaterials(material);
 				
-				 lasermodel.opacity = 0.5;
-        	 		 lasermodel.transparent = true;
+				 loader.opacity = 0.5;
+        	 		 loader.transparent = true;
 				
 				loader.load('models/pls.obj', function(object){
 					scene.add(object);
