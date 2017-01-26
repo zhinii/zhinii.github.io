@@ -21,11 +21,17 @@
 				loader.setMaterials(material);
 				loader.load('models/pls.obj', function(object){
 					scene.add(object);
-				object.opacity = .5;  ///opacity change
+				
 				});
 			});
-			
 
+			//opacity change below
+		lasermodel.traverse( function( node ) {
+    if( node.material ) {
+        node.material.opacity = 0.5;
+        node.material.transparent = true;
+    }
+});
 			
 			  var render = function() {
 	    
