@@ -24,7 +24,7 @@
 
 				});
 			});
-
+			lasermode.opacity = .5;
 
 			
 			  var render = function() {
