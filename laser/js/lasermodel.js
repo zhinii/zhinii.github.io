@@ -15,8 +15,7 @@
     scene.add(light);
 			
 			var lasermodel = new THREE.MTLLoader();
-			lasermodel.opacity = 0.5;
-        	 		 lasermodel.transparent = true;
+			
 			lasermodel.load('models/pls.mtl', function(material){
 				material.preload();
 				var loader = new THREE.OBJLoader();
@@ -25,6 +24,9 @@
 				
 				loader.load('models/pls.obj', function(object){
 					scene.add(object);
+					lasermodel.opacity = 0.5;
+        	 		 lasermodel.transparent = true;
+					
 				
 				});
 			});
