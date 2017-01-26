@@ -22,13 +22,14 @@
 				loader.setMaterials(material);
 				loader.load('models/pls.obj', function(object){
 					scene.add(object);
-				});
-				loader.traverse( function( node ) {
+					object.traverse( function( node ) {
    					 if( node.material ) {
        					 node.material.opacity = 0.5;
        					 node.material.transparent = true;
     					}
 					} );
+				});
+				
 			});
 
 	
