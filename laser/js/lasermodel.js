@@ -19,6 +19,14 @@
 				material.preload();
 				var loader = new THREE.OBJLoader();
 				loader.setMaterials(material);
+				
+				loader.traverse( function( node ) {
+    		if( node.material ) {
+       		 node.material.opacity = 0.5;
+        	 node.material.transparent = true;
+    			}
+		});
+				
 				loader.load('models/pls.obj', function(object){
 					scene.add(object);
 				
@@ -26,12 +34,7 @@
 			});
 
 			//opacity change below
-		lasermodel.traverse( function( node ) {
-    		if( node.material ) {
-       		 node.material.opacity = 0.5;
-        	 node.material.transparent = true;
-    			}
-		});
+		
 			
 			  var render = function() {
 	    
