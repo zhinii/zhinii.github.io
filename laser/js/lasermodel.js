@@ -27,11 +27,11 @@
 
 			//opacity change below
 		lasermodel.traverse( function( node ) {
-    if( node.material ) {
-        node.material.opacity = 0.5;
-        node.material.transparent = true;
-    }
-});
+    		if( node.material ) {
+       		 node.material.opacity = 0.5;
+        	 node.material.transparent = true;
+    			}
+		});
 			
 			  var render = function() {
 	    
