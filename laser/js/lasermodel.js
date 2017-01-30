@@ -6,7 +6,7 @@
   camera.position.z = 20;
       camera.position.y = 70;
   	    camera.position.x = 0;
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(window.innerWidth-10, window.innerHeight-10);
     document.body.appendChild(renderer.domElement);
     renderer.domElement.id = "context"
     scene.add(new THREE.HemisphereLight(0xaaaaaa, 0x444444));
