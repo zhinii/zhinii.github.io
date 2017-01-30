@@ -4,11 +4,11 @@ var menuClick = false;
 var menuSelect = document.getElementsByClassName("accordion");
 
 
-menuSelect.addEventListener('click', function(){
+for (var i = 0; i < menuSelect.length; i++){
+menuSelect[i].addEventListener('click', function(){
 	menuClick=true;
 });
-
-
+}
 
 var scene = new THREE.Scene();
     var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 500);
