@@ -1,4 +1,15 @@
- var scene = new THREE.Scene();
+ 
+var menuClick = false;
+
+var menuSelect= document.getElementByClassName('accordion');
+
+menuSelect.addEventListener('click', function(){
+	menuClick=true;
+});
+
+
+
+var scene = new THREE.Scene();
     var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 500);
     var renderer = new THREE.WebGLRenderer({
         antialias: true
@@ -23,10 +34,12 @@
 				loader.load('models/plsClear.obj', function(object){
 					scene.add(object);
 					object.traverse( function( node ) {
+   					 
+   					 if (menuClick){
    					 if( node.material ) {
        					 node.material.opacity = 0.5;
        					 node.material.transparent = true;
-    					}
+    					}}
 					} );
 				});
 				
