@@ -16,7 +16,7 @@
 			
 			var lasermodelClear = new THREE.MTLLoader();
 			
-			lasermodel.load('models/plsClear.mtl', function(material){
+			lasermodelClear.load('models/plsClear.mtl', function(material){
 				material.preload();
 				var loader = new THREE.OBJLoader();
 				loader.setMaterials(material);
@@ -34,7 +34,7 @@
 
 		var lasermodelSolid = new THREE.MTLLoader();
 			
-			lasermodel.load('models/plsSolid.mtl', function(material){
+			lasermodelSolid.load('models/plsSolid.mtl', function(material){
 				material.preload();
 				var loader = new THREE.OBJLoader();
 				loader.setMaterials(material);
