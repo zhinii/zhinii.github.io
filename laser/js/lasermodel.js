@@ -31,17 +31,13 @@ var scene = new THREE.Scene();
 				loader.load('models/plsClear.obj', function(object){
 					scene.add(object);
 
-					for (var i = 0; i < menuSelect.length; i++){
-menuSelect[i].addEventListener('click', function(){
-	menuClick=true;
-	console.log('click);
-});
-if (menuClick){object.traverse( function( node ) {  					 
+				object.traverse( function( node ) {  					 
    					 if( node.material ) {
        					 node.material.opacity = 0.5;
        					 node.material.transparent = true;
     					}
 					} );
+
 }
 }
 					});
