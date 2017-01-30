@@ -1,7 +1,8 @@
  
 var menuClick = false;
 
-var menuSelect= document.getElementByClassName('accordion');
+var menuSelect = document.getElementsByClassName("accordion");
+
 
 menuSelect.addEventListener('click', function(){
 	menuClick=true;
