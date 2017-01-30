@@ -14,13 +14,13 @@
     light.position.set(1, 1, 1);
     scene.add(light);
 			
-			var lasermodel = new THREE.MTLLoader();
+			var lasermodelClear = new THREE.MTLLoader();
 			
-			lasermodel.load('models/pls.mtl', function(material){
+			lasermodel.load('models/plsClear.mtl', function(material){
 				material.preload();
 				var loader = new THREE.OBJLoader();
 				loader.setMaterials(material);
-				loader.load('models/pls.obj', function(object){
+				loader.load('models/plsClear.obj', function(object){
 					scene.add(object);
 					object.traverse( function( node ) {
    					 if( node.material ) {
@@ -31,6 +31,20 @@
 				});
 				
 			});
+
+		var lasermodelSolid = new THREE.MTLLoader();
+			
+			lasermodel.load('models/plsSolid.mtl', function(material){
+				material.preload();
+				var loader = new THREE.OBJLoader();
+				loader.setMaterials(material);
+				loader.load('models/plsSolid.obj', function(object){
+					scene.add(object);
+				
+				});
+				
+			});
+
 
 	
 		
