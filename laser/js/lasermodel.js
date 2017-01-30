@@ -1,14 +1,10 @@
- 
+
 var menuClick = false;
 
 var menuSelect = document.getElementsByClassName("accordion");
 
 
-for (var i = 0; i < menuSelect.length; i++){
-menuSelect[i].addEventListener('click', function(){
-	menuClick=true;
-});
-}
+
 
 var scene = new THREE.Scene();
     var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 500);
@@ -34,15 +30,20 @@ var scene = new THREE.Scene();
 				loader.setMaterials(material);
 				loader.load('models/plsClear.obj', function(object){
 					scene.add(object);
-					object.traverse( function( node ) {
-   					 
-   					 if (menuClick){
+
+					for (var i = 0; i < menuSelect.length; i++){
+menuSelect[i].addEventListener('click', function(){
+	menuClick=true;
+});
+if (menuClick){object.traverse( function( node ) {  					 
    					 if( node.material ) {
        					 node.material.opacity = 0.5;
        					 node.material.transparent = true;
-    					}}
+    					}
 					} );
-				});
+}
+}
+					});
 				
 			});
 
