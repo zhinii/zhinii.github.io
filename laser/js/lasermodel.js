@@ -24,23 +24,24 @@ var scene = new THREE.Scene();
 			
 			var lasermodelClear = new THREE.MTLLoader();
 			
-			lasermodelClear.load('models/plsClear.mtl', function(material){
+		lasermodelClear.load('models/plsClear.mtl', function(material){
 				material.preload();
 				var loader = new THREE.OBJLoader();
 				loader.setMaterials(material);
 				loader.load('models/plsClear.obj', function(object){
 					scene.add(object);
-
-				object.traverse( function( node ) {  					 
+					object.traverse( function( node ) {
+   					 
+   					 if (menuClick){
    					 if( node.material ) {
        					 node.material.opacity = 0.5;
        					 node.material.transparent = true;
-    					}
+    					}}
 					} );
-
-					});
+				});
 				
 			});
+
 
 		var lasermodelSolid = new THREE.MTLLoader();
 			
