@@ -34,8 +34,9 @@ var scene = new THREE.Scene();
 					for (var i = 0; i < menuSelect.length; i++){
 menuSelect[i].addEventListener('click', function(){
 	menuClick=true;
+	console.log('click);
 });
-if (menuClick = true){object.traverse( function( node ) {  					 
+if (menuClick){object.traverse( function( node ) {  					 
    					 if( node.material ) {
        					 node.material.opacity = 0.5;
        					 node.material.transparent = true;
