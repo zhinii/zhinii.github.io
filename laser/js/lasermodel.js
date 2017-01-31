@@ -39,19 +39,18 @@ var scene = new THREE.Scene();
 				loader.setMaterials(material);
 				loader.load('models/plsClear.obj', function(object){
 					scene.add(object);
-					for(var i = 0; i <clickToHide.length; i++){
-					clickToHide[i].addEventListener('click', 
-					object.traverse( function( node ) {  
+for(var i = 0; i <clickToHide.length; i++){
+			clickToHide[i].addEventListener('click', function(){
+	
+	object.traverse( function( node ) {  
    					 if( node.material ) {
        					 node.material.opacity = 0.5;
        					 node.material.transparent = true;
     					}
 					} );
-								       
-								       );
-					}
 
-					
+});
+}
 					
 					
 					
