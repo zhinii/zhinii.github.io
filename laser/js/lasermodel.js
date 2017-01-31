@@ -1,9 +1,4 @@
 
-var menuClick = false;
-
-var menuSelect = document.getElementsByClassName("accordion");
-
-
 
 
 var scene = new THREE.Scene();
@@ -32,11 +27,11 @@ var scene = new THREE.Scene();
 					scene.add(object);
 					object.traverse( function( node ) {
    					 
-   					 if (menuClick){
+   					 
    					 if( node.material ) {
        					 node.material.opacity = 0.5;
        					 node.material.transparent = true;
-    					}}
+    					}
 					} );
 				});
 				
