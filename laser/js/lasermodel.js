@@ -1,4 +1,4 @@
-var clickToHide = document.getElementsByClassname('accordion');
+var clickToHide = document.getElementsByClassName('accordion');
 clickToHide.addEventListener('click', function(){
 	console.log('hi');
 });
