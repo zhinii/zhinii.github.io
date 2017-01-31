@@ -5,14 +5,14 @@ clickToHide[i].addEventListener('click', function(){
 });
 }
 
-var modelHide = function(){
-	object.traverse( function( node ) {  
-   					 if( node.material ) {
-       					 node.material.opacity = 0.5;
-       					 node.material.transparent = true;
-    					}
-					} );
-}
+
+// 	object.traverse( function( node ) {  
+//    					 if( node.material ) {
+//        					 node.material.opacity = 0.5;
+//        					 node.material.transparent = true;
+//     					}
+// 					} );
+
 
 
 var scene = new THREE.Scene();
@@ -40,7 +40,15 @@ var scene = new THREE.Scene();
 				loader.load('models/plsClear.obj', function(object){
 					scene.add(object);
 					for(var i = 0; i <clickToHide.length; i++){
-					clickToHide[i].addEventListener('click', modelHide);
+					clickToHide[i].addEventListener('click', 
+					object.traverse( function( node ) {  
+   					 if( node.material ) {
+       					 node.material.opacity = 0.5;
+       					 node.material.transparent = true;
+    					}
+					} );
+								       
+								       );
 					}
 
 					
