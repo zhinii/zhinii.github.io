@@ -1,4 +1,7 @@
-
+var clickToHide = document.getElementsByClass('accordion');
+clickToHide.addEventListener('click', function(){
+	console.log('hi');
+});
 
 
 var scene = new THREE.Scene();
