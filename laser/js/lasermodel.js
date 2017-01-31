@@ -1,7 +1,19 @@
 var clickToHide = document.getElementsByClassName('accordion');
-clickToHide.addEventListener('click', function(){
+for(var i = 0; i <clickToHide.length; i++){
+clickToHide[i].addEventListener('click', function(){
 	console.log('hi');
 });
+}
+
+var modelHide = function(){
+	object.traverse( function( node ) {
+   					  
+   					 if( node.material ) {
+       					 node.material.opacity = 0.5;
+       					 node.material.transparent = true;
+    					}
+					} );
+}
 
 
 var scene = new THREE.Scene();
@@ -28,14 +40,7 @@ var scene = new THREE.Scene();
 				loader.setMaterials(material);
 				loader.load('models/plsClear.obj', function(object){
 					scene.add(object);
-					object.traverse( function( node ) {
-   					 
-   					 
-   					 if( node.material ) {
-       					 node.material.opacity = 0.5;
-       					 node.material.transparent = true;
-    					}
-					} );
+					
 				});
 				
 			});
