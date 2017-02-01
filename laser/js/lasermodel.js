@@ -20,6 +20,7 @@ var scene = new THREE.Scene();
     var renderer = new THREE.WebGLRenderer({
         antialias: true
     });
+renderer.setClearColor( 0xCCCCCC );
   camera.position.z = 20;
       camera.position.y = 70;
   	    camera.position.x = 0;
