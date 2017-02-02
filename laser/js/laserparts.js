@@ -51,5 +51,5 @@ zClick.addEventListener('mouseover', zHover);
 
 function zHover(){
 	console.log('ok');
-	Zparts.material.color.setHex(intersectColor);
+	Zparts[0].material.color.setHex(intersectColor);
 }
