@@ -1,4 +1,5 @@
 var intersectColor = 0xff0000;
+	var Zparts = [];
 //zaxis parts
 
 var Zpulley = new THREE.MTLLoader();
@@ -37,12 +38,13 @@ var Zscrew = new THREE.MTLLoader();
 				loader.setMaterials(material);
 				loader.load('models/Zscrew.obj', function(object){
 					scene.add(object);
+					Zparts.push(object);
 					
 			});
 				
 			});
 
-	var Zparts = [];
+
 
 
 
@@ -51,6 +53,6 @@ zClick.addEventListener('mouseover', zHover);
 
 function zHover(){
 	console.log('ok');
-	Zscrew.material.color.setHex(0xff0000);
+	Zparts[0].material.color.setHex(0xff0000);
 }
 
