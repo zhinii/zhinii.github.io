@@ -37,12 +37,12 @@ var Zscrew = new THREE.MTLLoader();
 				loader.setMaterials(material);
 				loader.load('models/Zscrew.obj', function(object){
 					scene.add(object);
-				
+					Zparts.push(object);
 				});
 				
 			});
 
-	var Zparts = [Zscrew, Zpulley, Zbelt];
+	var Zparts = [];
 
 
 
