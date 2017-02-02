@@ -38,4 +38,5 @@ li{
 
 ul li:hover {
     color: red;
+    cursor: pointer;
 }
