@@ -37,7 +37,13 @@ var Zscrew = new THREE.MTLLoader();
 				loader.setMaterials(material);
 				loader.load('models/Zscrew.obj', function(object){
 					scene.add(object);
-					Zparts.push(object);
+					
+					zClick.addEventListener('mouseover', zHover);
+
+function zHover(){
+	console.log('ok');
+	object.material.color.setHex(intersectColor);
+}
 				});
 				
 			});
@@ -47,9 +53,4 @@ var Zscrew = new THREE.MTLLoader();
 
 
 var zClick = document.getElementById('zscrews');
-zClick.addEventListener('mouseover', zHover);
 
-function zHover(){
-	console.log('ok');
-	Zparts[0].material.color.setHex(intersectColor);
-}
