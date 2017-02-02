@@ -1,3 +1,4 @@
+var intersectColor = 0xff0000;
 //zaxis parts
 
 var Zpulley = new THREE.MTLLoader();
@@ -50,4 +51,5 @@ zClick.addEventListener('mouseover', zHover);
 
 function zHover(){
 	console.log('ok');
+	Zscrew.material.color.setHex(intersectColor);
 }
