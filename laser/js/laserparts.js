@@ -48,6 +48,6 @@ var Zscrew = new THREE.MTLLoader();
 var zClick = document.getElementById('zscrews');
 zClick.addEventListener('mouseon', zHover);
 
-function mouseon(){
+function zHover(){
 	console.log('hi');
 }
