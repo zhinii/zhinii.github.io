@@ -8,15 +8,15 @@ var material = new THREE.MeshLambertMaterial({
 var loader = new THREE.STLLoader();
 
 loader.load('./models/zbelt.stl', function(geometry){
-	scene.add(new THREE.Mesh(geometry)):
+	scene.add(new THREE.Mesh(geometry));
 });
 
 loader.load('./models/zmotor.stl', function(geometry){
-	scene.add(new THREE.Mesh(geometry)):
+	scene.add(new THREE.Mesh(geometry));
 });
 
 loader.load('./models/zscrew.stl', function(geometry){
-	scene.add(new THREE.Mesh(geometry)):
+	scene.add(new THREE.Mesh(geometry));
 });
 
 // var zClick = document.getElementById('zscrews');
