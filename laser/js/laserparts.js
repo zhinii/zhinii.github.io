@@ -10,7 +10,7 @@ var loader = new THREE.OBJLoader();
 loader.load('models/Zbelt.obj', function(geometry){
 	geometry.traverse(function(child){
 	geometry.material.color.setHex(0xff0000);
-	}
+	});
 	scene.add(geometry);
 });
 
