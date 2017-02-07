@@ -7,9 +7,9 @@ var material = new THREE.MeshLambertMaterial({
 
 var loader = new THREE.OBJLoader();
 
-// loader.load('./models/Zbelt.obj', function(geometry){
-// 	scene.add(new THREE.Mesh(geometry));
-// });
+loader.load('models/Zbelt.obj', function(geometry){
+	scene.add(geometry);
+});
 
 
 
