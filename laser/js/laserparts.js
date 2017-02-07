@@ -9,8 +9,12 @@ var loader = new THREE.OBJLoader();
 
 loader.material.color.setHex(0xff0000);
 
-loader.load('models/Zbelt.obj', function(geometry){
-	scene.add(geometry);
+loader.load('models/Zbelt.obj', function(object){
+	object.traverse( function ( child ) {
+        if ( child instanceof THREE.Mesh )
+            child.material.color.setHex (0xff0000);
+    });
+	scene.add(object);
 });
 
 
