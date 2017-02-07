@@ -5,19 +5,13 @@ var material = new THREE.MeshLambertMaterial({
 	color: 0xffffff
 });
 
-var loader = new THREE.STLLoader();
+var loader = new THREE.OBJLoader();
 
-loader.load('./models/zbelt.stl', function(geometry){
+loader.load('./models/Zbelt.obj', function(geometry){
 	scene.add(new THREE.Mesh(geometry));
 });
 
-loader.load('./models/zmotor.stl', function(geometry){
-	scene.add(new THREE.Mesh(geometry));
-});
 
-loader.load('./models/zscrew.stl', function(geometry){
-	scene.add(new THREE.Mesh(geometry));
-});
 
 // var zClick = document.getElementById('zscrews');
 // zClick.addEventListener('mouseover', zHover);
