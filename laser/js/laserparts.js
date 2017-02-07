@@ -5,7 +5,7 @@ var material = new THREE.MeshLambertMaterial({
 	color: 0xffffff
 });
 
-var loader = new.THREE.STLLoader();
+var loader = new THREE.STLLoader();
 
 loader.load('./models/zbelt.stl', function(geometry){
 	scene.add(new THREE.Mesh(geometry)):
