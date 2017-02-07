@@ -7,8 +7,6 @@ var red = new THREE.MeshLambertMaterial({
 
 var loader = new THREE.OBJLoader();
 
-loader.material.color.setHex(0xff0000);
-
 loader.load('models/Zbelt.obj', function(object){
 	object.traverse( function ( child ) {
         if ( child instanceof THREE.Mesh )
