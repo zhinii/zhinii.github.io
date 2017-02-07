@@ -1,13 +1,14 @@
 var intersectColor = 0xff0000;
 	var Zparts = [];
 //zaxis parts
-var material = new THREE.MeshLambertMaterial({
-	color: 0xffffff
+var red = new THREE.MeshLambertMaterial({
+	color: 0xff0000
 });
 
 var loader = new THREE.OBJLoader();
 
 loader.load('models/Zbelt.obj', function(geometry){
+	geometry.material = red;
 	scene.add(geometry);
 });
 
