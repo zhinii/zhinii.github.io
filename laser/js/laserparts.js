@@ -5,11 +5,11 @@ var material = new THREE.MeshLambertMaterial({
 	color: 0xffffff
 });
 
-var loader = new THREE.OBJLoader();
+// var loader = new THREE.OBJLoader();
 
-loader.load('./models/Zbelt.obj', function(geometry){
-	scene.add(new THREE.Mesh(geometry));
-});
+// loader.load('./models/Zbelt.obj', function(geometry){
+// 	scene.add(new THREE.Mesh(geometry));
+// });
 
 
 
