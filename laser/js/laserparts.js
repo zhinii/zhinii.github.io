@@ -32,3 +32,4 @@ loader.load('models/Zbelt.obj', function(object){
 		});
 });
 	
+});
