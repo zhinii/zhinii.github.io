@@ -1,7 +1,7 @@
 var baseColor = 0xffffff;
 
 var zClick = document.getElementById('zscrews');
-zClick.addEventListener('mouseover', zHover);
+zClick.addEventListener('mouseover', colorChange);
 	
 var colorChange = function zHover(){
 	console.log('ok');
