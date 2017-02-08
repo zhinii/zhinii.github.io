@@ -20,10 +20,14 @@ loader.load('models/Zbelt.obj', function(object){
         if ( child instanceof THREE.Mesh )
             child.material.color.setHex (baseColor);
     });
-
-
 	scene.add(object);
-	parts.push(object);
+	zClick.addEventListener('mouseover', function(){
+		object.traverse(function(child){
+			if(child.material){
+				child.material.color.setHex(0xff0000);
+			}
+		});
 });
+	});
 
 
