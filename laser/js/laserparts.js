@@ -1,3 +1,4 @@
+
 var baseColor = 0xffffff;
 
 var zClick = document.getElementById('zscrews');
@@ -21,6 +22,7 @@ loader.load('models/Zbelt.obj', function(object){
             child.material.color.setHex (baseColor);
     });
 	scene.add(object);
+	
 	zClick.addEventListener('mouseover', function(){
 		object.traverse(function(child){
 			if(child.material){
@@ -28,6 +30,4 @@ loader.load('models/Zbelt.obj', function(object){
 			}
 		});
 });
-	});
-
-
+	
