@@ -1,12 +1,13 @@
+var baseColor = 0xffffff;
 
 var zClick = document.getElementById('zscrews');
 zClick.addEventListener('mouseover', zHover);
 	
-function zHover(){
+var colorChange = function zHover(){
 	console.log('ok');
+	basecolor = 0xff0000;
 }
 
-var intersectColor = 0xff0000;
 	
 //zaxis parts
 
@@ -17,7 +18,7 @@ loader.load('models/Zbelt.obj', function(object){
 
 	object.traverse( function ( child ) {
         if ( child instanceof THREE.Mesh )
-            child.material.color.setHex (0xff0000);
+            child.material.color.setHex (baseColor);
     });
 
 
