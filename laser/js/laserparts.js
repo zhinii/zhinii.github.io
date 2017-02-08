@@ -23,7 +23,7 @@ loader.load('models/Zbelt.obj', function(object){
     });
 	scene.add(object);
 	
-	zClick.addEventListener('mouseover', function(){
+	zClick.addEventListener('click', function(){
 		object.traverse(function(child){
 			if(child.material){
 				child.material.color.setHex(0xff0000);
