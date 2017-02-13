@@ -2,18 +2,12 @@
 
 var baseColor = 0xffffff;
 
-var zClick = document.getElementById('zscrews');
-zClick.addEventListener('mouseover', colorChange);
+var partHilite = [#motor, #zbelt, #zscrews];
 	
-var colorChange = function zHover(){
-	console.log('ok');
-	basecolor = 0xff0000;
-}
 
 	
 //zaxis parts
 
-var parts = [];
 var loader = new THREE.OBJLoader();
 
 loader.load('models/Zbelt.obj', function(object){
@@ -24,12 +18,25 @@ loader.load('models/Zbelt.obj', function(object){
     });
 	scene.add(object);
 
-	zClick.addEventListener('click', function(){
+	partHilite.addEventListener('click', function(){
+		for(var i = 0; i < partHilite.length; i++)
+		{
+			if (partHilite[i] = #zbelt){
 		object.traverse(function(child){
 			if(child.material){
 				child.material.color.setHex(0xff0000);
 			}
+		}
+
+	});
+	}
+		else{
+			object.traverse(function(child){
+			if(child.material){
+				child.material.color.setHex(0xffffff);
+			}
 		});
+		}
+
 });
-	
 });
