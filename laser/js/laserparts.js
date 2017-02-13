@@ -19,16 +19,13 @@ loader.load('models/Zbelt.obj', function(object){
 
 		partHilite.addEventListener('click', function(){
 			for(var i = 0; i < partHilite.length; i++)
-			{
-				if (partHilite[i] = '#zbelt'){
-				object.traverse(function(child){	
-					if(child.material){
-					child.material.color.setHex(0xff0000);
-										}
-							}
-
-	});
-	}
+			{if (partHilite[i] = '#zbelt')
+				{object.traverse(function(child)
+					{if(child.material)
+						{child.material.color.setHex(0xff0000);}
+							});
+			}
+			}
 		else{
 			object.traverse(function(child){
 			if(child.material){
