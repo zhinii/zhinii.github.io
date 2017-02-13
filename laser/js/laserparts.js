@@ -25,15 +25,15 @@ loader.load('models/Zbelt.obj', function(object){
 						{child.material.color.setHex(0xff0000);}
 							});
 			}
-			}
-		else{
+			else{
 			object.traverse(function(child){
 			if(child.material){
 				child.material.color.setHex(0xffffff);
 			}
 		});
 		}
+			}
+		
 });
 
 });
-
