@@ -10,7 +10,7 @@ for(var i=0; i< partHilite.length; i++) {
  function bindClick(i) {
     return function(){
              console.log("you clicked region number " + i);
-           });
+           }
  }	
 
 
