@@ -4,7 +4,7 @@ var baseColor = 0xffffff;
 var hilite = ['#motor', '#zbelt', '#zscrews'];
 
 for(var i=0; i <hilite.length; i++){
-hilite[i].addEventListener('click', function(){
+document.getElementById(hilite[i]).addEventListener('click', function(){
 	console.log('hi');
 });
 }
