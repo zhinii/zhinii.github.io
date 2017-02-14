@@ -4,14 +4,11 @@ var baseColor = 0xffffff;
 var partHilite = ['#motor', '#zbelt', '#zscrews'];
 
 for(var i=0; i< partHilite.length; i++) {
-       partHilite[i].addEventListener("click", bindClick(i));
- }
+       partHilite[i].addEventListener("click", funtion(){
+				      console.log('testing');
+});
+}
 
- function bindClick(i) {
-    return function(){
-             console.log("you clicked region number " + i);
-           }
- }	
 
 
 	
