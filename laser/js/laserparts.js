@@ -20,7 +20,9 @@ loader.load('models/Zbelt.obj', function(object){
     });
 	scene.add(object);
 
+
 		function bindClick(i){
+			return function(){
 			if (bindClick[i] = '#zbelt')
 				{object.traverse(function(child)
 					{if(child.material)
@@ -34,7 +36,7 @@ loader.load('models/Zbelt.obj', function(object){
 			}
 		});
 		}
-			}
+			}}
 		
 });
 
