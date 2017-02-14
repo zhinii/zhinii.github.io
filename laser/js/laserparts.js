@@ -3,9 +3,7 @@ var baseColor = 0xffffff;
 
 var partHilite = ['#motor', '#zbelt', '#zscrews'];
 	
-for(var i=0; i< partHilite.length; i++) {
-       partHilite[i].addEventListener("click", bindClick(i));
- }
+
 
 	
 //zaxis parts
@@ -20,9 +18,8 @@ loader.load('models/Zbelt.obj', function(object){
     });
 	scene.add(object);
 
-
-		function bindClick(i){
-			return function(){
+for(var i=0; i< partHilite.length; i++) {
+       partHilite[i].addEventListener("click", function(){
 			if (bindClick[i] = '#zbelt')
 				{object.traverse(function(child)
 					{if(child.material)
@@ -36,9 +33,12 @@ loader.load('models/Zbelt.obj', function(object){
 			}
 		});
 		}
-			}}
+	});
+			//
 		
+}
 });
+
 
 
 
