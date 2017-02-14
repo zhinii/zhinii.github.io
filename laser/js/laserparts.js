@@ -1,10 +1,10 @@
 
 var baseColor = 0xffffff;
 
-var partHilite = ['#motor', '#zbelt', '#zscrews'];
+var hilite = ['#motor', '#zbelt', '#zscrews'];
 
-for(var i=0; i< partHilite.length; i++) {
-partHilite[i].addEventListener('click', function(){
+for(var i=0; i <hilite.length; i++){
+hilite[i].addEventListener('click', function(){
 	console.log('hi');
 });
 }
