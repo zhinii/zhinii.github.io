@@ -1,7 +1,7 @@
 
 var baseColor = 0xffffff;
 
-
+var menuClick = document.getElementById('menu');
 
 
 	
@@ -21,7 +21,7 @@ loader.load('models/Zbelt.obj', function(object){
 
 var thing = document.getElementById('zbelt');
 
-document.addEventListener('click', function(){
+menuClick.addEventListener('click', function(){
 	if(event.target == thing){
 	
 			object.traverse(function(child)
@@ -29,7 +29,7 @@ document.addEventListener('click', function(){
 						{child.material.color.setHex(0xff0000);}
 							});
 	}
-	else(event.target != thing){
+	else{
 		object.traverse(function(child){
 			if(child.material){
 				child.material.color.setHex(0xffffff);
