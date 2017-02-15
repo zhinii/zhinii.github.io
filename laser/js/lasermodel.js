@@ -6,12 +6,6 @@ clickToHide[i].addEventListener('click', function(){
 }
 
 
-// 	object.traverse( function( node ) {  
-//    					 if( node.material ) {
-//        					 node.material.opacity = 0.5;
-//        					 node.material.transparent = true;
-//     					}
-// 					} );
 
 
 
@@ -45,7 +39,7 @@ for(var i = 0; i <clickToHide.length; i++){
 	
 	object.traverse( function( node ) {  
    					 if( node.material ) {
-       					 node.material.opacity = 0.15;
+       					 node.material.opacity = 0.1;
        					 node.material.transparent = true;
     					}
 					} );
