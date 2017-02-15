@@ -1,13 +1,6 @@
 
 var baseColor = 0xffffff;
 
-var hilite = ['#motor', '#zbelt', '#zscrews'];
-
-for(var i=0; i <hilite.length; i++){
-hilite.addEventListener('click', function(){
-	console.log('hi');
-});
-}
 
 
 
@@ -24,25 +17,28 @@ loader.load('models/Zbelt.obj', function(object){
     });
 	scene.add(object);
 
-// for(var i=0; i< partHilite.length; i++) {
-//        partHilite[i].addEventListener("click", function(){
-// 			if (bindClick[i] = '#zbelt')
-// 				{object.traverse(function(child)
-// 					{if(child.material)
-// 						{child.material.color.setHex(0xff0000);}
-// 							});
-// 			}
-// 			else{
-// 			object.traverse(function(child){
-// 			if(child.material){
-// 				child.material.color.setHex(0xffffff);
-// 			}
-// 		});
-// 		}
-// 	});
-// 			
-		
-// }
+
+
+var thing = document.getElementById('zbelt');
+
+document.addEventListener('click', function(){
+	if(event.target == thing){
+	
+			object.traverse(function(child)
+					{if(child.material)
+						{child.material.color.setHex(0xff0000);}
+							});
+	}
+	else{
+		object.traverse(function(child){
+			if(child.material){
+				child.material.color.setHex(0xffffff);
+	}
+});
+	}
+});
+
+
 });
 
 
