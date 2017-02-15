@@ -29,7 +29,7 @@ document.addEventListener('click', function(){
 						{child.material.color.setHex(0xff0000);}
 							});
 	}
-	else{
+	else(event.target != thing){
 		object.traverse(function(child){
 			if(child.material){
 				child.material.color.setHex(0xffffff);
