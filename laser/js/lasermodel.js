@@ -28,11 +28,11 @@ renderer.setClearColor( 0xCCCCCC );
 			
 			var lasermodelClear = new THREE.MTLLoader();
 			
-		lasermodelClear.load('models/caseclear.mtl', function(material){
+		lasermodelClear.load('models/plsClear.mtl', function(material){
 				material.preload();
 				var loader = new THREE.OBJLoader();
 				loader.setMaterials(material);
-				loader.load('models/caseclear.obj', function(object){
+				loader.load('models/plsClear.obj', function(object){
 					scene.add(object);
 for(var i = 0; i <clickToHide.length; i++){
 			clickToHide[i].addEventListener('click', function(){
