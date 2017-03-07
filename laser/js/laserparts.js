@@ -2,7 +2,7 @@ var baseColor = 0xffffff;
 var menuClick = document.getElementById('menu');
 var loader = new THREE.OBJLoader();
 //zbelt 
-loader.load('models/Zbelt.obj', function(object) {      //file location
+loader.load('models/zBelts.stl', function(object) {      //file location
     object.traverse(function(child) {
         if (child instanceof THREE.Mesh)
             child.material.color.setHex(baseColor);
@@ -32,7 +32,7 @@ loader.load('models/Zbelt.obj', function(object) {      //file location
 });
 
 //zmotor
-loader.load('models/Zmotor.obj', function(object) {      //file location
+loader.load('models/zMotor.stl', function(object) {      //file location
     object.traverse(function(child) {
         if (child instanceof THREE.Mesh)
             child.material.color.setHex(baseColor);
@@ -62,7 +62,7 @@ loader.load('models/Zmotor.obj', function(object) {      //file location
 });
 
 //zpulley
-loader.load('models/Zpullley.obj', function(object) {      //file location
+loader.load('models/zScrew.stl', function(object) {      //file location
     object.traverse(function(child) {
         if (child instanceof THREE.Mesh)
             child.material.color.setHex(baseColor);
@@ -90,5 +90,3 @@ loader.load('models/Zpullley.obj', function(object) {      //file location
         }
     });
 });
-
-
