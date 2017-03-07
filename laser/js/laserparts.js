@@ -1,6 +1,6 @@
 var baseColor = 0xffffff;
 var menuClick = document.getElementById('menu');
-var loader = new THREE.OBJLoader();
+var loader = new THREE.STLLoader();
 //zbelt 
 loader.load('models/zBelts.stl', function(object) {      //file location
     object.traverse(function(child) {
