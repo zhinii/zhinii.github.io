@@ -6,7 +6,7 @@ var loader = new THREE.STLLoader();
 //zbelt 
 loader.load('models/zBelts.stl', function(object) {      //file location
   			var mesh = new THREE.Mesh(object, meshBaseColor);
-  mesh.rotateY( Math.PI / 2 );
+  mesh.rotateZ( Math.PI / 2 );
     scene.add(mesh);
 
 
