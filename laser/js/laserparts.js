@@ -5,7 +5,7 @@ var menuClick = document.getElementById('menu');
 var loader = new THREE.STLLoader();
 //zbelt 
 loader.load('models/zBelts.stl', function(object) {      //file location
-  			var mesh = new THREE.mesh(object, meshBaseColor);
+  			var mesh = new THREE.Mesh(object, meshBaseColor);
     scene.add(mesh);
 
 
