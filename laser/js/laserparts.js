@@ -7,7 +7,7 @@ var loader = new THREE.STLLoader();
 loader.load('models/zBelts.stl', function(object) {      //file location
   			var mesh = new THREE.Mesh(object, meshBaseColor);
     scene.add(mesh);
-}
+
 
     var thing = document.getElementById('zbelt');         //get id of associate menu item
     menuClick.addEventListener('click', function() {
@@ -29,7 +29,7 @@ loader.load('models/zBelts.stl', function(object) {      //file location
             });
         }
     });
-  );
+});
 
 
 
