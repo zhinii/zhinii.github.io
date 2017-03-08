@@ -20,7 +20,7 @@ loader.load('models/zBelts.stl', function(object) {      //file location
                 }
             });
         } else {
-            object.traverse(function(child) {
+           mesh.traverse(function(child) {
                 if (child.material) {
                     child.material.color.meshBaseColor;
                     child.material.opacity = .4;
