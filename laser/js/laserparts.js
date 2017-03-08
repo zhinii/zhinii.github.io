@@ -7,14 +7,14 @@ var loader = new THREE.STLLoader();
 loader.load('models/zBelts.stl', function(object) {      //file location
   			var mesh = new THREE.Mesh(object, meshBaseColor);
     scene.add(mesh);
-
+}
 
     var thing = document.getElementById('zbelt');         //get id of associate menu item
     menuClick.addEventListener('click', function() {
         if (event.target == thing) {
             mesh.traverse(function(child) {
                 if (child.material) {
-                    child.material.color.MeshClickColor;
+                    child.material.color.setHex(0xff0000);
                     child.material.opacity = 1;
                     child.material.transparent = true;
                 }
@@ -22,14 +22,14 @@ loader.load('models/zBelts.stl', function(object) {      //file location
         } else {
            mesh.traverse(function(child) {
                 if (child.material) {
-                    child.material.color.meshBaseColor;
+                    child.material.color.setHex(0xffffff);
                     child.material.opacity = .4;
                     child.material.transparent = true;
                 }
             });
         }
     });
-  });
+  );
 
 
 
