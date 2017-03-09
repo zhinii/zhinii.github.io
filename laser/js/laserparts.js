@@ -7,9 +7,9 @@ var loader = new THREE.STLLoader();
 console.log(menuClick);
 
 //zbelt 
-loader.load('models/zBelts.stl', function(object) {      //file location
+loader.load('models/zBelts.stl', function(zBeltObj) {      //file location
     //create mesh from file and color var
-  			var zBeltMesh = new THREE.Mesh(object, meshBaseColor);
+  			var zBeltMesh = new THREE.Mesh(zBeltObj, meshBaseColor);
                     //rotate mesh
   zBeltMesh.rotateX( -Math.PI / 2 );
     scene.add(zBeltMesh);
@@ -20,7 +20,8 @@ loader.load('models/zBelts.stl', function(object) {      //file location
         if (event.target == thing1) { console.log('click1');
             zBeltMesh.traverse(function(child) {
                 if (child.material) {
-                    child.material.color.setHex(0xff0000);   //change color of selected object
+                    child.material.color.setHex(0xff0000);   //change color of selected 
+                    
                     child.material.opacity = 1;
                     child.material.transparent = true;
                 }
