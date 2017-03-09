@@ -64,8 +64,8 @@ loader.load('models/zMotor.stl', function(object) {      //******file location
         }
     });
 });
-//xscrews
-loader.load('models/xScrew.stl', function(object) {      //******file location
+//zscrews
+loader.load('models/zScrew.stl', function(object) {      //******file location
     //create mesh from file and color var
             var mesh = new THREE.Mesh(object, meshBaseColor);
                     //rotate mesh
