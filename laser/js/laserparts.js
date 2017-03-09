@@ -9,16 +9,16 @@ console.log(menuClick);
 //zbelt 
 loader.load('models/zBelts.stl', function(object) {      //file location
     //create mesh from file and color var
-  			var mesh = new THREE.Mesh(object, meshBaseColor);
+  			var zBeltMesh = new THREE.Mesh(object, meshBaseColor);
                     //rotate mesh
-  mesh.rotateX( -Math.PI / 2 );
-    scene.add(mesh);
+  zBeltMesh.rotateX( -Math.PI / 2 );
+    scene.add(zBeltMesh);
 
 
     var thing1 = document.getElementById('zbelt');         //get id of associate menu item
     menuClick.addEventListener('click', function() {       //add event listener
         if (event.target == thing1) { console.log('click1');
-            mesh.traverse(function(child) {
+            zBeltMesh.traverse(function(child) {
                 if (child.material) {
                     child.material.color.setHex(0xff0000);   //change color of selected object
                     child.material.opacity = 1;
@@ -26,7 +26,7 @@ loader.load('models/zBelts.stl', function(object) {      //file location
                 }
             });
         } else {
-           mesh.traverse(function(child) {
+           zBeltMesh.traverse(function(child) {
                 if (child.material) {
                     child.material.color.setHex(0xffffff);  //change color if not selected
                     child.material.opacity = .4;
