@@ -16,8 +16,8 @@ loader.load('models/zBelts.stl', function(object) {      //file location
 
 
     var thing1 = document.getElementById('zbelt');         //get id of associate menu item
-    menuClick.addEventListener('click', function() {    console.log('click1');    //add event listener
-        if (event.target == thing1) {
+    menuClick.addEventListener('click', function() {       //add event listener
+        if (event.target == thing1) { console.log('click1');
             mesh.traverse(function(child) {
                 if (child.material) {
                     child.material.color.setHex(0xff0000);   //change color of selected object
@@ -46,8 +46,8 @@ loader.load('models/zMotor.stl', function(object) {      //******file location
 
 
     var thing2 = document.getElementById('zmotor');         //*****get id of associate menu item
-    menuClick.addEventListener('click', function() {     console.log('click2');    //add event listener
-        if (event.target == thing2) {
+    menuClick.addEventListener('click', function() {         //add event listener
+        if (event.target == thing2) {console.log('click2');
             mesh.traverse(function(child) {
                 if (child.material) {
                     child.material.color.setHex(0xff0000);   //change color of selected object
@@ -76,8 +76,8 @@ loader.load('models/zScrew.stl', function(object) {      //******file location
 
 
     var thing3 = document.getElementById('zscrews');         //*****get id of associate menu item
-    menuClick.addEventListener('click', function() {  console.log('click3');       //add event listener
-        if (event.target == thing3) {
+    menuClick.addEventListener('click', function() {       //add event listener
+        if (event.target == thing3) {console.log('click3');  
             mesh.traverse(function(child) {
                 if (child.material) {
                     child.material.color.setHex(0xff0000);   //change color of selected object
