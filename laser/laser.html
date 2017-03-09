@@ -7,7 +7,6 @@
 <script src='js/OrbitControls.js'></script>
 <script src='js/OBJLoader.js'></script>
 <script src='js/MTLLoader.js'></script>
-  <script src='js/STLLoader.js'></script>
 </head>
 
 <body>
@@ -17,9 +16,8 @@
 <ul>
   <li id='xmotor'>motor</li>
   <li id='xbelt'>belt</li>
-   <li id='xtension'>tensioning screws</li>
-   <li id='xbearings'>bearings</li>
-    <li id='xcarriage'>focus carriage</li>
+   <li id='xrails'>rails</li>
+   
 </ul>
 </div>
 </li>
@@ -30,10 +28,8 @@
 <ul>
   <li id='ymotor'>motor</li>
   <li id='ybelt'>belt</li>
-  <li id='ycoupler'>couplers</li>
-  <li id='ytension'>tensioning screws</li>
-     <li id='ybearings'>bearings</li>
-
+  <li id='yrails'>rails</li>
+ 
 </ul>
 </div>
 </li>
@@ -55,7 +51,8 @@
 <ul>
   <li id='bedrulers'>rulers</li>
   <li id='bedhoneycomb'>honeycomb</li>
-    <li id='bedplenum'>plenum</li>
+    <li id='platform'>platform</li>
+      <li id='bed'>bed</li>
 </ul>
 </div>
 </li>
@@ -64,14 +61,13 @@
 <button class="accordion">Laser Optics</button>
 <div class="panel">
 <ul>
-  <li id='lens'>lens</li>
-  <li id='mirrors'>mirrors</li>
-  <li id='window'>window</li>
+  <li id='lens'>lens/mirror</li>
+ <li id='xmirror'>mirror</li>
 </ul>
 </div>
 </li>
 
-<li>
+<!-- <li>
 <button class="accordion">Sensors</button>
 <div class="panel">
 <ul>
@@ -127,13 +123,12 @@
     <li id='upperflex'>upper flex board</li>
       <li id='lowerflex'>lower flex board</li>
 </ul></div>
-</li>
+</li> -->
 </div>
 
 
 <script src='js/lasermenu.js'></script>
 <script src='js/lasermodel.js'></script>
-  <script src='js/laserparts.js'></script>
 </body>
 
 </html>
