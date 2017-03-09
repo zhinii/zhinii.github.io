@@ -18,20 +18,20 @@ loader.load('models/zBelts.stl', function(zBeltObj) {      //file location
     var thing1 = document.getElementById('zbelt');         //get id of associate menu item
     menuClick.addEventListener('click', function() {       //add event listener
         if (event.target == thing1) { console.log('click1');
-            zBeltMesh.traverse(function(child) {
-                if (child.material) {
-                    child.material.color.setHex(0xff0000);   //change color of selected 
+            zBeltMesh.traverse(function(node) {
+                if (node.material) {
+                    node.material.color.setHex(0xff0000);   //change color of selected 
                     
-                    child.material.opacity = 1;
-                    child.material.transparent = true;
+                    node.material.opacity = 1;
+                    node.material.transparent = true;
                 }
             });
         } else {
-           zBeltMesh.traverse(function(child) {
-                if (child.material) {
-                    child.material.color.setHex(0xffffff);  //change color if not selected
-                    child.material.opacity = .4;
-                    child.material.transparent = true;
+           zBeltMesh.traverse(function(node) {
+                if (node.material) {
+                    node.material.color.setHex(0xffffff);  //change color if not selected
+                    node.material.opacity = .4;
+                    node.material.transparent = true;
                 }
             });
         }
