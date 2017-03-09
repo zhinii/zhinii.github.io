@@ -4,6 +4,8 @@ var MeshClickColor = new THREE.MeshLambertMaterial({color: 0xff0000});
 var menuClick = document.getElementById('menu');
 var loader = new THREE.STLLoader();
 
+console.log(menuClick);
+
 //zbelt 
 loader.load('models/zBelts.stl', function(object) {      //file location
     //create mesh from file and color var
@@ -13,9 +15,9 @@ loader.load('models/zBelts.stl', function(object) {      //file location
     scene.add(mesh);
 
 
-    var thing = document.getElementById('zbelt');         //get id of associate menu item
+    var thing1 = document.getElementById('zbelt');         //get id of associate menu item
     menuClick.addEventListener('click', function() {        //add event listener
-        if (event.target == thing) {
+        if (event.target == thing1) {
             mesh.traverse(function(child) {
                 if (child.material) {
                     child.material.color.setHex(0xff0000);   //change color of selected object
@@ -43,9 +45,9 @@ loader.load('models/zMotor.stl', function(object) {      //******file location
     scene.add(mesh);
 
 
-    var thing = document.getElementById('zmotor');         //*****get id of associate menu item
+    var thing2 = document.getElementById('zmotor');         //*****get id of associate menu item
     menuClick.addEventListener('click', function() {        //add event listener
-        if (event.target == thing) {
+        if (event.target == thing2) {
             mesh.traverse(function(child) {
                 if (child.material) {
                     child.material.color.setHex(0xff0000);   //change color of selected object
@@ -64,7 +66,7 @@ loader.load('models/zMotor.stl', function(object) {      //******file location
         }
     });
 });
-//zscrews
+//xscrews
 loader.load('models/zScrew.stl', function(object) {      //******file location
     //create mesh from file and color var
             var mesh = new THREE.Mesh(object, meshBaseColor);
@@ -73,9 +75,9 @@ loader.load('models/zScrew.stl', function(object) {      //******file location
     scene.add(mesh);
 
 
-    var thing = document.getElementById('zscrews');         //*****get id of associate menu item
+    var thing3 = document.getElementById('zscrews');         //*****get id of associate menu item
     menuClick.addEventListener('click', function() {        //add event listener
-        if (event.target == thing) {
+        if (event.target == thing3) {
             mesh.traverse(function(child) {
                 if (child.material) {
                     child.material.color.setHex(0xff0000);   //change color of selected object
@@ -106,9 +108,9 @@ loader.load('models/xMotor.stl', function(object) {      //******file location
     scene.add(mesh);
 
 
-    var thing = document.getElementById('xmotor');         //*****get id of associate menu item
+    var thing4 = document.getElementById('xmotor');         //*****get id of associate menu item
     menuClick.addEventListener('click', function() {        //add event listener
-        if (event.target == thing) {
+        if (event.target == thing4) {
             mesh.traverse(function(child) {
                 if (child.material) {
                     child.material.color.setHex(0xff0000);   //change color of selected object
@@ -137,9 +139,9 @@ loader.load('models/xBelt.stl', function(object) {      //******file location
     scene.add(mesh);
 
 
-    var thing = document.getElementById('xbelt');         //*****get id of associate menu item
+    var thing5 = document.getElementById('xbelt');         //*****get id of associate menu item
     menuClick.addEventListener('click', function() {        //add event listener
-        if (event.target == thing) {
+        if (event.target == thing5) {
             mesh.traverse(function(child) {
                 if (child.material) {
                     child.material.color.setHex(0xff0000);   //change color of selected object
@@ -168,9 +170,9 @@ loader.load('models/xRail.stl', function(object) {      //******file location
     scene.add(mesh);
 
 
-    var thing = document.getElementById('xrails');         //*****get id of associate menu item
+    var thing6 = document.getElementById('xrails');         //*****get id of associate menu item
     menuClick.addEventListener('click', function() {        //add event listener
-        if (event.target == thing) {
+        if (event.target == thing6) {
             mesh.traverse(function(child) {
                 if (child.material) {
                     child.material.color.setHex(0xff0000);   //change color of selected object
@@ -198,9 +200,9 @@ loader.load('models/xMirror.stl', function(object) {      //******file location
     scene.add(mesh);
 
 
-    var thing = document.getElementById('xmirror');         //*****get id of associate menu item
+    var thing7 = document.getElementById('xmirror');         //*****get id of associate menu item
     menuClick.addEventListener('click', function() {        //add event listener
-        if (event.target == thing) {
+        if (event.target == thing7) {
             mesh.traverse(function(child) {
                 if (child.material) {
                     child.material.color.setHex(0xff0000);   //change color of selected object
@@ -228,9 +230,9 @@ loader.load('models/yMotor.stl', function(object) {      //******file location
     scene.add(mesh);
 
 
-    var thing = document.getElementById('ymotor');         //*****get id of associate menu item
+    var thing8 = document.getElementById('ymotor');         //*****get id of associate menu item
     menuClick.addEventListener('click', function() {        //add event listener
-        if (event.target == thing) {
+        if (event.target == thing8) {
             mesh.traverse(function(child) {
                 if (child.material) {
                     child.material.color.setHex(0xff0000);   //change color of selected object
@@ -258,9 +260,9 @@ loader.load('models/yBelts.stl', function(object) {      //******file location
     scene.add(mesh);
 
 
-    var thing = document.getElementById('ybelt');         //*****get id of associate menu item
+    var thing9 = document.getElementById('ybelt');         //*****get id of associate menu item
     menuClick.addEventListener('click', function() {        //add event listener
-        if (event.target == thing) {
+        if (event.target == thing9) {
             mesh.traverse(function(child) {
                 if (child.material) {
                     child.material.color.setHex(0xff0000);   //change color of selected object
@@ -288,9 +290,9 @@ loader.load('models/yRails.stl', function(object) {      //******file location
     scene.add(mesh);
 
 
-    var thing = document.getElementById('yrails');         //*****get id of associate menu item
+    var thing10 = document.getElementById('yrails');         //*****get id of associate menu item
     menuClick.addEventListener('click', function() {        //add event listener
-        if (event.target == thing) {
+        if (event.target == thing10) {
             mesh.traverse(function(child) {
                 if (child.material) {
                     child.material.color.setHex(0xff0000);   //change color of selected object
@@ -319,9 +321,9 @@ loader.load('models/lensMirror.stl', function(object) {      //******file locati
     scene.add(mesh);
 
 
-    var thing = document.getElementById('lens');         //*****get id of associate menu item
+    var thing11 = document.getElementById('lens');         //*****get id of associate menu item
     menuClick.addEventListener('click', function() {        //add event listener
-        if (event.target == thing) {
+        if (event.target == thing11) {
             mesh.traverse(function(child) {
                 if (child.material) {
                     child.material.color.setHex(0xff0000);   //change color of selected object
@@ -349,9 +351,9 @@ loader.load('models/rulers.stl', function(object) {      //******file location
     scene.add(mesh);
 
 
-    var thing = document.getElementById('bedrulers');         //*****get id of associate menu item
+    var thing12 = document.getElementById('bedrulers');         //*****get id of associate menu item
     menuClick.addEventListener('click', function() {        //add event listener
-        if (event.target == thing) {
+        if (event.target == thing12) {
             mesh.traverse(function(child) {
                 if (child.material) {
                     child.material.color.setHex(0xff0000);   //change color of selected object
@@ -379,9 +381,9 @@ loader.load('models/honeycomb.stl', function(object) {      //******file locatio
     scene.add(mesh);
 
 
-    var thing = document.getElementById('bedhoneycomb');         //*****get id of associate menu item
+    var thing12 = document.getElementById('bedhoneycomb');         //*****get id of associate menu item
     menuClick.addEventListener('click', function() {        //add event listener
-        if (event.target == thing) {
+        if (event.target == thing12) {
             mesh.traverse(function(child) {
                 if (child.material) {
                     child.material.color.setHex(0xff0000);   //change color of selected object
@@ -410,9 +412,9 @@ loader.load('models/bedPlatform.stl', function(object) {      //******file locat
     scene.add(mesh);
 
 
-    var thing = document.getElementById('platform');         //*****get id of associate menu item
+    var thing13 = document.getElementById('platform');         //*****get id of associate menu item
     menuClick.addEventListener('click', function() {        //add event listener
-        if (event.target == thing) {
+        if (event.target == thing13) {
             mesh.traverse(function(child) {
                 if (child.material) {
                     child.material.color.setHex(0xff0000);   //change color of selected object
@@ -440,9 +442,9 @@ loader.load('models/bed.stl', function(object) {      //******file location
     scene.add(mesh);
 
 
-    var thing = document.getElementById('bed');         //*****get id of associate menu item
+    var thing14 = document.getElementById('bed');         //*****get id of associate menu item
     menuClick.addEventListener('click', function() {        //add event listener
-        if (event.target == thing) {
+        if (event.target == thing14) {
             mesh.traverse(function(child) {
                 if (child.material) {
                     child.material.color.setHex(0xff0000);   //change color of selected object
