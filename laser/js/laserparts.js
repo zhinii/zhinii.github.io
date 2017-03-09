@@ -15,27 +15,27 @@ loader.load('models/zBelts.stl', function(zBeltObj) {      //file location
     scene.add(zBeltMesh);
 
 
-    var thing1 = document.getElementById('zbelt');         //get id of associate menu item
-    menuClick.addEventListener('click', function() {       //add event listener
-        if (event.target == thing1) { console.log('click1');
-            zBeltMesh.traverse(function(node) {
-                if (node.material) {
-                    node.material.color.setHex(0xff0000);   //change color of selected 
+//     var thing1 = document.getElementById('zbelt');         //get id of associate menu item
+//     menuClick.addEventListener('click', function() {       //add event listener
+//         if (event.target == thing1) { console.log('click1');
+//             zBeltMesh.traverse(function(node) {
+//                 if (node.material) {
+//                     node.material.color.setHex(0xff0000);   //change color of selected 
                     
-                    node.material.opacity = 1;
-                    node.material.transparent = true;
-                }
-            });
-        } else {
-           zBeltMesh.traverse(function(node) {
-                if (node.material) {
-                    node.material.color.setHex(0xffffff);  //change color if not selected
-                    node.material.opacity = .4;
-                    node.material.transparent = true;
-                }
-            });
-        }
-    });
+//                     node.material.opacity = 1;
+//                     node.material.transparent = true;
+//                 }
+//             });
+//         } else {
+//            zBeltMesh.traverse(function(node) {
+//                 if (node.material) {
+//                     node.material.color.setHex(0xffffff);  //change color if not selected
+//                     node.material.opacity = .4;
+//                     node.material.transparent = true;
+//                 }
+//             });
+//         }
+//     });
 });
 //zmotor
 loader.load('models/zMotor.stl', function(object) {      //******file location
