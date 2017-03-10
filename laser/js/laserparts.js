@@ -41,7 +41,8 @@ loader.load('models/zMotor.stl', function(object) {      //******file location
 
 
     var thing2 = document.getElementById('zmotor');         //*****get id of associate menu item
-    menuClick.addEventListener('click', function() {         //add event listener
+    menuClick.addEventListener('click', function() {    
+         if (event.target == thing2){//add event listener
                     mesh.material.color.setHex(0xff0000);   //change color of selected object
                     mesh.material.opacity = 1;
                     mesh.material.transparent = true;
