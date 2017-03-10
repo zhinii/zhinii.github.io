@@ -18,15 +18,15 @@ loader.load('models/zBelts.stl', function(zBeltObj) {      //file location
     menuClick.addEventListener('click', function() {        //add event listener
         if (event.target == thing1) {
           
-                    mesh.material.color.setHex(0xff0000);   //change color of selected object
-                    mesh.material.opacity = 1;
-                    mesh.material.transparent = true;
+                   zBeltMesh.material.color.setHex(0xff0000);   //change color of selected object
+                    zBeltMesh.material.opacity = 1;
+                    zBeltMesh.material.transparent = true;
                 
             }
         else {
-                    mesh.material.color.setHex(0xffffff);  //change color if not selected
-                    mesh.material.opacity = .4;
-                    mesh.material.transparent = true;
+                    zBeltMesh.material.color.setHex(0xffffff);  //change color if not selected
+                    zBeltMesh.material.opacity = .4;
+                   zBeltMesh.material.transparent = true;
           
         }
     });
