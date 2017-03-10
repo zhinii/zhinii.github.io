@@ -42,23 +42,16 @@ loader.load('models/zMotor.stl', function(object) {      //******file location
 
     var thing2 = document.getElementById('zmotor');         //*****get id of associate menu item
     menuClick.addEventListener('click', function() {         //add event listener
-        if (event.target == thing2) {console.log('click2');
-            mesh.traverse(function(child) {
-                if (child.material) {
-                    child.material.color.setHex(0xff0000);   //change color of selected object
-                    child.material.opacity = 1;
-                    child.material.transparent = true;
-                }
-            });
-        } else {
-           mesh.traverse(function(child) {
-                if (child.material) {
-                    child.material.color.setHex(0xffffff);  //change color if not selected
-                    child.material.opacity = .4;
-                    child.material.transparent = true;
-                }
-            });
-        }
+                    mesh.material.color.setHex(0xff0000);   //change color of selected object
+                    mesh.material.opacity = 1;
+                    mesh.material.transparent = true;
+                }  
+        else {
+                    mesh.material.color.setHex(0xffffff);  //change color if not selected
+                    mesh.material.opacity = .4;
+                    mesh.material.transparent = true;
+                } 
+        
     });
 });
 // //zscrews
