@@ -22,7 +22,7 @@ cs = m*10
 ellipse(width/2, height/2, 10+cs, 10+cs);
 fill('orange');
 
-//
+//with hour time, draw a circle that reduces its arc as the day passes on.
 hr = h*.261799387;
 console.log(hr);
 push();
