@@ -32,7 +32,5 @@ arc(width/2, height/2, 221, 221, 0, TWO_PI-hr,PIE);
 pop();
 
 
-
-
 }
 
