@@ -21,7 +21,7 @@ loader.load('models/zBelts.stl', function(zBeltObj) {      //file location
 
   var thing1 = document.getElementById('zbelt');         //get id of associate menu item
     document.addEventListener('click', function() {        //add event listener
-        if (event.target == thing1) {
+        if (event.target.id == 'zbelt') {
           
                    zBeltMesh.material.color.setHex(0xff0000);   //change color of selected object
                     zBeltMesh.material.opacity = 1;
@@ -47,7 +47,7 @@ loader2.load('models/zMotor.stl', function(object) {      //******file location
 
     var thing2 = document.getElementById('zmotor');         //*****get id of associate menu item
     document.addEventListener('click', function() {    
-         if (event.target == thing2){//add event listener
+         if (event.target.id == 'zmotor'){//add event listener
                     mesh.material.color.setHex(0xff0000);   //change color of selected object
                     mesh.material.opacity = 1;
                     mesh.material.transparent = true;
