@@ -8,17 +8,17 @@ var stlloader = new THREE.STLLoader();
 
 console.log(menuClick);
 
-
 //zbelt
 
 stlloader.load('models/zBelt.stl', function(object){
-    object.rotateX( -Math.PI / 2 );
-    scene.add(object);
+        var mesh = new THREE.Mesh(object, meshBaseColor);
+    mesh.rotateX( -Math.PI / 2 );
+    scene.add(mesh);
       
 
 menuClick.addEventListener('click', function(){
 if (event.target.id === 'zbelt'){
-            object.traverse(function(child) {
+            mesh.traverse(function(child) {
                 if (child.material) {
                     child.material.color.setHex(0xff0000);   //change color of selected object
                     child.material.opacity = 1;
@@ -42,13 +42,14 @@ else{
 //zmotor
 
 stlloader.load('models/zMotor.stl', function(object){
-      object.rotateX( -Math.PI / 2 );
-    scene.add(object);
+        var mesh = new THREE.Mesh(object, meshBaseColor);
+      mesh.rotateX( -Math.PI / 2 );
+    scene.add(mesh);
     
 
 menuClick.addEventListener('click', function(){
 if (event.target.id === 'zmotor'){
-            object.traverse(function(child) {
+            mesh.traverse(function(child) {
                 if (child.material) {
                     child.material.color.setHex(0xff0000);   //change color of selected object
                     child.material.opacity = 1;
@@ -57,7 +58,7 @@ if (event.target.id === 'zmotor'){
             });
         }
 else{
-           object.traverse(function(child) {
+           mesh.traverse(function(child) {
                 if (child.material) {
                     child.material.color.setHex(0xffffff);  //change color if not selected
                     child.material.opacity = .7;
