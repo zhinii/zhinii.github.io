@@ -3,6 +3,7 @@ var meshBaseColor = new THREE.MeshLambertMaterial({color: 0xffffff});
 var MeshClickColor = new THREE.MeshLambertMaterial({color: 0xff0000});
 var menuClick = document.getElementById('menu');
 var loader = new THREE.STLLoader();
+var loader2 = new THREE.STLLoader();
 
 console.log(menuClick);
 
@@ -32,7 +33,7 @@ loader.load('models/zBelts.stl', function(zBeltObj) {      //file location
     });
 });
 //zmotor
-loader.load('models/zMotor.stl', function(object) {      //******file location
+loader2.load('models/zMotor.stl', function(object) {      //******file location
     //create mesh from file and color var
             var mesh = new THREE.Mesh(object, meshBaseColor);
                     //rotate mesh
