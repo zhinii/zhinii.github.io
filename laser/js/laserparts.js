@@ -33,3 +33,30 @@ else{
         }
 });
 });
+
+//zmotor
+
+objloader.load('objmodels/zmotor.obj', function(object){
+    scene.add(object);
+
+menuClick.addEventListener('click', function(){
+if (event.target.id === 'zmotor'){
+            object.traverse(function(child) {
+                if (child.material) {
+                    child.material.color.setHex(0xff0000);   //change color of selected object
+                    child.material.opacity = 1;
+                    child.material.transparent = true;
+                }
+            });
+        }
+else{
+           object.traverse(function(child) {
+                if (child.material) {
+                    child.material.color.setHex(0xffffff);  //change color if not selected
+                    child.material.opacity = .7;
+                    child.material.transparent = true;
+                }
+            });
+        }
+});
+});
