@@ -15,14 +15,22 @@ objloader.load('objmodels/zbelt.obj', function(object){
 
 menuClick.addEventListener('click', function(){
 if (event.target.id === 'zbelt'){
-    object.material.color.setHex(0xff0000);   //change color of selected object
-    object.material.opacity = 1;
-     object.material.transparent = true;
-}
+            object.traverse(function(child) {
+                if (child.material) {
+                    child.material.color.setHex(0xff0000);   //change color of selected object
+                    child.material.opacity = 1;
+                    child.material.transparent = true;
+                }
+            });
 else{
-object.material.color.setHex(0xffffff);  //change color if not selected
-object.material.opacity = .7;
-object.material.transparent = true;
+           object.traverse(function(child) {
+                if (child.material) {
+                    child.material.color.setHex(0xffffff);  //change color if not selected
+                    child.material.opacity = .4;
+                    child.material.transparent = true;
+                }
+            });
+        }
 }
 });
 });
