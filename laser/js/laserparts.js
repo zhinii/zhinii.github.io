@@ -12,7 +12,6 @@ console.log(menuClick);
 objloader.load('objmodels/zbelt.obj', function(object){
     scene.add(object);
 
-
 menuClick.addEventListener('click', function(){
 if (event.target.id === 'zbelt'){
             object.traverse(function(child) {
@@ -22,6 +21,7 @@ if (event.target.id === 'zbelt'){
                     child.material.transparent = true;
                 }
             });
+        }
 else{
            object.traverse(function(child) {
                 if (child.material) {
@@ -31,6 +31,5 @@ else{
                 }
             });
         }
-}
 });
 });
