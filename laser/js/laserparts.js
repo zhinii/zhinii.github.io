@@ -1,3 +1,7 @@
+function myFunction(event) { 
+    alert(event.target.id);
+}
+
 
 var meshBaseColor = new THREE.MeshLambertMaterial({color: 0xffffff});
 var MeshClickColor = new THREE.MeshLambertMaterial({color: 0xff0000});
