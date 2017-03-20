@@ -4,6 +4,7 @@ var MeshClickColor = new THREE.MeshLambertMaterial({color: 0xff0000});
 var menuClick = document.getElementById('menu');
 
 var objloader = new THREE.OBJLoader();
+var stlloader = new THREE.STLLoader();
 
 console.log(menuClick);
 
