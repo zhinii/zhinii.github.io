@@ -1,7 +1,3 @@
-function myFunction(event) { 
-    alert(event.target.id);
-}
-
 
 var meshBaseColor = new THREE.MeshLambertMaterial({color: 0xffffff});
 var MeshClickColor = new THREE.MeshLambertMaterial({color: 0xff0000});
@@ -19,10 +15,10 @@ loader.load('models/zBelts.stl', function(zBeltObj) {      //file location
   zBeltMesh.rotateX( -Math.PI / 2 );
     scene.add(zBeltMesh);
 
-  var thing1 = document.getElementById('zbelt');         //get id of associate menu item
+  
     document.addEventListener('click', function() {        //add event listener
-        if (event.target.id == 'zbelt') {
-          
+        if (event.target.id = 'zbelt') {
+          console.log(event.target.id);
                    zBeltMesh.material.color.setHex(0xff0000);   //change color of selected object
                     zBeltMesh.material.opacity = 1;
                     zBeltMesh.material.transparent = true;
