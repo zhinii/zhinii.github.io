@@ -10,15 +10,12 @@ console.log(menuClick);
 
 //zbelt
 
-stlloader.load('models/zBelts.stl', function(object){
-        var mesh = new THREE.Mesh(object, meshBaseColor);
-    mesh.rotateX( -Math.PI / 2 );
-    scene.add(mesh);
-      
+objloader.load('objmodels/zbelt.obj', function(object){
+    scene.add(object);
 
 menuClick.addEventListener('click', function(){
 if (event.target.id === 'zbelt'){
-            mesh.traverse(function(child) {
+            object.traverse(function(child) {
                 if (child.material) {
                     child.material.color.setHex(0xff0000);   //change color of selected object
                     child.material.opacity = 1;
@@ -27,7 +24,7 @@ if (event.target.id === 'zbelt'){
             });
         }
 else{
-           mesh.traverse(function(child) {
+           object.traverse(function(child) {
                 if (child.material) {
                     child.material.color.setHex(0xffffff);  //change color if not selected
                     child.material.opacity = .7;
@@ -41,15 +38,12 @@ else{
 
 //zmotor
 
-stlloader.load('models/zMotor.stl', function(object){
-        var mesh = new THREE.Mesh(object, meshBaseColor);
-      mesh.rotateX( -Math.PI / 2 );
-    scene.add(mesh);
-    
+objloader.load('objmodels/zmotor.obj', function(object){
+    scene.add(object);
 
 menuClick.addEventListener('click', function(){
 if (event.target.id === 'zmotor'){
-            mesh.traverse(function(child) {
+            object.traverse(function(child) {
                 if (child.material) {
                     child.material.color.setHex(0xff0000);   //change color of selected object
                     child.material.opacity = 1;
@@ -58,7 +52,7 @@ if (event.target.id === 'zmotor'){
             });
         }
 else{
-           mesh.traverse(function(child) {
+           object.traverse(function(child) {
                 if (child.material) {
                     child.material.color.setHex(0xffffff);  //change color if not selected
                     child.material.opacity = .7;
