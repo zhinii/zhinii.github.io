@@ -5,7 +5,7 @@ var menuClick = document.getElementById('menu');
 var loader = new THREE.STLLoader();
 var loader2 = new THREE.STLLoader();
 
-console.log(menuClick);
+
 
 //zbelt 
 loader.load('models/zBelts.stl', function(zBeltObj) {      //file location
