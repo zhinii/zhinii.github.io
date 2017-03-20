@@ -7,10 +7,13 @@ var objloader = new THREE.OBJLoader();
 
 console.log(menuClick);
 
+
 //zbelt
 
-objloader.load('objmodels/zbelt.obj', function(object){
+stlloader.load('models/zBelt.stl', function(object){
+    object.rotateX( -Math.PI / 2 );
     scene.add(object);
+      
 
 menuClick.addEventListener('click', function(){
 if (event.target.id === 'zbelt'){
@@ -26,7 +29,7 @@ else{
            object.traverse(function(child) {
                 if (child.material) {
                     child.material.color.setHex(0xffffff);  //change color if not selected
-                    child.material.opacity = .4;
+                    child.material.opacity = .7;
                     child.material.transparent = true;
                 }
             });
@@ -34,10 +37,13 @@ else{
 });
 });
 
+
 //zmotor
 
-objloader.load('objmodels/zmotor.obj', function(object){
+stlloader.load('models/zMotor.stl', function(object){
+      object.rotateX( -Math.PI / 2 );
     scene.add(object);
+    
 
 menuClick.addEventListener('click', function(){
 if (event.target.id === 'zmotor'){
