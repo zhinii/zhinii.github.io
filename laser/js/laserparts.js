@@ -34,7 +34,7 @@ loader.load('models/zBelts.stl', function(zBeltObj) {      //file location
 });
 
 //zmotor
-loader.load('models/zMotor.stl', function(zMotorObj) {      //file location cahnge this line
+loader2.load('models/zMotor.stl', function(zMotorObj) {      //file location cahnge this line
     //create mesh from file and color var
             var zMotorMesh = new THREE.Mesh(zMotorObj, meshBaseColor); ///cahnge this line
                     //rotate mesh
