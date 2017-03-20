@@ -18,8 +18,7 @@ if (event.target.id === 'zbelt'){
             object.traverse(function(child) {
                 if (child.material) {
                     child.material.color.setHex(0xff0000);   //change color of selected object
-                    child.material.opacity = 1;
-                    child.material.transparent = true;
+                    
                 }
             });
         }
@@ -27,8 +26,7 @@ else{
            object.traverse(function(child) {
                 if (child.material) {
                     child.material.color.setHex(0xffffff);  //change color if not selected
-                    child.material.opacity = .7;
-                    child.material.transparent = true;
+                 
                 }
             });
         }
@@ -46,8 +44,7 @@ if (event.target.id === 'zmotor'){
             object.traverse(function(child) {
                 if (child.material) {
                     child.material.color.setHex(0xff0000);   //change color of selected object
-                    child.material.opacity = 1;
-                    child.material.transparent = true;
+                   
                 }
             });
         }
@@ -55,8 +52,7 @@ else{
            object.traverse(function(child) {
                 if (child.material) {
                     child.material.color.setHex(0xffffff);  //change color if not selected
-                    child.material.opacity = .7;
-                    child.material.transparent = true;
+                    
                 }
             });
         }
@@ -74,8 +70,7 @@ if (event.target.id === 'zscrews'){                                        //cha
             object.traverse(function(child) {
                 if (child.material) {
                     child.material.color.setHex(0xff0000);   //change color of selected object
-                    child.material.opacity = 1;
-                    child.material.transparent = true;
+                   
                 }
             });
         }
@@ -83,8 +78,7 @@ else{
            object.traverse(function(child) {
                 if (child.material) {
                     child.material.color.setHex(0xffffff);  //change color if not selected
-                    child.material.opacity = .7;
-                    child.material.transparent = true;
+                    
                 }
             });
         }
