@@ -27,7 +27,7 @@ if (event.target.id === 'zbelt'){
             });
         }
 else{
-           object.traverse(function(child) {
+           mesh.traverse(function(child) {
                 if (child.material) {
                     child.material.color.setHex(0xffffff);  //change color if not selected
                     child.material.opacity = .7;
