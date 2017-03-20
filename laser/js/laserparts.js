@@ -13,7 +13,7 @@ objloader.load('objmodels/zbelt.obj', function(object){
     scene.add(object);
 
 
-menuCLick.addEventListener('click', function(){
+menuClick.addEventListener('click', function(){
 if (event.target.id === 'zbelt'){
     object.material.color.setHex(0xff0000);   //change color of selected object
     object.material.opacity = 1;
