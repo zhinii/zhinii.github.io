@@ -10,7 +10,7 @@ console.log(menuClick);
 
 //zbelt
 
-stlloader.load('models/zBelt.stl', function(object){
+stlloader.load('models/zBelts.stl', function(object){
         var mesh = new THREE.Mesh(object, meshBaseColor);
     mesh.rotateX( -Math.PI / 2 );
     scene.add(mesh);
