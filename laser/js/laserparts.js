@@ -167,3 +167,84 @@ else{
         }
 });
 });
+
+//ymotor
+
+objloader.load('objmodels/ymotor.obj', function(object){      //*******change location
+    scene.add(object);
+
+menuClick.addEventListener('click', function(){
+if (event.target.id === 'ymotor'){                                        //********change id of clicked object
+            object.traverse(function(child) {
+                if (child.material) {
+                    child.material.color.setHex(0xff0000);   //change color of selected object
+                    child.material.opacity = 1;
+                    child.material.transparent = true;
+                }
+            });
+        }
+else{
+           object.traverse(function(child) {
+                if (child.material) {
+                    child.material.color.setHex(0xffffff);  //change color if not selected
+                    child.material.opacity = .7;
+                    child.material.transparent = true;
+                }
+            });
+        }
+});
+});
+
+//yrails
+
+objloader.load('objmodels/yrail.obj', function(object){      //*******change location
+    scene.add(object);
+
+menuClick.addEventListener('click', function(){
+if (event.target.id === 'yrails'){                                        //********change id of clicked object
+            object.traverse(function(child) {
+                if (child.material) {
+                    child.material.color.setHex(0xff0000);   //change color of selected object
+                    child.material.opacity = 1;
+                    child.material.transparent = true;
+                }
+            });
+        }
+else{
+           object.traverse(function(child) {
+                if (child.material) {
+                    child.material.color.setHex(0xffffff);  //change color if not selected
+                    child.material.opacity = .7;
+                    child.material.transparent = true;
+                }
+            });
+        }
+});
+});
+
+//ybelt
+
+objloader.load('objmodels/ybelt.obj', function(object){      //*******change location
+    scene.add(object);
+
+menuClick.addEventListener('click', function(){
+if (event.target.id === 'ybelt'){                                        //********change id of clicked object
+            object.traverse(function(child) {
+                if (child.material) {
+                    child.material.color.setHex(0xff0000);   //change color of selected object
+                    child.material.opacity = 1;
+                    child.material.transparent = true;
+                }
+            });
+        }
+else{
+           object.traverse(function(child) {
+                if (child.material) {
+                    child.material.color.setHex(0xffffff);  //change color if not selected
+                    child.material.opacity = .7;
+                    child.material.transparent = true;
+                }
+            });
+        }
+});
+});
