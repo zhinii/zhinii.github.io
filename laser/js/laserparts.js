@@ -84,3 +84,86 @@ else{
         }
 });
 });
+
+
+
+//xmotor
+
+objloader.load('objmodels/xmotor.obj', function(object){      //*******change location
+    scene.add(object);
+
+menuClick.addEventListener('click', function(){
+if (event.target.id === 'xmotor'){                                        //********change id of clicked object
+            object.traverse(function(child) {
+                if (child.material) {
+                    child.material.color.setHex(0xff0000);   //change color of selected object
+                    child.material.opacity = 1;
+                    child.material.transparent = true;
+                }
+            });
+        }
+else{
+           object.traverse(function(child) {
+                if (child.material) {
+                    child.material.color.setHex(0xffffff);  //change color if not selected
+                    child.material.opacity = .7;
+                    child.material.transparent = true;
+                }
+            });
+        }
+});
+});
+
+//xbelt
+
+objloader.load('objmodels/xbelt.obj', function(object){      //*******change location
+    scene.add(object);
+
+menuClick.addEventListener('click', function(){
+if (event.target.id === 'xbelt'){                                        //********change id of clicked object
+            object.traverse(function(child) {
+                if (child.material) {
+                    child.material.color.setHex(0xff0000);   //change color of selected object
+                    child.material.opacity = 1;
+                    child.material.transparent = true;
+                }
+            });
+        }
+else{
+           object.traverse(function(child) {
+                if (child.material) {
+                    child.material.color.setHex(0xffffff);  //change color if not selected
+                    child.material.opacity = .7;
+                    child.material.transparent = true;
+                }
+            });
+        }
+});
+});
+
+//xrail
+
+objloader.load('objmodels/xrail.obj', function(object){      //*******change location
+    scene.add(object);
+
+menuClick.addEventListener('click', function(){
+if (event.target.id === 'xrails'){                                        //********change id of clicked object
+            object.traverse(function(child) {
+                if (child.material) {
+                    child.material.color.setHex(0xff0000);   //change color of selected object
+                    child.material.opacity = 1;
+                    child.material.transparent = true;
+                }
+            });
+        }
+else{
+           object.traverse(function(child) {
+                if (child.material) {
+                    child.material.color.setHex(0xffffff);  //change color if not selected
+                    child.material.opacity = .7;
+                    child.material.transparent = true;
+                }
+            });
+        }
+});
+});
