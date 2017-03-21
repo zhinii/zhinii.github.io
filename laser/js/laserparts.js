@@ -283,7 +283,7 @@ objloader.load('objmodels/platform.obj', function(object){      //*******change 
     scene.add(object);
 
 menuClick.addEventListener('click', function(){
-if (event.target.id === 'platofrm'){                                        //********change id of clicked object
+if (event.target.id === 'platform'){                                        //********change id of clicked object
             object.traverse(function(child) {
                 if (child.material) {
                     child.material.color.setHex(0xff0000);   //change color of selected object
@@ -360,7 +360,7 @@ else{
 
 //lens
 
-objloader.load('objmodels/lens.obj', function(object){      //*******change location
+objloader.load('objmodels/lensmirror.obj', function(object){      //*******change location
     scene.add(object);
 
 menuClick.addEventListener('click', function(){
