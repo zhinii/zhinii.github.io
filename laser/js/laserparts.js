@@ -248,3 +248,193 @@ else{
         }
 });
 });
+
+
+//rulers
+
+objloader.load('objmodels/rulers.obj', function(object){      //*******change location
+    scene.add(object);
+
+menuClick.addEventListener('click', function(){
+if (event.target.id === 'bedrulers'){                                        //********change id of clicked object
+            object.traverse(function(child) {
+                if (child.material) {
+                    child.material.color.setHex(0xff0000);   //change color of selected object
+                    child.material.opacity = 1;
+                    child.material.transparent = true;
+                }
+            });
+        }
+else{
+           object.traverse(function(child) {
+                if (child.material) {
+                    child.material.color.setHex(0xffffff);  //change color if not selected
+                    child.material.opacity = .7;
+                    child.material.transparent = true;
+                }
+            });
+        }
+});
+});
+
+//platform
+
+objloader.load('objmodels/platform.obj', function(object){      //*******change location
+    scene.add(object);
+
+menuClick.addEventListener('click', function(){
+if (event.target.id === 'platofrm'){                                        //********change id of clicked object
+            object.traverse(function(child) {
+                if (child.material) {
+                    child.material.color.setHex(0xff0000);   //change color of selected object
+                    child.material.opacity = 1;
+                    child.material.transparent = true;
+                }
+            });
+        }
+else{
+           object.traverse(function(child) {
+                if (child.material) {
+                    child.material.color.setHex(0xffffff);  //change color if not selected
+                    child.material.opacity = .7;
+                    child.material.transparent = true;
+                }
+            });
+        }
+});
+});
+
+//honeycomb
+
+objloader.load('objmodels/honeycomb.obj', function(object){      //*******change location
+    scene.add(object);
+
+menuClick.addEventListener('click', function(){
+if (event.target.id === 'bedhoneycomb'){                                        //********change id of clicked object
+            object.traverse(function(child) {
+                if (child.material) {
+                    child.material.color.setHex(0xff0000);   //change color of selected object
+                    child.material.opacity = 1;
+                    child.material.transparent = true;
+                }
+            });
+        }
+else{
+           object.traverse(function(child) {
+                if (child.material) {
+                    child.material.color.setHex(0xffffff);  //change color if not selected
+                    child.material.opacity = .7;
+                    child.material.transparent = true;
+                }
+            });
+        }
+});
+});
+
+//mirror
+
+objloader.load('objmodels/mirror.obj', function(object){      //*******change location
+    scene.add(object);
+
+menuClick.addEventListener('click', function(){
+if (event.target.id === 'xmirror'){                                        //********change id of clicked object
+            object.traverse(function(child) {
+                if (child.material) {
+                    child.material.color.setHex(0xff0000);   //change color of selected object
+                    child.material.opacity = 1;
+                    child.material.transparent = true;
+                }
+            });
+        }
+else{
+           object.traverse(function(child) {
+                if (child.material) {
+                    child.material.color.setHex(0xffffff);  //change color if not selected
+                    child.material.opacity = .7;
+                    child.material.transparent = true;
+                }
+            });
+        }
+});
+});
+
+//lens
+
+objloader.load('objmodels/lens.obj', function(object){      //*******change location
+    scene.add(object);
+
+menuClick.addEventListener('click', function(){
+if (event.target.id === 'lens'){                                        //********change id of clicked object
+            object.traverse(function(child) {
+                if (child.material) {
+                    child.material.color.setHex(0xff0000);   //change color of selected object
+                    child.material.opacity = 1;
+                    child.material.transparent = true;
+                }
+            });
+        }
+else{
+           object.traverse(function(child) {
+                if (child.material) {
+                    child.material.color.setHex(0xffffff);  //change color if not selected
+                    child.material.opacity = .7;
+                    child.material.transparent = true;
+                }
+            });
+        }
+});
+});
+
+//carriage
+
+objloader.load('objmodels/carriage.obj', function(object){      //*******change location
+    scene.add(object);
+
+menuClick.addEventListener('click', function(){
+if (event.target.id === 'carriage'){                                        //********change id of clicked object
+            object.traverse(function(child) {
+                if (child.material) {
+                    child.material.color.setHex(0xff0000);   //change color of selected object
+                    child.material.opacity = 1;
+                    child.material.transparent = true;
+                }
+            });
+        }
+else{
+           object.traverse(function(child) {
+                if (child.material) {
+                    child.material.color.setHex(0xffffff);  //change color if not selected
+                    child.material.opacity = .7;
+                    child.material.transparent = true;
+                }
+            });
+        }
+});
+});
+
+//controlpad
+
+objloader.load('objmodels/controlpad.obj', function(object){      //*******change location
+    scene.add(object);
+
+menuClick.addEventListener('click', function(){
+if (event.target.id === 'controlpad'){                                        //********change id of clicked object
+            object.traverse(function(child) {
+                if (child.material) {
+                    child.material.color.setHex(0xff0000);   //change color of selected object
+                    child.material.opacity = 1;
+                    child.material.transparent = true;
+                }
+            });
+        }
+else{
+           object.traverse(function(child) {
+                if (child.material) {
+                    child.material.color.setHex(0xffffff);  //change color if not selected
+                    child.material.opacity = .7;
+                    child.material.transparent = true;
+                }
+            });
+        }
+});
+});
