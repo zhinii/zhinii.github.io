@@ -39,8 +39,9 @@ for(var i = 0; i <clickToHide.length; i++){
 	
 	object.traverse( function( node ) {  
    					 if( node.material ) {
-       					 node.material.opacity = 0.08;
-       					 node.material.transparent = true;
+						 node.material.wireframe = true;
+//        					 node.material.opacity = 0.08;
+//        					 node.material.transparent = true;
     					}
 					} );
 
