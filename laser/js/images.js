@@ -9,10 +9,10 @@ menuClick.addEventListener('click', function(){
      var images = document.querySelectorAll("#imageshow img");
       for(var i = 0; i < images.length; i++){
     if(event.target.id === 'zmotor'){  
-      images[3].src = images[3].getAttribute('data-src');
+      images[0].src = images[3].getAttribute('data-src');
       }
       else if(event.target.id === 'xmotor'){
-        images[2].src = images[2].getAttribute('data-src');
+        images[0].src = images[2].getAttribute('data-src');
       }
       }
 })
