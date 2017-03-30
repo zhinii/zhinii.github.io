@@ -3,6 +3,17 @@
     position: absolute;
 }
 
+#imageshow{
+    position: absolute;
+      top:0;
+   right:0;
+    width: 900px;
+    height: 600px;
+}
+.imageshow{
+object-fit: contain;
+}
+
 button.accordion {
     background-color: rgba(255,0,0,.9);
     color: black;
