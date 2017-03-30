@@ -5,6 +5,7 @@
 
 #imageshow{
     position: absolute;
+    right: 0px;
     width: 600px;
     height: 400px;
     object-fit: contain;
