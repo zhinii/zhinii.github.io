@@ -7,10 +7,9 @@
     position: absolute;
     width: 600px;
     height: 400px;
+    object-fit: contain;
 }
-.imageshow{
-object-fit: contain;
-}
+
 
 button.accordion {
     background-color: rgba(255,0,0,.9);
