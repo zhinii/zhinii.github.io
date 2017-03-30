@@ -5,10 +5,8 @@
 
 #imageshow{
     position: absolute;
-      top:0;
-   right:0;
-    width: 900px;
-    height: 600px;
+    width: 600px;
+    height: 400px;
 }
 .imageshow{
 object-fit: contain;
