@@ -23,4 +23,5 @@ menuClick.addEventListener('click', function(){
                  else {
            images[0].src = images[0].getAttribute('data-src');
       }
+}
 })
