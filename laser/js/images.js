@@ -14,5 +14,13 @@ menuClick.addEventListener('click', function(){
       else if(event.target.id === 'xmotor'){
         images[0].src = images[3].getAttribute('data-src');
       }
+      else if(event.target.id === 'lens'){
+           images[0].src = images[1].getAttribute('data-src');
+      }
+                 else if(event.target.id === 'xmirror'){
+           images[0].src = images[2].getAttribute('data-src');
+      }
+                 else {
+           images[0].src = images[0].getAttribute('data-src');
       }
 })
