@@ -41,15 +41,32 @@ for(var i = 0; i <clickToHide.length; i++){
    					 if( node.material ) {
 						 node.material.wireframe = true;
        					 node.material.opacity = 0.08;
-//        					 node.material.transparent = true;
+
     					}
 					} );
 
 });
-}
-					
-					
-					
+}				
+				});
+				
+			});
+
+			var lasermodelWire = new THREE.MTLLoader();
+			
+		lasermodelWire.load('models/wireframe.mtl', function(material){
+				material.preload();
+				var loader = new THREE.OBJLoader();
+				loader.setMaterials(material);
+				loader.load('models/wireframe.obj', function(object){
+					scene.add(object);
+					object.visible = false;
+
+for(var i = 0; i <clickToHide.length; i++){
+			clickToHide[i].addEventListener('click', function(){
+					object.visible = true;
+
+});
+}				
 				});
 				
 			});
