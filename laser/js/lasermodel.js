@@ -36,14 +36,7 @@ renderer.setClearColor( 0xCCCCCC );
 					scene.add(object);
 for(var i = 0; i <clickToHide.length; i++){
 			clickToHide[i].addEventListener('click', function(){
-	
-	object.traverse( function( node ) {  
-   					 if( node.material ) {
-						 node.material.wireframe = true;
-       					 node.material.opacity = 0.08;
-
-    					}
-					} );
+	object.visible = false;
 
 });
 }				
