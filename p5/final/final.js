@@ -4,6 +4,9 @@ var canvas;
  var sliderR;
   var sliderG;
    var sliderB;
+   var r;
+   var g;
+   var b;
 function setup() {
     canvas = createCanvas(400, 400);
     background('yellow');
@@ -59,18 +62,45 @@ function draw() {
     // don't create DOM elements here!
     // this is a loop, you'll create a million DOM elements
   
- 
- noLoop();
+  r = sliderR.value();
+   g = sliderG.value();
+  b = sliderB.value();
+
    loadPixels();
+
+ for (var y = 0; y < height; y++) {
+    // and each column
+    for(var x = 0; x < width; x++) {
+      // go through EVERY individual pixel's R, G, B, and A
+      var index = (x + y * width) * 4;
+        // mess with the RGBa values!
+       pixels[index] = r; // red
+        pixels[index + 1] = g // green
+        pixels[index + 2] = b; // blue
+       
+    }
+  }
+  updatePixels();
+
+
  console.log(pixels);
  sliderR.value(0);
   sliderG.value(0);
    sliderB.value(0);
 
 
-     var r = sliderR.value();
-    var g = sliderG.value();
-    var b = sliderB.value();
-    console.log(r, g, b);
+
+
+   
+  //   document.addEventListener('mousemove', function(){
+        
+  //        console.log(r, g, b);
+
+  //  r = sliderR.value();
+  //  g = sliderG.value();
+  // b = sliderB.value();
+  //             }
+  //        )
+  
 
 }
