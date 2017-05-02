@@ -8,13 +8,16 @@ var sliderB;
 var r;
 var g;
 var b;
+var mouseDown = false;
+var lastPointX;
+var lastPointY;
 
 function setup() {
     // deal with issues on retina displays
     pixelDensity(1);
     canvas = createCanvas(400, 400);
     background("yellow");
-
+    strokeWeight(3);
     // drop event for canvas
     canvas.drop(gotFile);
 
@@ -37,6 +40,14 @@ function setup() {
     sliderB = createSlider(0, 255, 0);
     sliderB.position(425, 70);
 
+    //explanation
+     var para1 = createP("Drag image from folder/desktop to yellow box to view on canvas");
+      var para2 = createP("Click and drag mouse on canvas to draw");
+       var para3 = createP("Use sliders to adjust color values on canvas when image is present");
+       para1.position(10, 420);
+       para2.position(10, 440);
+       para3.position(10, 460);
+
     //create save button and mousepress to activate savecancas function
     var button = createButton("click to save canvas as image");
     button.position(0, 410);
@@ -53,8 +64,29 @@ function gotFile(file) {
     image(img, 0, 0, 400, 400);
 
 }
+//function to detect if mouse is clicked
+  function mousePressed(){
+    mouseDown = true;
+                    lastPointX = mouseX;
+                    lastPointY = mouseY;
+                    console.log(lastPointX);
+}
+//function to detect if mouse is released
+function mouseReleased() {
+  mouseDown = false;
+}
+
 
 function draw() {
+
+
+//if mouse is down draw line from where it was to where it is
+  if (mouseDown){
+    line(lastPointX, lastPointY, mouseX, mouseY);
+ }
+ lastPointX = mouseX;
+ lastPointY = mouseY;
+
     // don't create DOM elements here!
     // this is a loop, you'll create a million DOM elements
 
@@ -87,4 +119,6 @@ function draw() {
         }
         updatePixels();
     }
+
 }
+
