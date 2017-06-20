@@ -48,9 +48,11 @@ objloader.load('objmodels/platform.obj', function(object){      //*******change 
 
 
 //controlpad
-
+mtlloader.load('objmodels/controlpad.mtl', function(material){
+    material.preload();
+    var objloader = new THREE.OBJLoader();
 objectloader.load('objmodels/controlpad.obj', function(object){      //*******change location
     scene.add(object);
 });
-
+});
 
