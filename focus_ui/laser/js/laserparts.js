@@ -7,7 +7,7 @@ var stlloader = new THREE.STLLoader();
 var mtlloader = new THREE.MTLLoader();
 
 //xrail
-mtloader.load('objmodels/xrail.mtl',function(material){
+mtlloader.load('objmodels/xrail.mtl',function(material){
 material.preload();
 objloader.setMaterials(material);
 objloader.load('objmodels/xrail.obj', function(object){      //*******change location
