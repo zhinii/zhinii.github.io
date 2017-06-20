@@ -1,0 +1,87 @@
+/* Style the buttons that are used to open and close the accordion panel */
+control_panel{
+    position: absolute;
+}
+#menu {
+    position: absolute;
+    right:0px;
+    bottom:0px;
+    max-width: 100%;
+    width: 800px;
+    height: 200px;
+ }
+
+
+.cls-1{fill:#53abd3;}
+
+.cls-2{fill:#231f20;}
+
+.cls-3{fill:#b9d989;}
+
+.cls-4{fill:#323842;}
+
+.cls-5{fill:#f2717c;}
+
+.cls-6{fill:#fff;}
+
+.cls-7{fill:#727373;}
+
+#green:hover{
+    fill: #8ec05f;
+}
+
+li .panel{
+    position: absolute;
+    right:0px;
+    bottom:0px;
+    max-width: 100%;
+    width: 800px;
+    height: 200px;
+}
+
+#imageshow{
+    position: absolute;
+    right: 0px;
+    object-fit: contain;
+}
+
+#control{
+    position: absolute;
+    left: 300px;
+    font-size: 18px;
+}
+
+button.accordion {
+    /*background-color: rgba(255,0,0,.9);*/
+    /*color: black;*/
+    cursor: pointer;
+    padding: 8px;
+    width: 100px;
+    text-align: left;
+    border: none;
+    outline: none;
+    transition: 0.4s;
+    border-radius: 12px;
+
+
+}
+
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+button.accordion.active, button.accordion:hover {
+    background-color: orange;
+}
+div.panel {
+    padding: 0 18px;
+}
+
+li{
+    list-style-type: none;
+    margin: 5px;
+    color: white;
+}
+
+ul li:hover {
+    color: red;
+    cursor: pointer;
+}
