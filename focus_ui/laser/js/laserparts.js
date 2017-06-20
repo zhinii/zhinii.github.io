@@ -40,7 +40,7 @@ objloader.load('objmodels/platform.obj', function(object){      //*******change 
     scene.add(object);
 
 });
-
+});
 
 
 
