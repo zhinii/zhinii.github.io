@@ -52,7 +52,7 @@ mtlloader.load('objmodels/controlpad.mtl', function(material){
     material.preload();
     var objloader = new THREE.OBJLoader();
     objloader.setMaterials(material);
-objectloader.load('objmodels/controlpad.obj', function(object){      //*******change location
+objloader.load('objmodels/controlpad.obj', function(object){      //*******change location
     scene.add(object);
 });
 });
