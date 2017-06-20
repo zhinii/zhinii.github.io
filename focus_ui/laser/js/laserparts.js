@@ -33,7 +33,9 @@ objloader.load('objmodels/ybelt.obj', function(object){      //*******change loc
 
 
 //platform
-
+mtlloader.load('objmodels/platform.mtl', function(material){
+    material.preload();
+    objloader.setMaterials(material);
 objloader.load('objmodels/platform.obj', function(object){      //*******change location
     scene.add(object);
 
