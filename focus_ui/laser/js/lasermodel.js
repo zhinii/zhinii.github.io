@@ -1,9 +1,3 @@
-var clickToHide = document.getElementsByClassName('accordion');
-for(var i = 0; i <clickToHide.length; i++){
-clickToHide[i].addEventListener('click', function(){
-	console.log(i);
-});
-}
 
 
 
@@ -44,25 +38,6 @@ for(var i = 0; i <clickToHide.length; i++){
 				
 			});
 
-			var lasermodelWire = new THREE.MTLLoader();
-			
-		lasermodelWire.load('models/wireframe.mtl', function(material){
-				material.preload();
-				var loader = new THREE.OBJLoader();
-				loader.setMaterials(material);
-				loader.load('models/wireframe.obj', function(object){
-					scene.add(object);
-					object.visible = false;
-
-for(var i = 0; i <clickToHide.length; i++){
-			clickToHide[i].addEventListener('click', function(){
-					object.visible = true;
-
-});
-}				
-				});
-				
-			});
 
 
 		var lasermodelSolid = new THREE.MTLLoader();
