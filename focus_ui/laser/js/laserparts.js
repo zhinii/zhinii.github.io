@@ -77,5 +77,10 @@ objloader.load('objmodels/carriage.obj', function(object){      //*******change 
 
 objloader.load('objmodels/controlpad.obj', function(object){      //*******change location
     scene.add(object);
+});
 
+//lensmirror
+
+objloader.load('objmodels/lensmirror.obj', function(object){      //*******change location
+    scene.add(object);
 });
