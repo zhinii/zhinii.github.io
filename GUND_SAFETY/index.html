@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>GUND FIRE</title>
+        <div id="text">Please locate the fire extinguishers, first-aid kit, emergency call box, and fire alarm.<br/> Click on the spheres for a more detailed view.</div>
+        
+        <div id='imageA' class='imageshow'>
+            <img src="images/A.jpg" alt="">
+        </div>
+        <div id='imageB' class='imageshow'>
+            <img src="images/B.jpg" alt="">
+        </div>
+        <div id='imageC' class='imageshow'>
+            <img src="images/C.jpg" alt="">
+        </div>
+        <div id='imageD' class='imageshow'>
+            <img src="images/D.jpg" alt="">
+        </div>
+
+        <style>
+            body {
+                max-height: 500px;
+                max-width: 900px;
+                margin: 0;
+            }
+
+            #toShow {
+              visibility: hidden;
+            }
+
+            #text {
+                position: absolute;
+                font: 15px arial, sans-serif;
+                color: white;
+                top: 10px;
+                left: 20px;
+                width: 100%;
+/*                text-align: center;*/
+                z-index: 100;
+                display:block;        
+            }
+
+            .imageshow {
+                width: 200px;
+                height: 120px;
+                position: absolute;
+                top: 10px;
+                left: 685px;
+            }
+
+            .imageshow img {
+                width: 100%;
+                height: auto;
+            }
+
+        </style>
+    </head>
+
+    <body>
+        <script src="js/build/three.js"></script>
+
+        <script src="js/examples/js/loaders/DDSLoader.js"></script>
+        <script src="js/examples/js/loaders/MTLLoader.js"></script>
+        <script src="js/examples/js/loaders/OBJLoader.js"></script>
+        <script src="js/examples/js/controls/OrbitControls.js"></script>
+
+        <script src="js/examples/js/Detector.js"></script>
+        <script src="js/examples/js/libs/stats.min.js"></script>
+
+        <script>
+            // declare variables
+            var scene = new THREE.Scene();
+            // declaring a second scene to place the text sprites on; solves transparency issues with webGL
+            var scene2 = new THREE.Scene();
+            // set scene height and width. can also use window.innerHeight, etc... for responsive size
+            var sceneHeight = 500;
+            var sceneWidth = 900;
+            var camera = new THREE.PerspectiveCamera(75, sceneWidth / sceneHeight, 0.1, 1000);
+            var renderer = new THREE.WebGLRenderer({
+                antialias: true
+            });
+
+            // set up renderer
+            renderer.setSize(sceneWidth, sceneHeight);
+            // setclearcolor is how to set the background color
+            renderer.setClearColor( 0xC2C2C2 );
+            // added to resolve the webgl transparency issue
+            renderer.autoClear = false;
+            document.body.appendChild(renderer.domElement);
+            renderer.domElement.id = "context"
+            
+            // add lights
+            // var light = new THREE.AmbientLight(0x404040); // soft white light
+            scene.add(new THREE.HemisphereLight(0xaaaaaa, 0x444444));
+            var light1 = new THREE.DirectionalLight(0xffffcc, 0.2);
+            light1.position.set(0, .75, .75);
+            scene.add(light1);
+
+            var light2 = new THREE.DirectionalLight(0xffffcc, 0.2);
+            light2.position.set(.75, .8, 1);
+            scene.add(light2);
+
+            // SPRITES
+            
+            // CANVAS A
+            
+            // create a canvas for the sprite
+            var canvasA = document.createElement('canvas');
+            var size = 256; // CHANGED
+            canvasA.width = size;
+            canvasA.height = size;
+            var context = canvasA.getContext('2d');
+            // text formatting
+            context.fillStyle = '#ff0000'; // CHANGED
+            context.textAlign = 'center';
+            context.font = '48px Arial';
+            context.fillText("A", size / 2, size / 2);
+            
+            // create a new texture
+            var amapA = new THREE.Texture(canvasA);
+            amapA.needsUpdate = true;
+
+            // map texture onto new material 
+            var matA = new THREE.SpriteMaterial({
+                map: amapA,
+                transparent: false,
+                //useScreenCoordinates: false,
+                color: 0xffffff // CHANGED
+            });
+
+            // create a new sprite with the material you just created
+            var spA = new THREE.Sprite(matA);
+            spA.scale.set( 20, 20, 20 ); // CHANGED
+            spA.position.x = 59;
+            spA.position.y = 44;
+            spA.position.z = 13;
+            // add sprite to scene2, not scene 1
+            scene2.add(spA);    
+
+
+            //CANVAS B
+
+            var canvasB = document.createElement('canvas');
+            var size = 256; // CHANGED
+            canvasB.width = size;
+            canvasB.height = size;
+            var context = canvasB.getContext('2d');
+            context.fillStyle = '#ff0000'; // CHANGED
+            context.textAlign = 'center';
+            context.font = '48px Arial';
+            context.fillText("B", size / 2, size / 2);
+
+            var amapB = new THREE.Texture(canvasB);
+            amapB.needsUpdate = true;
+
+            var matB = new THREE.SpriteMaterial({
+                map: amapB,
+                transparent: false,
+                //useScreenCoordinates: false,
+                color: 0xffffff // CHANGED
+            });
+
+            var spB = new THREE.Sprite(matB);
+            spB.scale.set( 20, 20, 1 ); // CHANGED
+            spB.position.x = 20;
+            spB.position.y = 5;
+            spB.position.z = 15;
+            scene2.add(spB); 
+
+
+            //CANVAS C
+
+            var canvasC = document.createElement('canvas');
+            var size = 256; // CHANGED
+            canvasC.width = size;
+            canvasC.height = size;
+            var context = canvasC.getContext('2d');
+            context.fillStyle = '#ff0000'; // CHANGED
+            context.textAlign = 'center';
+            context.font = '48px Arial';
+            context.fillText("C", size / 2, size / 2);
+
+            var amapC = new THREE.Texture(canvasC);
+            amapC.needsUpdate = true;
+
+            var matC = new THREE.SpriteMaterial({
+                map: amapC,
+                transparent: false,
+                //useScreenCoordinates: false,
+                color: 0xffffff // CHANGED
+            });
+
+            var spC = new THREE.Sprite(matC);
+            spC.scale.set( 20, 20, 1 ); // CHANGED
+            spC.position.x = 12;
+            spC.position.y = 5;
+            spC.position.z = 15;
+            scene2.add(spC); 
+
+
+            //CANVAS D
+
+            var canvasD = document.createElement('canvas');
+            var size = 256; // CHANGED
+            canvasD.width = size;
+            canvasD.height = size;
+            var context = canvasD.getContext('2d');
+            context.fillStyle = '#ff0000'; // CHANGED
+            context.textAlign = 'center';
+            context.font = '48px Arial';
+            context.fillText("D", size / 2, size / 2);
+
+            var amapD = new THREE.Texture(canvasD);
+            amapD.needsUpdate = true;
+
+            var matD = new THREE.SpriteMaterial({
+                map: amapD,
+                transparent: false,
+                //useScreenCoordinates: false,
+                color: 0xffffff // CHANGED
+            });
+
+            var spD = new THREE.Sprite(matD);
+            spD.scale.set( 20, 20, 1 ); // CHANGED
+            spD.position.x = 3;
+            spD.position.y = -75;
+            spD.position.z = 45;
+            scene2.add(spD); 
+
+            //5TH FLOOR
+
+            var canvasE = document.createElement('canvas');
+            var size = 256; // CHANGED
+            canvasE.width = size;
+            canvasE.height = size;
+            var context = canvasE.getContext('2d');
+            context.fillStyle = '#ff0000'; // CHANGED
+            context.textAlign = 'center';
+            context.font = '48px Arial';
+            context.fillText("5th Floor", size / 2, size / 2);
+
+            var amapE = new THREE.Texture(canvasE);
+            amapE.needsUpdate = true;
+
+            var matE = new THREE.SpriteMaterial({
+                map: amapE,
+                transparent: false,
+                //useScreenCoordinates: false,
+                color: 0xffffff // CHANGED
+            });
+
+            var spE = new THREE.Sprite(matE);
+            spE.scale.set( 20, 20, 1 ); // CHANGED
+            spE.position.x = 41;
+            spE.position.y = -33;
+            spE.position.z = 40;
+            scene2.add(spE); 
+
+
+            //FABLAB
+
+            var canvasF = document.createElement('canvas');
+            var size = 256; // CHANGED
+            canvasF.width = size;
+            canvasF.height = size;
+            var context = canvasF.getContext('2d');
+            context.fillStyle = '#ff0000'; // CHANGED
+            context.textAlign = 'center';
+            context.font = '48px Arial';
+            context.fillText("FabLab", size / 2, size / 2);
+
+            var amapF = new THREE.Texture(canvasF);
+            amapF.needsUpdate = true;
+
+            var matF = new THREE.SpriteMaterial({
+                map: amapF,
+                transparent: false,
+                //useScreenCoordinates: false,
+                color: 0xffffff // CHANGED
+            });
+
+            var spF = new THREE.Sprite(matF);
+            spF.scale.set( 20, 20, 1 ); // CHANGED
+            spF.position.x = -19;
+            spF.position.y = 23;
+            spF.position.z = 0;
+            scene2.add(spF); 
+
+
+            // LOAD OBJECTS
+            
+            // declare global arrays first so you can push the obj into it later
+            var stuff1 = [];
+            var stuff2 = [];
+            var stuff3 = [];
+            var stuff4 = [];
+
+            // load the material first
+            var sphereA = new THREE.MTLLoader();
+            sphereA.load('3d/sphereA.mtl', function(material){
+                material.preload();
+                var loader = new THREE.OBJLoader();
+                loader.setMaterials(material);
+                // then load the object and apply the material to the object
+                loader.load('3d/sphereA.obj', function(object){
+                    // add object to the scene first
+                    scene.add(object);
+                    // then push the object into the empty stuff array
+                    stuff1.push(object);
+                });
+            });
+
+            var sphereB = new THREE.MTLLoader();
+            sphereB.load('3d/sphereB.mtl', function(material){
+                material.preload();
+                var loader = new THREE.OBJLoader();
+                loader.setMaterials(material);
+                loader.load('3d/sphereB.obj', function(object){
+                    scene.add(object);
+                    stuff2.push(object);
+                });
+            });
+
+            var sphereC = new THREE.MTLLoader();
+            sphereC.load('3d/sphereC.mtl', function(material){
+                material.preload();
+                var loader = new THREE.OBJLoader();
+                loader.setMaterials(material);
+                loader.load('3d/sphereC.obj', function(object){
+                    scene.add(object);
+                    stuff3.push(object);
+                });
+            });
+
+            var sphereD = new THREE.MTLLoader();
+            sphereD.load('3d/sphereD.mtl', function(material){
+                material.preload();
+                var loader = new THREE.OBJLoader();
+                loader.setMaterials(material);
+                loader.load('3d/sphereD.obj', function(object){
+                    scene.add(object);
+                    stuff4.push(object);
+                });
+            });
+
+            var gund = new THREE.MTLLoader();
+            gund.load('3d/gund_model3.mtl', function(material) {
+                material.preload();
+                var loader = new THREE.OBJLoader();
+                loader.setMaterials(material);
+                loader.load('3d/gund_model3.obj',
+                    function(object) {
+                        scene.add(object);
+    //                    stuff.push(object);
+
+                    });
+            });
+
+
+            // IMAGE CLICK
+            
+            
+            // set images to hidden to begin with
+            document.getElementById("imageA").style.visibility = "hidden";
+            document.getElementById("imageB").style.visibility = "hidden";
+            document.getElementById("imageC").style.visibility = "hidden";
+            document.getElementById("imageD").style.visibility = "hidden";
+            
+            // SET CAMERA POSITION
+
+            camera.position.z = 50;
+            camera.position.y = 80;
+            camera.position.x = -20;
+            // setting the up vector of the camera helps to orient it
+            camera.up = new THREE.Vector3(0,0,1);
+            camera.lookAt(new THREE.Vector3(0,0,0));
+            
+            // DECLARE RAYCASTER VARIABLES
+
+            // original red color (couldnt figure out how to reload .mtl so just switching back to the rgb)
+            var baseColor = 0xdff5a49;
+            var foundColor = 0xffffff;
+            // hover color
+            var intersectColor = 0x00D66B;
+            var raycaster = new THREE.Raycaster();
+            var mouse = new THREE.Vector2();
+            var intersected1;
+            var intersected2;
+            var intersected3;
+            var intersected4;
+
+            // this function displays a detail image on the upper corner when the sphere is clicked
+            function onDocumentClick(event) { 
+                var offsetX = renderer.domElement.offsetLeft * (2 / sceneWidth);
+                var offsetY = renderer.domElement.offsetTop * (2 / sceneHeight);
+                mouse.x = (event.clientX / sceneWidth) * 2 - 1 - offsetX;
+                mouse.y = -(event.clientY / sceneHeight) * 2 + 1 + offsetY;
+                
+                // Tell our raycaster to cast from our mouse
+                raycaster.setFromCamera(mouse, camera);
+                
+                var intersections1 = raycaster.intersectObjects(stuff1, true );
+                if (intersections1.length > 0) { // If we find any intersections
+                    document.getElementById("imageA").style.visibility = "visible";
+                    console.log("Clicked");
+                } else {document.getElementById("imageA").style.visibility = "hidden";}
+
+                var intersections2 = raycaster.intersectObjects(stuff2, true );
+                if (intersections2.length > 0) { // If we find any intersections
+                    document.getElementById("imageB").style.visibility = "visible";
+                    console.log("Clicked");
+                } else {document.getElementById("imageB").style.visibility = "hidden";}
+
+                var intersections3 = raycaster.intersectObjects(stuff3, true );
+                if (intersections3.length > 0) { // If we find any intersections
+                    document.getElementById("imageC").style.visibility = "visible";
+                    console.log("Clicked");
+                } else {document.getElementById("imageC").style.visibility = "hidden";}
+
+                var intersections4 = raycaster.intersectObjects(stuff4, true );
+                if (intersections4.length > 0) { // If we find any intersections
+                    document.getElementById("imageD").style.visibility = "visible";
+                    console.log("Clicked");
+                } else {document.getElementById("imageD").style.visibility = "hidden";}
+             };
+            
+             // And then actually attach our onDocumentClick function as an event handler to when the canvas hears a `click`
+             renderer.domElement.addEventListener('click', onDocumentClick, false);
+
+            // on hovering over the sphere, turns green
+            function onDocumentMouseMove(event) {
+                event.preventDefault();
+                var offsetX = renderer.domElement.offsetLeft * (2 / sceneWidth);
+                var offsetY = renderer.domElement.offsetTop * (2 / sceneHeight);
+                mouse.x = (event.clientX / sceneWidth) * 2 - 1 - offsetX;
+                mouse.y = -(event.clientY / sceneHeight) * 2 + 1 + offsetY;
+                raycaster.setFromCamera(mouse, camera);
+                var intersections1 = raycaster.intersectObjects(stuff1, true);
+
+                if (intersections1.length > 0) {
+                    console.log("i work");
+                    if (intersected1 != intersections1[0].object) {
+                        if (intersected1) intersected1.material.color.setHex(baseColor);
+                        //document.getElementById("imageA").style.visibility = "visible";
+                        intersected1 = intersections1[0].object;
+                        intersected1.material.color.setHex(intersectColor);
+                    }
+                    document.body.style.cursor = 'pointer';
+                } else if (intersected1) {
+                    intersected1.material.color.setHex(baseColor);
+                    //document.getElementById("imageA").style.visibility = "hidden";
+                    intersected1 = null;
+                    document.body.style.cursor = 'auto';
+                }
+
+                var intersections2 = raycaster.intersectObjects(stuff2, true);
+                if (intersections2.length > 0) {
+                    console.log("i work");
+                    if (intersected2 != intersections2[0].object) {
+                        if (intersected2) intersected2.material.color.setHex(baseColor);
+                        //document.getElementById("imageB").style.visibility = "visible";
+                        intersected2 = intersections2[0].object;
+                        intersected2.material.color.setHex(intersectColor);
+                    }
+                    document.body.style.cursor = 'pointer';
+                } else if (intersected2) {
+                    intersected2.material.color.setHex(baseColor);
+                    //document.getElementById("imageB").style.visibility = "hidden";
+                    intersected2 = null;
+                    document.body.style.cursor = 'auto';
+                }           
+
+                var intersections3 = raycaster.intersectObjects(stuff3, true);
+                if (intersections3.length > 0) {
+                    console.log("i work");
+                    if (intersected3 != intersections3[0].object) {
+                        if (intersected3) intersected3.material.color.setHex(baseColor);
+                        //document.getElementById("imageC").style.visibility = "visible";
+                        intersected3 = intersections3[0].object;
+                        intersected3.material.color.setHex(intersectColor);
+                    }
+                    document.body.style.cursor = 'pointer';
+                } else if (intersected3) {
+                    intersected3.material.color.setHex(baseColor);
+                    //document.getElementById("imageC").style.visibility = "hidden";
+                    intersected3 = null;
+                    document.body.style.cursor = 'auto';
+                }   
+
+                var intersections4 = raycaster.intersectObjects(stuff4, true);
+                if (intersections4.length > 0) {
+                    console.log("i work");
+                    if (intersected4 != intersections4[0].object) {
+
+                        if (intersected4) intersected4.material.color.setHex(baseColor);
+                        //document.getElementById("imageD").style.visibility = "visible";
+                        intersected4 = intersections4[0].object;
+                        intersected4.material.color.setHex(intersectColor);
+                    }
+                    document.body.style.cursor = 'pointer';
+                } else if (intersected4) {
+                    intersected4.material.color.setHex(baseColor);
+                   // document.getElementById("imageD").style.visibility = "hidden";
+                    intersected4 = null;
+                    document.body.style.cursor = 'auto';
+                }  
+            };
+
+            renderer.domElement.addEventListener('mousemove', onDocumentMouseMove, false);
+        
+            // render function
+            var render = function() {
+                requestAnimationFrame(render);
+                // first clear the renderer
+                renderer.clear();
+                // then call the first scene without the sprites
+                renderer.render(scene, camera);
+                renderer.clearDepth();
+                // then call the sprites
+                renderer.render(scene2, camera);
+                controls.update();
+            };
+
+            // orbital controls for camera
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.target.set(0,0,0);
+            render();
+        </script>
+    </body>
+</html>
