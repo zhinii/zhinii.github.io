@@ -39,16 +39,16 @@
                         lastPoint.y = event.y;
                     }
                 });
-                //https://www.kirupa.com/html5/handling_events_for_many_elements.htm - used as guide for below code
-                //add event listener to the #pictures div
-                var photosToShow = document.querySelector('#pictures');
-                photosToShow.addEventListener('click', photoClicked, false);
-                // function to run when mouseclick occurs on images
-            
-                colorChange.addEventListener('click', changeStroke, false);
-                function changeStroke(c) {
-                        var colorClicked = c.target.getAttribute('data-color');
-                        console.log(colorClicked);
-                        ctx.strokeStyle = colorClicked;
-                    
-                }
+
+       var draw = document.getElementById('draw2d');
+       var nav = document.getElementById('view3d');
+
+       draw.addEventListener('click', function(){
+                 ctx.clearRect(0, 0, canvas.width, canvas.height);
+        canvas.style.display = 'block';
+       });
+
+       nav.addEventListener('click', function(){
+        canvas.style.display = 'none';
+        console.log('hide');
+       });
