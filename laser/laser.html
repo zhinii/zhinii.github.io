@@ -3,6 +3,7 @@
 <title>
 </title>
 <link rel='stylesheet' href='lasermenu.css'>
+<script src='js/2dcanvas.js'></script>
 <script src='js/three.js'></script>
 <script src='js/OrbitControls.js'></script>
 <script src='js/OBJLoader.js'></script>
@@ -11,6 +12,19 @@
 </head>
 
 <body>
+ <canvas id='artboard' ></canvas>
+   
+            <span id='colorChange'>
+            <button  type='button' id='red' data-color='#ff0000'>Red</button>
+            <button   type='button' id='blue' data-color='#0000ff'>Blue</button>
+            <button  type='button' id='green' data-color='#00ff00'>Green</button>
+            <button  type='button' id='black' data-color='#000000'>Black</button>
+            </span>
+
+
+
+
+
   <div id='control'>left mouse click rotate, right mouse click pan, mouse wheel zoom in/out</div>
   <div id='imageshow' class='imageshow'>
     <img data-src="" alt="">
