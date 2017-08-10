@@ -1,5 +1,7 @@
-         //assign canvas to var
+  //assign canvas to var
                 var canvas = document.getElementById('artboard');
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
                 //create drawing elements in canvas i.e. line color, width
                 var ctx = canvas.getContext('2d');
                 ctx.fillStyle = "#000000";
@@ -37,8 +39,12 @@
                         lastPoint.y = event.y;
                     }
                 });
-          
-              
+                //https://www.kirupa.com/html5/handling_events_for_many_elements.htm - used as guide for below code
+                //add event listener to the #pictures div
+                var photosToShow = document.querySelector('#pictures');
+                photosToShow.addEventListener('click', photoClicked, false);
+                // function to run when mouseclick occurs on images
+            
                 colorChange.addEventListener('click', changeStroke, false);
                 function changeStroke(c) {
                         var colorClicked = c.target.getAttribute('data-color');
