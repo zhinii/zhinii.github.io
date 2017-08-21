@@ -101,9 +101,10 @@ for(var i = 0; i <clickToHide.length; i++){
         console.log('save');
         render();
         var screenshot = renderer.domElement.toDataURL();
+        console.log(screenshot);
 
-        var link = document.createElement("a");
-       link.download = 'capture.png';
-       link.href = saveScene;
-       link.click();
+       //  var link = document.createElement("a");
+       // link.download = 'capture.png';
+       // link.href = saveScene;
+       // link.click();
        });
