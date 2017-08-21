@@ -53,15 +53,4 @@
         console.log('hide');
        });
 
-       var saveScene = document.getElementById('save');
-
-       saveScene.addEventListener('click', function(){
-        console.log('save');
-        render();
-        var screenshot = renderer.domElement.toDataURL();
-
-        var link = document.createElement("a");
-       link.download = 'capture.png';
-       link.href = saveScene;
-       link.click();
-       });
+      

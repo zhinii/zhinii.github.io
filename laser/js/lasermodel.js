@@ -93,3 +93,17 @@ for(var i = 0; i <clickToHide.length; i++){
 	    controls.target.set( 0,30,0 );
     render();
     //end of controls
+
+
+ var saveScene = document.getElementById('save');
+
+       saveScene.addEventListener('click', function(){
+        console.log('save');
+        render();
+        var screenshot = renderer.domElement.toDataURL();
+
+        var link = document.createElement("a");
+       link.download = 'capture.png';
+       link.href = saveScene;
+       link.click();
+       });
