@@ -52,3 +52,13 @@
         canvas.style.display = 'none';
         console.log('hide');
        });
+
+       var saveScene = document.getElementById('save');
+
+       saveScene.addEventListener('click', function(){
+        render();
+        var screenshot = renderer.domElement.toDataURL();
+
+        saveScene.download = 'capture.png';
+        saveScene.href = imgData;
+       });
