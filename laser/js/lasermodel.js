@@ -13,7 +13,6 @@ var scene = new THREE.Scene();
     var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 500);
     var renderer = new THREE.WebGLRenderer({
         antialias: true
-        preserveDrawingBuffer: true
     });
 renderer.setClearColor( 0xCCCCCC );
   camera.position.z = 20;
@@ -95,7 +94,7 @@ for(var i = 0; i <clickToHide.length; i++){
     render();
     //end of controls
 
-
+//trying to save scene.
  var saveScene = document.getElementById('save');
 
        saveScene.addEventListener('click', function(){
