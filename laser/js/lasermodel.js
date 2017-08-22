@@ -150,10 +150,10 @@ for(var i = 0; i <clickToHide.length; i++){
        var nav = document.getElementById('view3d');
 
        draw.addEventListener('click', function(){
-       	  render();
+       	  // render();
                  ctx.clearRect(0, 0, canvas.width, canvas.height);
         canvas.style.display = 'block';
-         render();
+         // render();
         var screenshot = renderer.domElement.toDataURL();
         var imgSS = new Image;
         imgSS.src = screenshot;
