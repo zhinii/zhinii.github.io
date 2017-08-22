@@ -3,6 +3,7 @@
                 canvas.width = window.innerWidth;
                 canvas.height = window.innerHeight;
                 //create drawing elements in canvas i.e. line color, width
+                canvas.display.style = 'none';
                 var ctx = canvas.getContext('2d');
                 ctx.fillStyle = "#000000";
                 ctx.lineWidth = 2;
@@ -46,6 +47,12 @@
        draw.addEventListener('click', function(){
                  ctx.clearRect(0, 0, canvas.width, canvas.height);
         canvas.style.display = 'block';
+         render();
+        var screenshot = renderer.domElement.toDataURL();
+        var imgSS = new Image;
+        imgSS.src = screenshot;
+        ctx.drawImage(imgSS,0,0);
+
        });
 
        nav.addEventListener('click', function(){

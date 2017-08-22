@@ -95,19 +95,19 @@ for(var i = 0; i <clickToHide.length; i++){
     //end of controls
 
 //trying to save scene as image.
- var saveScene = document.getElementById('save');
+ // var saveScene = document.getElementById('save');
 
-       saveScene.addEventListener('click', function(){
+ //       saveScene.addEventListener('click', function(){
       
-        render();
-        var screenshot = renderer.domElement.toDataURL();
+ //        render();
+ //        var screenshot = renderer.domElement.toDataURL();
       
 
-        var link = document.createElement("a");
-       link.download = 'capture.png';
-       link.href = screenshot;
-       link.click();
-       });
+ //        var link = document.createElement("a");
+ //       link.download = 'capture.png';
+ //       link.href = screenshot;
+ //       link.click();
+ //       });
 
        //thoughts to draw on scene
        // capture scene as image and draw to canvas
