@@ -3,7 +3,7 @@
                 canvas.width = window.innerWidth;
                 canvas.height = window.innerHeight;
                 //create drawing elements in canvas i.e. line color, width
-                canvas.display.style = 'none';
+                canvas.style.display = 'none';
                 var ctx = canvas.getContext('2d');
                 ctx.fillStyle = "#000000";
                 ctx.lineWidth = 2;
