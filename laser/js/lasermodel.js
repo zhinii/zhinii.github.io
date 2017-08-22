@@ -94,17 +94,23 @@ for(var i = 0; i <clickToHide.length; i++){
     render();
     //end of controls
 
-//trying to save scene.
+//trying to save scene as image.
  var saveScene = document.getElementById('save');
 
        saveScene.addEventListener('click', function(){
-        console.log('save');
+      
         render();
         var screenshot = renderer.domElement.toDataURL();
-        console.log(screenshot);
+      
 
         var link = document.createElement("a");
        link.download = 'capture.png';
        link.href = screenshot;
        link.click();
        });
+
+       //thoughts to draw on scene
+       // capture scene as image and draw to canvas
+       //draw on canvas with pen
+       //save drawn on image as download
+       //to view in 3d, clear canvas
