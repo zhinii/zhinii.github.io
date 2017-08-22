@@ -94,20 +94,6 @@ for(var i = 0; i <clickToHide.length; i++){
     render();
     //end of controls
 
-//trying to save scene as image.
- // var saveScene = document.getElementById('save');
-
- //       saveScene.addEventListener('click', function(){
-      
- //        render();
- //        var screenshot = renderer.domElement.toDataURL();
-      
-
- //        var link = document.createElement("a");
- //       link.download = 'capture.png';
- //       link.href = screenshot;
- //       link.click();
- //       });
 
        //thoughts to draw on scene
        // capture scene as image and draw to canvas
@@ -177,4 +163,19 @@ for(var i = 0; i <clickToHide.length; i++){
        nav.addEventListener('click', function(){
         canvas.style.display = 'none';
         console.log('hide');
+       });
+
+
+//trying to save scene (canvas) as image.
+ var saveScene = document.getElementById('save');
+
+       saveScene.addEventListener('click', function(){
+    
+        var screenshot = canvas.toDataURL();
+      
+
+        var link = document.createElement("a");
+       link.download = 'capture.png';
+       link.href = screenshot;
+       link.click();
        });
