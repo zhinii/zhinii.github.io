@@ -150,6 +150,7 @@ for(var i = 0; i <clickToHide.length; i++){
        var nav = document.getElementById('view3d');
 
        draw.addEventListener('click', function(){
+       	  render();
                  ctx.clearRect(0, 0, canvas.width, canvas.height);
         canvas.style.display = 'block';
          render();
