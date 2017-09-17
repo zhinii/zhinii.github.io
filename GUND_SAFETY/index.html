@@ -401,30 +401,30 @@
                 // Tell our raycaster to cast from our mouse
                 raycaster.setFromCamera(mouse, camera);
                 
-             //    var intersections1 = raycaster.intersectObjects(stuff1, true );
-             //    if (intersections1.length > 0) { // If we find any intersections
-             //        document.getElementById("imageA").style.visibility = "visible";
-             //        console.log("Clicked");
-             //    } else {document.getElementById("imageA").style.visibility = "hidden";}
+                var intersections1 = raycaster.intersectObjects(stuff1, true );
+                if (intersections1.length > 0) { // If we find any intersections
+                    document.getElementById("imageA").style.visibility = "visible";
+                    console.log("Clicked");
+                } else {document.getElementById("imageA").style.visibility = "hidden";}
 
-             //    var intersections2 = raycaster.intersectObjects(stuff2, true );
-             //    if (intersections2.length > 0) { // If we find any intersections
-             //        document.getElementById("imageB").style.visibility = "visible";
-             //        console.log("Clicked");
-             //    } else {document.getElementById("imageB").style.visibility = "hidden";}
+                var intersections2 = raycaster.intersectObjects(stuff2, true );
+                if (intersections2.length > 0) { // If we find any intersections
+                    document.getElementById("imageB").style.visibility = "visible";
+                    console.log("Clicked");
+                } else {document.getElementById("imageB").style.visibility = "hidden";}
 
-             //    var intersections3 = raycaster.intersectObjects(stuff3, true );
-             //    if (intersections3.length > 0) { // If we find any intersections
-             //        document.getElementById("imageC").style.visibility = "visible";
-             //        console.log("Clicked");
-             //    } else {document.getElementById("imageC").style.visibility = "hidden";}
+                var intersections3 = raycaster.intersectObjects(stuff3, true );
+                if (intersections3.length > 0) { // If we find any intersections
+                    document.getElementById("imageC").style.visibility = "visible";
+                    console.log("Clicked");
+                } else {document.getElementById("imageC").style.visibility = "hidden";}
 
-             //    var intersections4 = raycaster.intersectObjects(stuff4, true );
-             //    if (intersections4.length > 0) { // If we find any intersections
-             //        document.getElementById("imageD").style.visibility = "visible";
-             //        console.log("Clicked");
-             //    } else {document.getElementById("imageD").style.visibility = "hidden";}
-             // };
+                var intersections4 = raycaster.intersectObjects(stuff4, true );
+                if (intersections4.length > 0) { // If we find any intersections
+                    document.getElementById("imageD").style.visibility = "visible";
+                    console.log("Clicked");
+                } else {document.getElementById("imageD").style.visibility = "hidden";}
+             };
             
              // And then actually attach our onDocumentClick function as an event handler to when the canvas hears a `click`
              renderer.domElement.addEventListener('click', onDocumentClick, false);
