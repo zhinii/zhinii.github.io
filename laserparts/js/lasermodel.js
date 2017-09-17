@@ -90,11 +90,9 @@ objloader.load('models/zScrew.obj', function(object){      //change location
             document.body.style.cursor = 'auto';
         }
    
-        }
-         
-    };
-
-	
+        };
+//not sure is this is needed after raycasting
+	 renderer.domElement.addEventListener('mousemove', onDocumentMouseMove, false);
 		
 			
 			  var render = function() {
