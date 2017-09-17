@@ -75,7 +75,7 @@ objloader.load('models/zScrew.obj', function(object){      //change location
         raycaster.setFromCamera(mouse, camera);
         
         // Tell our raycaster to detect the intersection with that array of objects
-        var intersections = raycaster.intersectObjects(objects, true);
+        var intersections = raycaster.intersectObjects(stuff, true);
         if (intersections.length > 0) { 
         // If we find any intersections
           // Do stuff  
