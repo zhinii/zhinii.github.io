@@ -77,7 +77,8 @@ objloader.load('models/zScrew.obj', function(object){      //change location
         var intersections = raycaster.intersectObjects(objects, true);
         if (intersections.length > 0) { 
         // If we find any intersections
-          // Do stuff  if (intersected != intersections[0].object) {
+          // Do stuff  
+          if (intersected != intersections[0].object) {
                 if (intersected) intersected.material.color.setHex(baseColor);
                 intersected = intersections[0].object;
                 intersected.material.color.setHex(intersectColor);
