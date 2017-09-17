@@ -27,6 +27,7 @@ renderer.setClearColor( 0xCCCCCC );
     light.position.set(1, 1, 1);
     scene.add(light);
 			
+      var objloader = new THREE.OBJLoader();
 
 //load obj with mtl file
 		var lasermodelSolid = new THREE.MTLLoader();
