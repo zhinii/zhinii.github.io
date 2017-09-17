@@ -43,7 +43,7 @@ renderer.setClearColor( 0xCCCCCC );
 
 //load obj with no mtl and set material manually
 
-objloader.load('objmodels/zscrew.obj', function(object){      //change location
+objloader.load('objmodels/zScrew.obj', function(object){      //change location
     scene.add(object);
     object.material.color.setHex(0xffffff);
 });
