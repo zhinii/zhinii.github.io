@@ -45,100 +45,100 @@ renderer.setClearColor( 0xCCCCCC );
 //load obj with no mtl and material is default
 
 objloader.load('models/zScrew.obj', function(object){  
-  //set material
-    object.traverse( function ( child ) {
-        if ( child instanceof THREE.Mesh ) {
-              child.material.color.setHex(0xff0000);
-            // child.material = material;
-        }
-    });
+  // //set material
+  //   object.traverse( function ( child ) {
+  //       if ( child instanceof THREE.Mesh ) {
+  //             child.material.color.setHex(0xff0000);
+  //           // child.material = material;
+  //       }
+  //   });
       //change location
     scene.add(object);
-     //push object to array
-          stuff.push(object);
+     // //push object to array
+     //      stuff.push(object);
 });
 
 objloader.load('models/zMotor.obj', function(object){  
   //set material
-    object.traverse( function ( child ) {
-        if ( child instanceof THREE.Mesh ) {
-              child.material.color.setHex(0xff0000);
-            // child.material = material;
-        }
-    });
+    // object.traverse( function ( child ) {
+    //     if ( child instanceof THREE.Mesh ) {
+    //           child.material.color.setHex(0xff0000);
+    //         // child.material = material;
+    //     }
+    // });
       //change location
     scene.add(object);
-     //push object to array
-          stuff.push(object);
+     // //push object to array
+     //      stuff.push(object);
 });
 
 
 objloader.load('models/zBelt.obj', function(object){  
-  //set material
-    object.traverse( function ( child ) {
-        if ( child instanceof THREE.Mesh ) {
-              child.material.color.setHex(0xff0000);
-            // child.material = material;
-        }
-    });
+  // //set material
+  //   object.traverse( function ( child ) {
+  //       if ( child instanceof THREE.Mesh ) {
+  //             child.material.color.setHex(0xff0000);
+  //           // child.material = material;
+  //       }
+  //   });
       //change location
     scene.add(object);
-     //push object to array
-          stuff.push(object);
+     // //push object to array
+     //      stuff.push(object);
 });
 
 objloader.load('models/yMotor.obj', function(object){  
-  //set material
-    object.traverse( function ( child ) {
-        if ( child instanceof THREE.Mesh ) {
-              child.material.color.setHex(0xff0000);
-            // child.material = material;
-        }
-    });
+  // //set material
+  //   object.traverse( function ( child ) {
+  //       if ( child instanceof THREE.Mesh ) {
+  //             child.material.color.setHex(0xff0000);
+  //           // child.material = material;
+  //       }
+  //   });
       //change location
     scene.add(object);
-     //push object to array
-          stuff.push(object);
+     // //push object to array
+     //      stuff.push(object);
 });
 
 objloader.load('models/yBelt.obj', function(object){  
-  //set material
-    object.traverse( function ( child ) {
-        if ( child instanceof THREE.Mesh ) {
-              child.material.color.setHex(0xff0000);
-            // child.material = material;
-        }
-    });
+  // //set material
+  //   object.traverse( function ( child ) {
+  //       if ( child instanceof THREE.Mesh ) {
+  //             child.material.color.setHex(0xff0000);
+  //           // child.material = material;
+  //       }
+  //   });
       //change location
     scene.add(object);
      //push object to array
-          stuff.push(object);
+          // stuff.push(object);
 });
 objloader.load('models/xMotor.obj', function(object){  
-  //set material
-    object.traverse( function ( child ) {
-        if ( child instanceof THREE.Mesh ) {
-              child.material.color.setHex(0xff0000);
-            // child.material = material;
-        }
-    });
+  // //set material
+  //   object.traverse( function ( child ) {
+  //       if ( child instanceof THREE.Mesh ) {
+  //             child.material.color.setHex(0xff0000);
+  //           // child.material = material;
+  //       }
+  //   });
       //change location
     scene.add(object);
-     //push object to array
-          stuff.push(object);
+     // //push object to array
+     //      stuff.push(object);
 });
 objloader.load('models/pad.obj', function(object){  
-  //set material
-    object.traverse( function ( child ) {
-        if ( child instanceof THREE.Mesh ) {
-              child.material.color.setHex(0xff0000);
-            // child.material = material;
-        }
-    });
+  // //set material
+  //   object.traverse( function ( child ) {
+  //       if ( child instanceof THREE.Mesh ) {
+  //             child.material.color.setHex(0xff0000);
+  //           // child.material = material;
+  //       }
+  //   });
       //change location
     scene.add(object);
-     //push object to array
-          stuff.push(object);
+     // //push object to array
+     //      stuff.push(object);
 });
 objloader.load('models/mirrorTwo.obj', function(object){  
   //set material
@@ -168,30 +168,30 @@ objloader.load('models/mirrorLens.obj', function(object){
           stuff.push(object);
 });
 objloader.load('models/honeycomb.obj', function(object){  
-  //set material
-    object.traverse( function ( child ) {
-        if ( child instanceof THREE.Mesh ) {
-              child.material.color.setHex(0xff0000);
-            // child.material = material;
-        }
-    });
+  // //set material
+  //   object.traverse( function ( child ) {
+  //       if ( child instanceof THREE.Mesh ) {
+  //             child.material.color.setHex(0xff0000);
+  //           // child.material = material;
+  //       }
+  //   });
       //change location
     scene.add(object);
-     //push object to array
-          stuff.push(object);
+     // //push object to array
+     //      stuff.push(object);
 });
 objloader.load('models/doorSensor.obj', function(object){  
-  //set material
-    object.traverse( function ( child ) {
-        if ( child instanceof THREE.Mesh ) {
-              child.material.color.setHex(0xff0000);
-            // child.material = material;
-        }
-    });
+  // //set material
+  //   object.traverse( function ( child ) {
+  //       if ( child instanceof THREE.Mesh ) {
+  //             child.material.color.setHex(0xff0000);
+  //           // child.material = material;
+  //       }
+  //   });
       //change location
     scene.add(object);
-     //push object to array
-          stuff.push(object);
+     // //push object to array
+     //      stuff.push(object);
 });
 
 
