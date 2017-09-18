@@ -37,8 +37,7 @@ renderer.setClearColor( 0xCCCCCC );
 				loader.setMaterials(material);
 				loader.load('models/chassis.obj', function(object){
 					scene.add(object);
-          //push object to array
-				  stuff.push(object);
+         
 				});
 				
 			});
@@ -47,6 +46,8 @@ renderer.setClearColor( 0xCCCCCC );
 
 objloader.load('models/zScrew.obj', function(object){      //change location
     scene.add(object);
+     //push object to array
+          stuff.push(object);
 
 });
 
