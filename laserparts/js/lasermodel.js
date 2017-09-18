@@ -245,6 +245,34 @@ objloader.load('models/doorSensor.obj', function(object){
 
         //attaches event listender to the renderer, which is a dom element. so when a mouse moves it is listening and executing our function for raycasting
 	 renderer.domElement.addEventListener('mousemove', onDocumentMouseMove, false);
+
+   //raycasting function for click events
+    function onDocumentClick(event) { 
+                var offsetX = renderer.domElement.offsetLeft * (2 / sceneWidth);
+                var offsetY = renderer.domElement.offsetTop * (2 / sceneHeight);
+                mouse.x = (event.clientX / sceneWidth) * 2 - 1 - offsetX;
+                mouse.y = -(event.clientY / sceneHeight) * 2 + 1 + offsetY;
+                
+                // Tell our raycaster to cast from our mouse
+                raycaster.setFromCamera(mouse, camera);
+                
+                var intersections1 = raycaster.intersectObjects(mirror, true );
+                if (intersections1.length > 0) { // If we find any intersections
+                    document.getElementById("mirrorBezel").style.visibility = "visible";
+                    console.log("Clicked");
+                } else {document.getElementById("mirrorBezel").style.visibility = "hidden";}
+
+                var intersections2 = raycaster.intersectObjects(lens, true );
+                if (intersections2.length > 0) { // If we find any intersections
+                    document.getElementById("mirrorLens").style.visibility = "visible";
+                    console.log("Clicked");
+                } else {document.getElementById("mirrorLens").style.visibility = "hidden";}
+
+             
+             };
+            
+             // And then actually attach our onDocumentClick function as an event handler to when the canvas hears a `click`
+             renderer.domElement.addEventListener('click', onDocumentClick, false);
 		
 			
 			  var render = function() {
