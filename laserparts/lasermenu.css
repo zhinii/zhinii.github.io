@@ -1,3 +1,6 @@
+body {
+	font-family: 'Helvetica';
+}
 .parts{
 	position: absolute;
 	left: 620px;
@@ -6,6 +9,7 @@
 
 .parts img{
 	max-width: 50%;
+	border: 2px solid;
 
 }
 .head{
