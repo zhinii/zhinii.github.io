@@ -1,1 +1,8 @@
-   
+.parts{
+	position: absolute;
+	left: 620px;
+}   
+
+.parts img{
+	max-width: 50%;
+}
