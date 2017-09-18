@@ -1,8 +1,15 @@
 .parts{
 	position: absolute;
 	left: 620px;
+	visibility: hidden;
 }   
 
 .parts img{
 	max-width: 50%;
+
+}
+.head{
+	position:absolute;
+	left: 620px;
+	top:10px;
 }

@@ -152,6 +152,7 @@ objloader.load('models/mirrorTwo.obj', function(object){
     scene.add(object);
      //push object to array
           stuff.push(object);
+          mirror.push(object);
 });
 
 objloader.load('models/mirrorLens.obj', function(object){  
@@ -166,6 +167,7 @@ objloader.load('models/mirrorLens.obj', function(object){
     scene.add(object);
      //push object to array
           stuff.push(object);
+          lens.push(object);
 });
 objloader.load('models/honeycomb.obj', function(object){  
   // //set material
@@ -203,7 +205,11 @@ objloader.load('models/doorSensor.obj', function(object){
     var mouse = new THREE.Vector2();
     var intersected;
     //an array for raycasting, push objects into it. we will call array later
+    //array for all raycasting color change, each object goes in here
     var stuff = [];
+    //array for raycast clicking, each object gets its own array
+    var lens = [];
+    var mirror = [];
     console.log(stuff);
 
     //below is raycaster for mouse move intersections, second raycaster function is needed for click events
