@@ -204,6 +204,7 @@ objloader.load('models/doorSensor.obj', function(object){
     var intersected;
     //an array for raycasting, push objects into it. we will call array later
     var stuff = [];
+    console.log(stuff);
 
     //below is raycaster for mouse move intersections, second raycaster function is needed for click events
      function onDocumentMouseMove(event) { // This is a function to run when we click; we get information about the event through the `event` parameter
