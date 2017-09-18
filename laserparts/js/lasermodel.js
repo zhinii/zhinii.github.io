@@ -44,12 +44,18 @@ renderer.setClearColor( 0xCCCCCC );
 
 //load obj with no mtl and material is default
 
-objloader.load('models/zScrew.obj', function(object){      //change location
+objloader.load('models/zScrew.obj', function(object){  
+  //set material
+    object.traverse( function ( child ) {
+        if ( child instanceof THREE.Mesh ) {
+              child.material.color.setHex(0xff0000);
+            // child.material = material;
+        }
+    });
+      //change location
     scene.add(object);
-    object.material.color.setHex(0xff0000);
      //push object to array
           stuff.push(object);
-
 });
 
 
@@ -94,7 +100,8 @@ objloader.load('models/zScrew.obj', function(object){      //change location
         }
    
         };
-//not sure is this is needed after raycasting
+
+        //attaches event listender to the renderer, which is a dom element. so when a mouse moves it is listening and executing our function for raycasting
 	 renderer.domElement.addEventListener('mousemove', onDocumentMouseMove, false);
 		
 			
