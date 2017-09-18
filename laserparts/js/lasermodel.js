@@ -46,6 +46,7 @@ renderer.setClearColor( 0xCCCCCC );
 
 objloader.load('models/zScrew.obj', function(object){      //change location
     scene.add(object);
+    object.material.color.setHex(0xff0000);
      //push object to array
           stuff.push(object);
 
@@ -55,7 +56,7 @@ objloader.load('models/zScrew.obj', function(object){      //change location
 
 //ray casting with mouse picking objects
 
-   var baseColor = 0xffffff;
+   var baseColor = 0xff0000;
     var intersectColor = 0x00D66B;
     var raycaster = new THREE.Raycaster();
     var mouse = new THREE.Vector2();
