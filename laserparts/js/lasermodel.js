@@ -268,7 +268,6 @@ objloader.load('models/doorSensor.obj', function(object){
                     console.log("Clicked");
                 } else {document.getElementById("mirrorLens").style.visibility = "hidden";}
 
-             
              };
             
              // And then actually attach our onDocumentClick function as an event handler to when the canvas hears a `click`
