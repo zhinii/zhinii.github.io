@@ -56,6 +56,8 @@ objloader.load('models/blade.obj', function(object){
     scene.add(object);
      // //push object to array
           stuff.push(object);
+          blade.push(object);
+
 });
 
 objloader.load('models/cover.obj', function(object){  
@@ -70,6 +72,7 @@ objloader.load('models/cover.obj', function(object){
     scene.add(object);
      // //push object to array
           stuff.push(object);
+         cover.push(object);
 });
 
 
@@ -85,6 +88,7 @@ objloader.load('models/deck.obj', function(object){
     scene.add(object);
      // //push object to array
           stuff.push(object);
+          deck.push(object);
 });
 
 objloader.load('models/guard.obj', function(object){  
@@ -99,6 +103,7 @@ objloader.load('models/guard.obj', function(object){
     scene.add(object);
      // //push object to array
           stuff.push(object);
+          guard.push(object);
 });
 
 objloader.load('models/guide.obj', function(object){  
@@ -113,40 +118,15 @@ objloader.load('models/guide.obj', function(object){
     scene.add(object);
      //push object to array
           stuff.push(object);
+         guide.push(object);
 });
 
-objloader.load('models/mirrorTwo.obj', function(object){  
-  //set material
-    object.traverse( function ( child ) {
-        if ( child instanceof THREE.Mesh ) {
-              child.material.color.setHex(0xff0000);
-            // child.material = material;
-        }
-    });
-      //change location
-    scene.add(object);
-     //push object to array
-          stuff.push(object);
-          mirror.push(object);
-});
 
-objloader.load('models/mirrorLens.obj', function(object){  
-  //set material
-    object.traverse( function ( child ) {
-        if ( child instanceof THREE.Mesh ) {
-              child.material.color.setHex(0xff0000);
-            // child.material = material;
-        }
-    });
-      //change location
-    scene.add(object);
-     //push object to array
-          stuff.push(object);
-          lens.push(object);
-});
+
+
 //ray casting with mouse picking objects
 
-   var baseColor = 0xff0000;
+   var baseColor = 0xffffff;
     var intersectColor = 0x00D66B;
     var raycaster = new THREE.Raycaster();
     var mouse = new THREE.Vector2();
@@ -155,8 +135,11 @@ objloader.load('models/mirrorLens.obj', function(object){
     //array for all raycasting color change, each object goes in here
     var stuff = [];
     //array for raycast clicking, each object gets its own array
-    var lens = [];
-    var mirror = [];
+    var guide = [];
+    var blade = [];
+     var cover = [];
+      var deck = [];
+       var guard = [];
     console.log(stuff);
 
     //below is raycaster for mouse move intersections, second raycaster function is needed for click events
@@ -203,17 +186,36 @@ objloader.load('models/mirrorLens.obj', function(object){
                 // Tell our raycaster to cast from our mouse
                 raycaster.setFromCamera(mouse, camera);
                 
-                var intersections1 = raycaster.intersectObjects(mirror, true );
+                var intersections1 = raycaster.intersectObjects(blade, true );
                 if (intersections1.length > 0) { // If we find any intersections
                     document.getElementById("mirrorBezel").style.visibility = "visible";
                     console.log("Clicked");
                 } else {document.getElementById("mirrorBezel").style.visibility = "hidden";}
 
-                var intersections2 = raycaster.intersectObjects(lens, true );
+                var intersections2 = raycaster.intersectObjects(cover, true );
                 if (intersections2.length > 0) { // If we find any intersections
                     document.getElementById("mirrorLens").style.visibility = "visible";
                     console.log("Clicked");
                 } else {document.getElementById("mirrorLens").style.visibility = "hidden";}
+
+                   var intersections3 = raycaster.intersectObjects(deck, true );
+                if (intersections3.length > 0) { // If we find any intersections
+                    document.getElementById("mirrorLens").style.visibility = "visible";
+                    console.log("Clicked");
+                } else {document.getElementById("mirrorLens").style.visibility = "hidden";}
+
+                   var intersections4 = raycaster.intersectObjects(guard, true );
+                if (intersections4.length > 0) { // If we find any intersections
+                    document.getElementById("mirrorLens").style.visibility = "visible";
+                    console.log("Clicked");
+                } else {document.getElementById("mirrorLens").style.visibility = "hidden";}
+
+                   var intersections5 = raycaster.intersectObjects(guide, true );
+                if (intersections5.length > 0) { // If we find any intersections
+                    document.getElementById("mirrorLens").style.visibility = "visible";
+                    console.log("Clicked");
+                } else {document.getElementById("mirrorLens").style.visibility = "hidden";}
+               
 
              };
             
