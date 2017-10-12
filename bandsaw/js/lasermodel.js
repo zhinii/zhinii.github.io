@@ -55,7 +55,7 @@ objloader.load('models/blade.obj', function(object){
       //change location
     scene.add(object);
      // //push object to array
-     //      stuff.push(object);
+          stuff.push(object);
 });
 
 objloader.load('models/cover.obj', function(object){  
@@ -69,7 +69,7 @@ objloader.load('models/cover.obj', function(object){
       //change location
     scene.add(object);
      // //push object to array
-     //      stuff.push(object);
+          stuff.push(object);
 });
 
 
@@ -84,7 +84,7 @@ objloader.load('models/deck.obj', function(object){
       //change location
     scene.add(object);
      // //push object to array
-     //      stuff.push(object);
+          stuff.push(object);
 });
 
 objloader.load('models/guard.obj', function(object){  
@@ -98,7 +98,7 @@ objloader.load('models/guard.obj', function(object){
       //change location
     scene.add(object);
      // //push object to array
-     //      stuff.push(object);
+          stuff.push(object);
 });
 
 objloader.load('models/guide.obj', function(object){  
@@ -112,7 +112,7 @@ objloader.load('models/guide.obj', function(object){
       //change location
     scene.add(object);
      //push object to array
-          // stuff.push(object);
+          stuff.push(object);
 });
 
 objloader.load('models/mirrorTwo.obj', function(object){  
