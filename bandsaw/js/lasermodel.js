@@ -7,7 +7,7 @@
 var scene = new THREE.Scene();
 //set scene width and height var
 var sceneWidth = 600;
-var sceneHeight = 400
+var sceneHeight = 900
 //set camera 
     var camera = new THREE.PerspectiveCamera(75, sceneWidth / sceneHeight, 0.1, 500);
     var renderer = new THREE.WebGLRenderer({
