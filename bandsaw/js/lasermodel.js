@@ -188,33 +188,33 @@ objloader.load('models/guide.obj', function(object){
                 
                 var intersections1 = raycaster.intersectObjects(blade, true );
                 if (intersections1.length > 0) { // If we find any intersections
-                    document.getElementById("mirrorBezel").style.visibility = "visible";
+                    document.getElementById("blade").style.visibility = "visible";
                     console.log("Clicked");
-                } else {document.getElementById("mirrorBezel").style.visibility = "hidden";}
+                } else {document.getElementById("blade").style.visibility = "hidden";}
 
                 var intersections2 = raycaster.intersectObjects(cover, true );
                 if (intersections2.length > 0) { // If we find any intersections
-                    document.getElementById("mirrorLens").style.visibility = "visible";
+                    document.getElementById("cover").style.visibility = "visible";
                     console.log("Clicked");
-                } else {document.getElementById("mirrorLens").style.visibility = "hidden";}
+                } else {document.getElementById("cover").style.visibility = "hidden";}
 
                    var intersections3 = raycaster.intersectObjects(deck, true );
                 if (intersections3.length > 0) { // If we find any intersections
-                    document.getElementById("mirrorLens").style.visibility = "visible";
+                    document.getElementById("deck").style.visibility = "visible";
                     console.log("Clicked");
-                } else {document.getElementById("mirrorLens").style.visibility = "hidden";}
+                } else {document.getElementById("deck").style.visibility = "hidden";}
 
                    var intersections4 = raycaster.intersectObjects(guard, true );
                 if (intersections4.length > 0) { // If we find any intersections
-                    document.getElementById("mirrorLens").style.visibility = "visible";
+                    document.getElementById("guard").style.visibility = "visible";
                     console.log("Clicked");
-                } else {document.getElementById("mirrorLens").style.visibility = "hidden";}
+                } else {document.getElementById("guard").style.visibility = "hidden";}
 
                    var intersections5 = raycaster.intersectObjects(guide, true );
                 if (intersections5.length > 0) { // If we find any intersections
-                    document.getElementById("mirrorLens").style.visibility = "visible";
+                    document.getElementById("guide").style.visibility = "visible";
                     console.log("Clicked");
-                } else {document.getElementById("mirrorLens").style.visibility = "hidden";}
+                } else {document.getElementById("guide").style.visibility = "hidden";}
                
 
              };
