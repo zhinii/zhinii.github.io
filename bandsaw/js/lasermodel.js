@@ -7,7 +7,7 @@
 var scene = new THREE.Scene();
 //set scene width and height var
 var sceneWidth = 600;
-var sceneHeight = 900
+var sceneHeight = 600
 //set camera 
     var camera = new THREE.PerspectiveCamera(75, sceneWidth / sceneHeight, 0.1, 500);
     var renderer = new THREE.WebGLRenderer({
@@ -145,7 +145,7 @@ objloader.load('models/guide.obj', function(object){
     //below is raycaster for mouse move intersections, second raycaster function is needed for click events
      function onDocumentMouseMove(event) { // This is a function to run when we click; we get information about the event through the `event` parameter
         
-        // Set the x and y coordinates of our mouse vector to our pointer position, scaling for the width and height of our renderer (400 and 300, respectively)
+        // Set the x and y coordinates of our mouse vector to our pointer position, scaling for the width and height of our renderer (, respectively)
         var offsetX = renderer.domElement.offsetLeft*(2/sceneWidth);
         var offsetY = renderer.domElement.offsetTop*(2/sceneHeight);
         mouse.x = (event.clientX / sceneWidth) * 2 - 1 - offsetX;
