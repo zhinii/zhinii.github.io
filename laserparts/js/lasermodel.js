@@ -39,46 +39,49 @@ renderer.setClearColor( 0xCCCCCC );
 //load obj with no mtl and material is default
 
 objloader.load('models/zScrew.obj', function(object){  
-  // //set material
-  //   object.traverse( function ( child ) {
-  //       if ( child instanceof THREE.Mesh ) {
-  //             child.material.color.setHex(0xff0000);
-  //           // child.material = material;
-  //       }
-  //   });
+  //set material
+    object.traverse( function ( child ) {
+        if ( child instanceof THREE.Mesh ) {
+              child.material.color.setHex(0x0000FF);
+            // child.material = material;
+        }
+    });
       //change location
     scene.add(object);
-     // //push object to array
-     //      stuff.push(object);
+     //push object to array
+          stuff.push(object);
+          Zscrew.push(object);
 });
 
 objloader.load('models/zMotor.obj', function(object){  
   //set material
-    // object.traverse( function ( child ) {
-    //     if ( child instanceof THREE.Mesh ) {
-    //           child.material.color.setHex(0xff0000);
-    //         // child.material = material;
-    //     }
-    // });
+    object.traverse( function ( child ) {
+        if ( child instanceof THREE.Mesh ) {
+              child.material.color.setHex(0x0000FF);
+            // child.material = material;
+        }
+    });
       //change location
     scene.add(object);
-     // //push object to array
-     //      stuff.push(object);
+     //push object to array
+          stuff.push(object);
+          Zmotor.push(object);
 });
 
 
 objloader.load('models/zBelt.obj', function(object){  
-  // //set material
-  //   object.traverse( function ( child ) {
-  //       if ( child instanceof THREE.Mesh ) {
-  //             child.material.color.setHex(0xff0000);
-  //           // child.material = material;
-  //       }
-  //   });
+ //set material
+    object.traverse( function ( child ) {
+        if ( child instanceof THREE.Mesh ) {
+              child.material.color.setHex(0x0000FF);
+            // child.material = material;
+        }
+    });
       //change location
     scene.add(object);
-     // //push object to array
-     //      stuff.push(object);
+     //push object to array
+          stuff.push(object);
+          Zbelt.push(object);
 });
 
 objloader.load('models/yMotor.obj', function(object){  
@@ -204,6 +207,9 @@ objloader.load('models/doorSensor.obj', function(object){
     //array for raycast clicking, each object gets its own array until i can figure out how to put multiple objects in an array and call them individualy via raycasting
     var lens = [];
     var mirror = [];
+    var Zscrew = [];
+    var Zmotor = [];
+       var Zbelt = [];
     console.log(stuff);
 
     //below is raycaster for mouse move intersections, second raycaster function is needed for click events
