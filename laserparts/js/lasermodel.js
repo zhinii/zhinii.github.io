@@ -230,13 +230,14 @@ objloader.load('models/doorSensor.obj', function(object){
         // If we find any intersections
           // Do stuff  
           if (intersected != intersections[0].object) {
-                if (intersected) intersected.material.color.setHex(baseColor);
+                if (intersected) intersected.material.color.setHex(intersected.currentHex);
                 intersected = intersections[0].object;
+                intersected.currentHex = intersected.material.color.getHex();
                 intersected.material.color.setHex(intersectColor);
             }
             document.body.style.cursor = 'pointer';
         } else if (intersected) {
-            intersected.material.color.setHex(baseColor);
+            intersected.material.color.setHex(intersected.currentHex);
             intersected = null;
             document.body.style.cursor = 'auto';
         }
