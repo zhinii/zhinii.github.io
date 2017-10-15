@@ -1,9 +1,3 @@
-
-
-
-
-
-
 var scene = new THREE.Scene();
 //set scene width and height var
 var sceneWidth = 600;
@@ -207,7 +201,7 @@ objloader.load('models/doorSensor.obj', function(object){
     //an array for raycasting, push objects into it. we will call array later
     //array for all raycasting color change, each object goes in here
     var stuff = [];
-    //array for raycast clicking, each object gets its own array
+    //array for raycast clicking, each object gets its own array until i can figure out how to put multiple objects in an array and call them individualy via raycasting
     var lens = [];
     var mirror = [];
     console.log(stuff);
