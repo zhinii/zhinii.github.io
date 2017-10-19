@@ -100,6 +100,36 @@ objloader.load('models/zBelt.obj', function(object){
           Zbelt.push(object);
 });
 
+objloader.load('models/zScrewPulley.obj', function(object){  
+ //set material
+    object.traverse( function ( child ) {
+        if ( child instanceof THREE.Mesh ) {
+              child.material.color.setHex(0x0000FF);
+            // child.material = material;
+        }
+    });
+      //change location
+    scene.add(object);
+     //push object to array
+          stuff.push(object);
+          ZscrewPulley.push(object);
+});
+
+objloader.load('models/zMotorBelt.obj', function(object){  
+ //set material
+    object.traverse( function ( child ) {
+        if ( child instanceof THREE.Mesh ) {
+              child.material.color.setHex(0x0000FF);
+            // child.material = material;
+        }
+    });
+      //change location
+    scene.add(object);
+     //push object to array
+          stuff.push(object);
+          zMotorBelt.push(object);
+});
+
 objloader.load('models/yMotor.obj', function(object){  
   // //set material
   //   object.traverse( function ( child ) {
@@ -227,6 +257,8 @@ objloader.load('models/doorSensor.obj', function(object){
     var Zmotor = [];
     var ZmotorPulley = [];
        var Zbelt = [];
+       var Zmotorbelt = [];
+       var ZscrewPulley = [];
     console.log(stuff);
 
     //below is raycaster for mouse move intersections, second raycaster function is needed for click events
