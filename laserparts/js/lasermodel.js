@@ -36,7 +36,7 @@ renderer.setClearColor( 0xCCCCCC );
 				
 			});
 
-//load obj with no mtl and material is default
+//load obj with no mtl and material is defined hex value
 
 objloader.load('models/zScrew.obj', function(object){  
   //set material
@@ -67,6 +67,22 @@ objloader.load('models/zMotor.obj', function(object){
           stuff.push(object);
           Zmotor.push(object);
 });
+
+objloader.load('models/zMotorPulley.obj', function(object){  
+  //set material
+    object.traverse( function ( child ) {
+        if ( child instanceof THREE.Mesh ) {
+              child.material.color.setHex(0x0000FF);
+            // child.material = material;
+        }
+    });
+      //change location
+    scene.add(object);
+     //push object to array
+          stuff.push(object);
+          ZmotorPulley.push(object);
+});
+
 
 
 objloader.load('models/zBelt.obj', function(object){  
@@ -209,6 +225,7 @@ objloader.load('models/doorSensor.obj', function(object){
     var mirror = [];
     var Zscrew = [];
     var Zmotor = [];
+    var ZmotorPulley = [];
        var Zbelt = [];
     console.log(stuff);
 
