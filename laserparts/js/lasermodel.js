@@ -323,7 +323,7 @@ objloader.load('models/doorSensor.obj', function(object){
                 if (intersections3.length > 0) { // If we find any intersections
                     document.getElementById("Zscrew").style.visibility = "visible";
                     console.log("Clicked");
-                } else {document.getElementById("mirrorLens").style.visibility = "hidden";}
+                } else {document.getElementById("Zscrew").style.visibility = "hidden";}
 
                   var intersections4 = raycaster.intersectObjects(Zmotor, true );
                 if (intersections4.length > 0) { // If we find any intersections
