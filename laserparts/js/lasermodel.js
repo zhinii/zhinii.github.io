@@ -128,7 +128,7 @@ objloader.load('models/zMotorBelt.obj', function(object){
     scene.add(object);
      //push object to array
           stuff.push(object);
-          zMotorBelt.push(object);
+          Zmotorbelt.push(object);
 });
 
 objloader.load('models/yMotor.obj', function(object){  
@@ -257,9 +257,9 @@ objloader.load('models/doorSensor.obj', function(object){
     var Zscrew = [];
     var Zmotor = [];
     var ZmotorPulley = [];
-       var Zbelt = [];
-       var Zmotorbelt = [];
-       var ZscrewPulley = [];
+    var Zbelt = [];
+    var Zmotorbelt = [];
+    var ZscrewPulley = [];
     console.log(stuff);
 
     //below is raycaster for mouse move intersections, second raycaster function is needed for click events
