@@ -306,54 +306,60 @@ objloader.load('models/doorSensor.obj', function(object){
                 
                 // Tell our raycaster to cast from our mouse
                 raycaster.setFromCamera(mouse, camera);
+
+                var intersections = raycaster.intersectObjects(stuff, true);
+                if (intersections.length > 0){
+                  // for (var i = 0; i < stuff.length; i++)
+                  console.log(intersections);
+                }
                 
-                var intersections1 = raycaster.intersectObjects(mirror, true );
-                if (intersections1.length > 0) { // If we find any intersections
-                    document.getElementById("mirrorBezel").style.visibility = "visible";
-                    console.log("Clicked");
-                } else {document.getElementById("mirrorBezel").style.visibility = "hidden";}
+                // var intersections1 = raycaster.intersectObjects(mirror, true );
+                // if (intersections1.length > 0) { // If we find any intersections
+                //     document.getElementById("mirrorBezel").style.visibility = "visible";
+                //     console.log("Clicked");
+                // } else {document.getElementById("mirrorBezel").style.visibility = "hidden";}
 
-                var intersections2 = raycaster.intersectObjects(lens, true );
-                if (intersections2.length > 0) { // If we find any intersections
-                    document.getElementById("mirrorLens").style.visibility = "visible";
-                    console.log("Clicked");
-                } else {document.getElementById("mirrorLens").style.visibility = "hidden";}
+                // var intersections2 = raycaster.intersectObjects(lens, true );
+                // if (intersections2.length > 0) { // If we find any intersections
+                //     document.getElementById("mirrorLens").style.visibility = "visible";
+                //     console.log("Clicked");
+                // } else {document.getElementById("mirrorLens").style.visibility = "hidden";}
 
-                  var intersections3 = raycaster.intersectObjects(Zscrew, true );
-                if (intersections3.length > 0) { // If we find any intersections
-                    document.getElementById("Zscrew").style.visibility = "visible";
-                    console.log("Clicked");
-                } else {document.getElementById("Zscrew").style.visibility = "hidden";}
+                //   var intersections3 = raycaster.intersectObjects(Zscrew, true );
+                // if (intersections3.length > 0) { // If we find any intersections
+                //     document.getElementById("Zscrew").style.visibility = "visible";
+                //     console.log("Clicked");
+                // } else {document.getElementById("Zscrew").style.visibility = "hidden";}
 
-                  var intersections4 = raycaster.intersectObjects(Zmotor, true );
-                if (intersections4.length > 0) { // If we find any intersections
-                    document.getElementById("Zmotor").style.visibility = "visible";
-                    console.log("Clicked");
-                } else {document.getElementById("Zmotor").style.visibility = "hidden";}
+                //   var intersections4 = raycaster.intersectObjects(Zmotor, true );
+                // if (intersections4.length > 0) { // If we find any intersections
+                //     document.getElementById("Zmotor").style.visibility = "visible";
+                //     console.log("Clicked");
+                // } else {document.getElementById("Zmotor").style.visibility = "hidden";}
 
-                  var intersections5 = raycaster.intersectObjects(ZmotorPulley, true );
-                if (intersections5.length > 0) { // If we find any intersections
-                    document.getElementById("pulleyZmotor").style.visibility = "visible";
-                    console.log("Clicked");
-                } else {document.getElementById("pulleyZmotor").style.visibility = "hidden";}
+                //   var intersections5 = raycaster.intersectObjects(ZmotorPulley, true );
+                // if (intersections5.length > 0) { // If we find any intersections
+                //     document.getElementById("pulleyZmotor").style.visibility = "visible";
+                //     console.log("Clicked");
+                // } else {document.getElementById("pulleyZmotor").style.visibility = "hidden";}
 
-                 var intersections6 = raycaster.intersectObjects(Zbelt, true );
-                if (intersections6.length > 0) { // If we find any intersections
-                    document.getElementById("Zbelt").style.visibility = "visible";
-                    console.log("Clicked");
-                } else {document.getElementById("Zbelt").style.visibility = "hidden";}
+                //  var intersections6 = raycaster.intersectObjects(Zbelt, true );
+                // if (intersections6.length > 0) { // If we find any intersections
+                //     document.getElementById("Zbelt").style.visibility = "visible";
+                //     console.log("Clicked");
+                // } else {document.getElementById("Zbelt").style.visibility = "hidden";}
 
-                 var intersections5 = raycaster.intersectObjects(Zmotorbelt, true );
-                if (intersections5.length > 0) { // If we find any intersections
-                    document.getElementById("beltZmotor").style.visibility = "visible";
-                    console.log("Clicked");
-                } else {document.getElementById("beltZmotor").style.visibility = "hidden";}
+                //  var intersections5 = raycaster.intersectObjects(Zmotorbelt, true );
+                // if (intersections5.length > 0) { // If we find any intersections
+                //     document.getElementById("beltZmotor").style.visibility = "visible";
+                //     console.log("Clicked");
+                // } else {document.getElementById("beltZmotor").style.visibility = "hidden";}
 
-                 var intersections5 = raycaster.intersectObjects(ZscrewPulley, true );
-                if (intersections5.length > 0) { // If we find any intersections
-                    document.getElementById("pulleyZscrew").style.visibility = "visible";
-                    console.log("Clicked");
-                } else {document.getElementById("pulleyZscrew").style.visibility = "hidden";}
+                //  var intersections5 = raycaster.intersectObjects(ZscrewPulley, true );
+                // if (intersections5.length > 0) { // If we find any intersections
+                //     document.getElementById("pulleyZscrew").style.visibility = "visible";
+                //     console.log("Clicked");
+                // } else {document.getElementById("pulleyZscrew").style.visibility = "hidden";}
 
 
 
