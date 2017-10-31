@@ -310,7 +310,7 @@ objloader.load('models/doorSensor.obj', function(object){
                 var intersections = raycaster.intersectObjects(stuff, true);
                 if (intersections.length > 0){
                   // for (var i = 0; i < stuff.length; i++)
-                  console.log(intersections);
+                  console.log(stuff);
                 }
                 
                 // var intersections1 = raycaster.intersectObjects(mirror, true );
