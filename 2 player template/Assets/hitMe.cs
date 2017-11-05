@@ -7,7 +7,6 @@ public class hitMe : MonoBehaviour {
 		public GameObject item; //ibjecr we want to grab
 	public GameObject tempParent;  //object we want to attached it to when picked up until its dropped
 	public Transform guide;  //position we want it to sit when picked up
-	public Transform drop; //where the object will go when dropped.
 
 	bool playerInTrigger; ///this is used to indicate player is in 'hit zone'
 
