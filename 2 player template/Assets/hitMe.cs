@@ -21,7 +21,20 @@ public class hitMe : MonoBehaviour {
 	
 	}
 
-}
+	}
+	
+		void OnTriggerExit(Collider col)
+	{
+		if(col.gameObject.name == "player1")
+	{
+			Debug.Log("exit");
+
+		playerInTrigger = false;
+	
+	}
+
+	}
+
 
 //this says if player is in 'hit area' and they press the right key, they will pick up object
 	void Update(){
