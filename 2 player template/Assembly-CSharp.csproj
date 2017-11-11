@@ -57,6 +57,7 @@
      <Compile Include="Assets\MoveObject.cs" />
      <Compile Include="Assets\player1.cs" />
      <Compile Include="Assets\player2.cs" />
+     <Compile Include="Assets\UIScript.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

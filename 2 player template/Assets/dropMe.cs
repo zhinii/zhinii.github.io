@@ -42,6 +42,8 @@ private GameController gameController;
 		item.transform.parent = null;
 		item.transform.position = drop.transform.position;
 		gameController.AddScore (1);// adds score after drop
+		// UIScript ui = GameObject.Find("canvas/" + Image).GetComponent<UIScript>();
+		// ui.ObtainKey();
 	}
 	}
 }
