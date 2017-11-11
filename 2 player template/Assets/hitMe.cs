@@ -10,6 +10,7 @@ public class hitMe : MonoBehaviour {
 
 	bool playerInTrigger; ///this is used to indicate player is in 'hit zone'
 
+
 //this detect if player 1 is in 'hit area' to pick up object
 	void OnTriggerEnter (Collider col)
 	{
