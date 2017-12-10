@@ -1,12 +1,16 @@
-﻿using System.Collections;
+﻿// script is used to define what object is being picked up and which player can pick it up
+//create an 'empty' game object and make it a child of the object to be picked up. 
+//the size of the 'empty' object if the 'hit area' this object must have 'box collider', i.e. the are the player must breach in order for code to be active
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class hitMe : MonoBehaviour {
 
-		public GameObject item; //ibjecr we want to grab
+		public GameObject item; //oject we want to grab
 	public GameObject tempParent;  //object we want to attached it to when picked up until its dropped
-	public Transform guide;  //position we want it to sit when picked up
+	public Transform guide;  //position we want it to sit when picked up this is another empty object that is attached to a player
 
 	bool playerInTrigger; ///this is used to indicate player is in 'hit zone'
 
@@ -22,7 +26,7 @@ public class hitMe : MonoBehaviour {
 	}
 
 	}
-	
+	//this detects if player has left the 'hit area' and disbales ability to pick up object
 		void OnTriggerExit(Collider col)
 	{
 		if(col.gameObject.name == "player1")
