@@ -14,7 +14,7 @@ console.log(menuClick);
 
 //zbelt
 
-objloader.load('objmodels/zbelt.obj', function(object){
+objloader.load('models/zbelt.obj', function(object){
     scene.add(object);
     stuff.push(object);
 });
@@ -22,7 +22,7 @@ objloader.load('objmodels/zbelt.obj', function(object){
 
 //zmotor
 
-objloader.load('objmodels/zmotor.obj', function(object){
+objloader.load('models/zmotor.obj', function(object){
     scene.add(object);
     stuff.push(object);
 });
@@ -30,7 +30,7 @@ objloader.load('objmodels/zmotor.obj', function(object){
 
 //zscrew
 
-objloader.load('objmodels/zscrew.obj', function(object){      //change location
+objloader.load('models/zscrew.obj', function(object){      //change location
     scene.add(object);
     stuff.push(object);
 });
@@ -39,35 +39,35 @@ objloader.load('objmodels/zscrew.obj', function(object){      //change location
 
 //xmotor
 
-objloader.load('objmodels/xmotor.obj', function(object){      //*******change location
+objloader.load('models/xmotor.obj', function(object){      //*******change location
     scene.add(object);
     stuff.push(object);
 });
 
 //xbelt
 
-objloader.load('objmodels/xbelt.obj', function(object){      //*******change location
+objloader.load('models/xbelt.obj', function(object){      //*******change location
     scene.add(object);
     stuff.push(object);
 });
 
 //xrail
 
-objloader.load('objmodels/xrail.obj', function(object){      //*******change location
+objloader.load('models/xrail.obj', function(object){      //*******change location
     scene.add(object);
     stuff.push(object);
 });
 
 //ymotor
 
-objloader.load('objmodels/ymotor.obj', function(object){      //*******change location
+objloader.load('models/ymotor.obj', function(object){      //*******change location
     scene.add(object);
     stuff.push(object);
 });
 
 //yrails
 
-objloader.load('objmodels/yrail.obj', function(object){      //*******change location
+objloader.load('models/yrail.obj', function(object){      //*******change location
     scene.add(object);
     stuff.push(object);
 
@@ -75,7 +75,7 @@ objloader.load('objmodels/yrail.obj', function(object){      //*******change loc
 
 //ybelt
 
-objloader.load('objmodels/ybelt.obj', function(object){      //*******change location
+objloader.load('models/ybelt.obj', function(object){      //*******change location
     scene.add(object);
     stuff.push(object);
 });
@@ -83,49 +83,49 @@ objloader.load('objmodels/ybelt.obj', function(object){      //*******change loc
 
 //rulers
 
-objloader.load('objmodels/rulers.obj', function(object){      //*******change location
+objloader.load('models/rulers.obj', function(object){      //*******change location
     scene.add(object);
     stuff.push(object);
 });
 
 //platform
 
-objloader.load('objmodels/platform.obj', function(object){      //*******change location
+objloader.load('models/platform.obj', function(object){      //*******change location
     scene.add(object);
     stuff.push(object);
 });
 
 //honeycomb
 
-objloader.load('objmodels/honeycomb.obj', function(object){      //*******change location
+objloader.load('models/honeycomb.obj', function(object){      //*******change location
     scene.add(object);
     stuff.push(object);
 });
 
 //mirror
 
-objloader.load('objmodels/mirror.obj', function(object){      //*******change location
+objloader.load('models/mirror.obj', function(object){      //*******change location
     scene.add(object);
     stuff.push(object);
 });
 
 //lens
 
-objloader.load('objmodels/lensmirror.obj', function(object){      //*******change location
+objloader.load('models/lensmirror.obj', function(object){      //*******change location
     scene.add(object);
 
 });
 
 //carriage
 
-objloader.load('objmodels/carriage.obj', function(object){      //*******change location
+objloader.load('models/carriage.obj', function(object){      //*******change location
     scene.add(object);
     stuff.push(object);
 });
 
 //controlpad
 
-objloader.load('objmodels/controlpad.obj', function(object){      //*******change location
+objloader.load('models/controlpad.obj', function(object){      //*******change location
     scene.add(object);
     stuff.push(object);
 });
