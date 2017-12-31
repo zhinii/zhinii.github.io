@@ -4,7 +4,8 @@ var MeshClickColor = new THREE.MeshLambertMaterial({color: 0xff0000});
 
    var baseColor = 0xff0000;
     var intersectColor = 0x00D66B;
-
+var sceneWidth = window.innerWidth-10;
+var sceneHeight = window.innerHeight-10;
 var menuClick = document.getElementById('menu');
 
 var objloader = new THREE.OBJLoader();
