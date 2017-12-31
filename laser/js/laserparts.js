@@ -132,6 +132,9 @@ objloader.load('models/controlpad.obj', function(object){      //*******change l
 });
 
 var stuff = [];
+   var raycaster = new THREE.Raycaster();
+    var mouse = new THREE.Vector2();
+    var intersected;
 
 
     //below is raycaster for mouse move intersections, second raycaster function is needed for click events
