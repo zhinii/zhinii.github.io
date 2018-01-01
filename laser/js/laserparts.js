@@ -26,6 +26,7 @@ objloader.load('models/zbelt.obj', function(object){
 objloader.load('models/zmotor.obj', function(object){
     scene.add(object);
     stuff.push(object);
+    motorZ.push(object);
 });
 
 
@@ -43,6 +44,7 @@ objloader.load('models/zscrew.obj', function(object){      //change location
 objloader.load('models/xmotor.obj', function(object){      //*******change location
     scene.add(object);
     stuff.push(object);
+    motorX.push(object);
 });
 
 //xbelt
@@ -108,12 +110,15 @@ objloader.load('models/honeycomb.obj', function(object){      //*******change lo
 objloader.load('models/mirror.obj', function(object){      //*******change location
     scene.add(object);
     stuff.push(object);
+    mirrorLeft.push(object);
 });
 
 //lens
 
 objloader.load('models/lensmirror.obj', function(object){      //*******change location
     scene.add(object);
+    stuff.push(object);
+    mirrorLens.push(object);
 
 });
 
@@ -131,11 +136,14 @@ objloader.load('models/controlpad.obj', function(object){      //*******change l
     stuff.push(object);
 });
 
+var motorZ = [];
+var motorX = [];
+var mirrorLens = [];
+var mirrorLeft = [];
 var stuff = [];
    var raycaster = new THREE.Raycaster();
     var mouse = new THREE.Vector2();
     var intersected;
-
 
     //below is raycaster for mouse move intersections, second raycaster function is needed for click events
      function onDocumentMouseMove(event) { // This is a function to run when we click; we get information about the event through the `event` parameter
@@ -173,7 +181,6 @@ var stuff = [];
      renderer.domElement.addEventListener('mousemove', onDocumentMouseMove, false);
 
 
-
 //raycasting function for click events
     function onDocumentClick(event) { 
                 var offsetX = renderer.domElement.offsetLeft * (2 / sceneWidth);
@@ -184,10 +191,12 @@ var stuff = [];
                 // Tell our raycaster to cast from our mouse
                 raycaster.setFromCamera(mouse, camera);
 
-                var intersections = raycaster.intersectObjects(stuff, true);//change out STUFF with array of object
+                var intersections = raycaster.intersectObjects(motorZ, true);//change out STUFF with array of object
                 if (intersections.length > 0){
-                  for (var i = 0; i < stuff.length; i++)
-                  console.log(stuff[0]); /// do things here
+                  document.getElementById('motorZ').style.visibility = 'visible';
+                }
+                else{
+                     document.getElementById('motorZ').style.visibility = 'hidden';
                 }
                 
                
