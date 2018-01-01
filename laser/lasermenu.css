@@ -3,10 +3,28 @@
     position: absolute;
 }
 
-#imageshow{
+.imageshow{
     position: absolute;
     right: 0px;
     object-fit: contain;
+    background-color: white;
+    visibility: : hidden;
+}
+
+#mirrorLens{
+    visibility: hidden;
+}
+
+#mirrorLeft{
+    visibility: hidden;
+}
+
+#motorX{
+    visibility: hidden;
+}
+
+#motorZ{
+    visibility: hidden;
 }
 
 #control{
