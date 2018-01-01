@@ -198,6 +198,30 @@ var stuff = [];
                 else{
                      document.getElementById('motorZ').style.visibility = 'hidden';
                 }
+
+                 var intersections1 = raycaster.intersectObjects(motorX, true);//change out STUFF with array of object
+                if (intersections1.length > 0){
+                  document.getElementById('motorX').style.visibility = 'visible';
+                }
+                else{
+                     document.getElementById('motorX').style.visibility = 'hidden';
+                }
+
+                   var intersections2 = raycaster.intersectObjects(mirrorLeft, true);//change out STUFF with array of object
+                if (intersections2.length > 0){
+                  document.getElementById('mirrorLeft').style.visibility = 'visible';
+                }
+                else{
+                     document.getElementById('mirrorLeft').style.visibility = 'hidden';
+                }
+                
+                   var intersections3 = raycaster.intersectObjects(mirrorLens, true);//change out STUFF with array of object
+                if (intersections3.length > 0){
+                  document.getElementById('mirrorLens').style.visibility = 'visible';
+                }
+                else{
+                     document.getElementById('mirrorLens').style.visibility = 'hidden';
+                }
                 
                
              };
