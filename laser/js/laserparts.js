@@ -171,3 +171,28 @@ var stuff = [];
 
         //attaches event listender to the renderer, which is a dom element. so when a mouse moves it is listening and executing our function for raycasting
      renderer.domElement.addEventListener('mousemove', onDocumentMouseMove, false);
+
+
+
+//raycasting function for click events
+    function onDocumentClick(event) { 
+                var offsetX = renderer.domElement.offsetLeft * (2 / sceneWidth);
+                var offsetY = renderer.domElement.offsetTop * (2 / sceneHeight);
+                mouse.x = (event.clientX / sceneWidth) * 2 - 1 - offsetX;
+                mouse.y = -(event.clientY / sceneHeight) * 2 + 1 + offsetY;
+                
+                // Tell our raycaster to cast from our mouse
+                raycaster.setFromCamera(mouse, camera);
+
+                var intersections = raycaster.intersectObjects(stuff, true);//change out STUFF with array of object
+                if (intersections.length > 0){
+                  for (var i = 0; i < stuff.length; i++)
+                  console.log(stuff[i]); /// do things here
+                }
+                
+               
+             };
+            
+             // And then actually attach our onDocumentClick function as an event handler to when the canvas hears a `click`
+             renderer.domElement.addEventListener('click', onDocumentClick, false);
+        
