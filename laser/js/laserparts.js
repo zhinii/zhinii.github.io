@@ -187,7 +187,7 @@ var stuff = [];
                 var intersections = raycaster.intersectObjects(stuff, true);//change out STUFF with array of object
                 if (intersections.length > 0){
                   for (var i = 0; i < stuff.length; i++)
-                  console.log(stuff[i]); /// do things here
+                  console.log(stuff[0]); /// do things here
                 }
                 
                
