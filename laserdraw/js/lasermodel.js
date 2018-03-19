@@ -110,7 +110,7 @@ for(var i = 0; i <clickToHide.length; i++){
                 //create drawing elements in canvas i.e. line color, width
                 canvas.style.display = 'none';
                 var ctx = canvas.getContext('2d');
-                ctx.fillStyle = "#000000";
+                ctx.strokeStyle = '#ff6600';
                 ctx.lineWidth = 2;
                 // var for mouse down or up
                 var isMousedown = false;
@@ -155,11 +155,6 @@ for(var i = 0; i <clickToHide.length; i++){
                   	  render();
         canvas.style.display = 'block';
          // render();
-        var screenshot = renderer.domElement.toDataURL();
-        var imgSS = new Image;
-        imgSS.src = screenshot;
-        ctx.drawImage(imgSS,0,0);
-
        });
 
        nav.addEventListener('click', function(){
@@ -168,16 +163,3 @@ for(var i = 0; i <clickToHide.length; i++){
        });
 
 
-//trying to save scene (canvas) as image.
- var saveScene = document.getElementById('save');
-
-       saveScene.addEventListener('click', function(){
-    
-        var screenshot = canvas.toDataURL();
-      
-
-        var link = document.createElement("a");
-       link.download = 'capture.png';
-       link.href = screenshot;
-       link.click();
-       });
