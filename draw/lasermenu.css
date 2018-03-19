@@ -1,0 +1,57 @@
+    #artboard {
+        position: absolute;
+        width:100%;
+        height: 100%;
+        z-index: 5;
+        border: 5px solid red;
+
+    }
+    #colorchange{
+        position: absolute;
+        top: 20px;
+
+        z-index: 6;
+    }
+
+/* Style the buttons that are used to open and close the accordion panel */
+#menu {
+    position: absolute;
+    z-index: 6;
+}
+
+#imageshow{
+    position: absolute;
+    right: 0px;
+    object-fit: contain;
+}
+
+#control{
+    position: absolute;
+    left: 300px;
+        font-size: 18px;
+}
+    
+
+
+
+/* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
+button:hover {
+    background-color: orange;
+}
+
+/* Style the accordion panel. Note: hidden by default */
+div.panel {
+    padding: 0 18px;
+    display: none;
+ }
+
+li{
+   list-style-type: none;
+    margin: 5px;
+    color: white;
+}
+
+ul li:hover {
+    color: red;
+    cursor: pointer;
+}
