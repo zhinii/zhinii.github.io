@@ -11,64 +11,26 @@
 </head>
 
 <body>
-  <div id='control'>left mouse click rotate, right mouse click pan, mouse wheel zoom in/out</div>
+ <canvas id='artboard' ></canvas>
+   
+            <span id='colorChange'>
+            <ul><button  type='button' id='draw2d' >Draw on Scene/Clear Drawing</button></ul>
+            <ul><button   type='button' id='view3d' >Back to 3D view</button></ul>
+            <ul><button type='button' class="accordion">Hide Laser Case</button></ul>   
+            </span>
+
+
+
+
+
+<div id='control'>left mouse click rotate, right mouse click pan, mouse wheel zoom in/out</div>
   
-  <div id='mirrorLens' class='imageshow'>  
-  <img src="lineDrawings/lens.png" alt="">
-  <br>
-  <button type='button'>Order Replacement Mirror</button>
-  <br>
-  <br>
-    <button type='button'>Order Replacement Lens</button>
-</div>
-
-<div id= 'mirrorLeft' class = 'imageshow'>
-  <img src="lineDrawings/mirror.png" alt="">
-  <br>
-   <button type='button'>Order Replacement Mirror</button>
-  <br>
-  <br>
-    <button type='button'>Order Replacement Bezel</button>
-</div>
-<div id='motorX' class = 'imageshow'>
-  <img src="lineDrawings/xmotor.png" alt="">
-   <br>
-   <button type='button'>Order Replacement x-axis motor assembly</button>
-</div>
-<div id='motorZ' class='imageshow'>
-  <img src="lineDrawings/zmotor.png" alt="">
-   <br>
-   <button type='button'>Order Replacement Z Motor</button>
-  <br>
-  <br>
-    <button type='button'>Order Replacement Z Motor Belt</button>
-</div>
-  
-<div id='menu'>
-<li><button class="accordion">Hide Case</button>
-
-  
-</li>
-
-
-
-
-</div>
 <script src='js/lasermodel.js'></script>
  <script src='js/laserparts.js'></script>
-<!-- <script src='js/lasermenu.js'></script> -->
 
- <script src='js/images.js'></script>
-  <script>
-  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
 
-  ga('create', 'UA-101194116-1', 'auto');
-  ga('send', 'pageview');
 
-</script>
+
 </body>
 
 </html>
