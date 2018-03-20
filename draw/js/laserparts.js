@@ -3,8 +3,8 @@
 var meshBaseColor = new THREE.MeshLambertMaterial({color: 0xffffff});
 var MeshClickColor = new THREE.MeshLambertMaterial({color: 0xff0000});
 
-   var baseColor = 0xff0000;
-    var intersectColor = 0x00D66B;
+var baseColor = 0xff0000;
+var intersectColor = 0x00D66B;
 var sceneWidth = window.innerWidth-10;
 var sceneHeight = window.innerHeight-10;
 
@@ -24,7 +24,6 @@ objloader.load('models/zbelt.obj', function(object){
 objloader.load('models/zmotor.obj', function(object){
     scene.add(object);
     stuff.push(object);
-    motorZ.push(object);
 });
 
 
@@ -42,7 +41,6 @@ objloader.load('models/zscrew.obj', function(object){      //change location
 objloader.load('models/xmotor.obj', function(object){      //*******change location
     scene.add(object);
     stuff.push(object);
-    motorX.push(object);
 });
 
 //xbelt
