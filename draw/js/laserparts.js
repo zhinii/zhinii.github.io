@@ -1,5 +1,3 @@
-
-
 var meshBaseColor = new THREE.MeshLambertMaterial({color: 0xffffff});
 var MeshClickColor = new THREE.MeshLambertMaterial({color: 0xff0000});
 
@@ -7,11 +5,14 @@ var baseColor = 0xff0000;
 var intersectColor = 0x00D66B;
 var sceneWidth = window.innerWidth-10;
 var sceneHeight = window.innerHeight-10;
+var menuClick = document.getElementById('menu');
 
 var objloader = new THREE.OBJLoader();
 var stlloader = new THREE.STLLoader();
 
+console.log(menuClick);
 
+//zbelt
 
 objloader.load('models/zbelt.obj', function(object){
     scene.add(object);
@@ -24,6 +25,7 @@ objloader.load('models/zbelt.obj', function(object){
 objloader.load('models/zmotor.obj', function(object){
     scene.add(object);
     stuff.push(object);
+    motorZ.push(object);
 });
 
 
@@ -41,6 +43,7 @@ objloader.load('models/zscrew.obj', function(object){      //change location
 objloader.load('models/xmotor.obj', function(object){      //*******change location
     scene.add(object);
     stuff.push(object);
+    motorX.push(object);
 });
 
 //xbelt
@@ -106,7 +109,7 @@ objloader.load('models/honeycomb.obj', function(object){      //*******change lo
 objloader.load('models/mirror.obj', function(object){      //*******change location
     scene.add(object);
     stuff.push(object);
-    
+    mirrorLeft.push(object);
 });
 
 //lens
@@ -114,7 +117,7 @@ objloader.load('models/mirror.obj', function(object){      //*******change locat
 objloader.load('models/lensmirror.obj', function(object){      //*******change location
     scene.add(object);
     stuff.push(object);
-  
+    mirrorLens.push(object);
 
 });
 
@@ -132,7 +135,10 @@ objloader.load('models/controlpad.obj', function(object){      //*******change l
     stuff.push(object);
 });
 
-
+var motorZ = [];
+var motorX = [];
+var mirrorLens = [];
+var mirrorLeft = [];
 var stuff = [];
    var raycaster = new THREE.Raycaster();
     var mouse = new THREE.Vector2();
@@ -174,51 +180,52 @@ var stuff = [];
      renderer.domElement.addEventListener('mousemove', onDocumentMouseMove, false);
 
 
-//raycasting function for click events
-    function onDocumentClick(event) { 
-                var offsetX = renderer.domElement.offsetLeft * (2 / sceneWidth);
-                var offsetY = renderer.domElement.offsetTop * (2 / sceneHeight);
-                mouse.x = (event.clientX / sceneWidth) * 2 - 1 - offsetX;
-                mouse.y = -(event.clientY / sceneHeight) * 2 + 1 + offsetY;
+// //raycasting function for click events
+//     function onDocumentClick(event) { 
+//                 var offsetX = renderer.domElement.offsetLeft * (2 / sceneWidth);
+//                 var offsetY = renderer.domElement.offsetTop * (2 / sceneHeight);
+//                 mouse.x = (event.clientX / sceneWidth) * 2 - 1 - offsetX;
+//                 mouse.y = -(event.clientY / sceneHeight) * 2 + 1 + offsetY;
                 
-                // Tell our raycaster to cast from our mouse
-                raycaster.setFromCamera(mouse, camera);
+//                 // Tell our raycaster to cast from our mouse
+//                 raycaster.setFromCamera(mouse, camera);
 
-                var intersections = raycaster.intersectObjects(motorZ, true);//change out STUFF with array of object
-                if (intersections.length > 0){
-                  document.getElementById('motorZ').style.visibility = 'visible';
-                }
-                else{
-                     document.getElementById('motorZ').style.visibility = 'hidden';
-                }
+//                 var intersections = raycaster.intersectObjects(motorZ, true);//change out STUFF with array of object
+//                 if (intersections.length > 0){
+//                   document.getElementById('motorZ').style.visibility = 'visible';
+//                 }
+//                 else{
+//                      document.getElementById('motorZ').style.visibility = 'hidden';
+//                 }
 
-                 var intersections1 = raycaster.intersectObjects(motorX, true);//change out STUFF with array of object
-                if (intersections1.length > 0){
-                  document.getElementById('motorX').style.visibility = 'visible';
-                }
-                else{
-                     document.getElementById('motorX').style.visibility = 'hidden';
-                }
+//                  var intersections1 = raycaster.intersectObjects(motorX, true);//change out STUFF with array of object
+//                 if (intersections1.length > 0){
+//                   document.getElementById('motorX').style.visibility = 'visible';
+//                 }
+//                 else{
+//                      document.getElementById('motorX').style.visibility = 'hidden';
+//                 }
 
-                   var intersections2 = raycaster.intersectObjects(mirrorLeft, true);//change out STUFF with array of object
-                if (intersections2.length > 0){
-                  document.getElementById('mirrorLeft').style.visibility = 'visible';
-                }
-                else{
-                     document.getElementById('mirrorLeft').style.visibility = 'hidden';
-                }
+//                    var intersections2 = raycaster.intersectObjects(mirrorLeft, true);//change out STUFF with array of object
+//                 if (intersections2.length > 0){
+//                   document.getElementById('mirrorLeft').style.visibility = 'visible';
+//                 }
+//                 else{
+//                      document.getElementById('mirrorLeft').style.visibility = 'hidden';
+//                 }
                 
-                   var intersections3 = raycaster.intersectObjects(mirrorLens, true);//change out STUFF with array of object
-                if (intersections3.length > 0){
-                  document.getElementById('mirrorLens').style.visibility = 'visible';
-                }
-                else{
-                     document.getElementById('mirrorLens').style.visibility = 'hidden';
-                }
+//                    var intersections3 = raycaster.intersectObjects(mirrorLens, true);//change out STUFF with array of object
+//                 if (intersections3.length > 0){
+//                   document.getElementById('mirrorLens').style.visibility = 'visible';
+//                 }
+//                 else{
+//                      document.getElementById('mirrorLens').style.visibility = 'hidden';
+//                 }
                 
                
-             };
+//              };
             
-             // And then actually attach our onDocumentClick function as an event handler to when the canvas hears a `click`
-             renderer.domElement.addEventListener('click', onDocumentClick, false);
+//              // And then actually attach our onDocumentClick function as an event handler to when the canvas hears a `click`
+//              renderer.domElement.addEventListener('click', onDocumentClick, false);
         
+
