@@ -1,5 +1,3 @@
-import * as THREE from 'https://threejsfundamentals.org/threejs/resources/threejs/r108/build/three.module.js';
-
 function main() {
   const canvas = document.querySelector('#objectScene');
   const renderer = new THREE.WebGLRenderer({canvas});
