@@ -97,7 +97,7 @@ ol li.steps{
 }
 
 #threeD {
-	position: absolute;
+	position: fixed;
 	background-color: blue;
 	height: 80%;
 	top: 180px;
