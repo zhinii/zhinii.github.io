@@ -1,38 +1,656 @@
-function main() {
-  const canvas = document.querySelector('#objectScene');
-  const renderer = new THREE.WebGLRenderer({canvas});
 
-  const fov = 75;
-  const aspect = 2;  // the canvas default
-  const near = 0.1;
-  const far = 5;
-  const camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
-  camera.position.z = 2;
+const scene = new THREE.Scene();
+      var camera = new THREE.PerspectiveCamera( 75, window.innerWidth/window.innerHeight, 0.1, 1000 );
+      var canvas = document.querySelector("#objectScene")
+      var renderer = new THREE.WebGLRenderer({canvas});
+   var loader = new THREE.GLTFLoader();
 
-  const scene = new THREE.Scene();
 
-  const boxWidth = 1;
-  const boxHeight = 1;
-  const boxDepth = 1;
-  const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
+        const color = 0xFFFFFF;
+    const intensity = 1;
+    const light = new THREE.DirectionalLight(color, intensity);
+    light.position.set(-1, 2, 4);
+    scene.add(light);
+    scene.background = new THREE.Color('grey');
+      const controls = new THREE.OrbitControls( camera, canvas );
+      
+ camera.position.z = 8;
+  camera.position.y = 8;
+      controls.update();
 
-  const material = new THREE.MeshBasicMaterial({color: 0x44aa88});  // greenish blue
+//add model object eher
 
-  const cube = new THREE.Mesh(geometry, material);
-  scene.add(cube);
 
-  function render(time) {
-    time *= 0.001;  // convert time to seconds
+loader.load('head.glb',function(gltf){
 
-    cube.rotation.x = time;
-    cube.rotation.y = time;
+    scene.add(gltf.scene);  
+    
+    });
 
-    renderer.render(scene, camera);
 
-    requestAnimationFrame(render);
+loader.load('head2.glb',function(gltf){
+
+    scene.add(gltf.scene); 
+
+     stepList.addEventListener('click', function(){
+    for (var i = 0; i < allSteps.length; i ++)
+	if (event.target.id === 'sp2'){
+		gltf.scene.visible = false;
+	}
+	else if (event.target.id === 'sp5'){
+		gltf.scene.visible = false;
+	}
+	else {
+		gltf.scene.visible = true;
+	}
+	});
+     menu.addEventListener('click', function(){
+		if (event.target.id === 'printhead'){
+			gltf.scene.visible = true;
+		}
+		else if(event.target.id === 'fan'){
+			gltf.scene.visible = true;
+		}
+    });
+
+    });
+
+     
+     loader.load('s1arrow.glb',function(gltf){
+    scene.add(gltf.scene);  
+    	gltf.scene.visible = false;
+
+    stepList.addEventListener('click', function(){
+    for (var i = 0; i < allSteps.length; i ++)
+	if (event.target.id === 'sp1'){
+		gltf.scene.visible = true;
+	}
+	else {
+		gltf.scene.visible = false;
+	}
+	});
+
+
+     fanList.addEventListener('click', function(){
+    for (var i = 0; i < allSteps.length; i ++)
+	if (event.target.id === 'sf1'){
+		gltf.scene.visible = true;
+	}
+	else {
+		gltf.scene.visible = false;
+	}
+	});
+ 
+	menu.addEventListener('click', function(){
+		if (event.target.id === 'printhead'){
+			gltf.scene.visible = false;
+		}
+		else if(event.target.id === 'fan'){
+			gltf.scene.visible = false;
+		}
+    });
+});
+     
+     loader.load('s1obj.glb',function(gltf){
+    scene.add(gltf.scene);  
+    stepList.addEventListener('click', function(){
+    for (var i = 0; i < allSteps.length; i ++)
+	if (event.target.id === 'sp1') {
+		gltf.scene.visible = true;
+	}
+	else if(event.target.id === 'sp8') {
+		gltf.scene.visible = true;
+	}
+	else {
+		gltf.scene.visible = false;
+	}
+	});
+
+	fanList.addEventListener('click', function(){
+    for (var i = 0; i < allSteps.length; i ++)
+	if (event.target.id === 'sf1'){
+		gltf.scene.visible = true;
+	}
+	else if (event.target.id === 'sf7'){
+		gltf.scene.visible = true;
+	}
+	else {
+		gltf.scene.visible = false;
+	}
+	});
+
+menu.addEventListener('click', function(){
+		if (event.target.id === 'printhead'){
+			gltf.scene.visible = true;
+		}
+		else if(event.target.id === 'fan'){
+			gltf.scene.visible = true;
+		}
+    });
+
+    });
+
+         loader.load('s2arrow.glb',function(gltf){
+    scene.add(gltf.scene);  
+     gltf.scene.visible = false;
+
+    stepList.addEventListener('click', function(){
+    for (var i = 0; i < allSteps.length; i ++)
+	if (event.target.id === 'sp2'){
+		gltf.scene.visible = true;
+	}
+
+	else {
+		gltf.scene.visible = false;
+	}
+	});
+
+
+     fanList.addEventListener('click', function(){
+    for (var i = 0; i < allSteps.length; i ++)
+	if (event.target.id === 'sf2'){
+		gltf.scene.visible = true;
+	}
+	else {
+		gltf.scene.visible = false;
+	}
+	});
+
+		menu.addEventListener('click', function(){
+		if (event.target.id === 'printhead'){
+			gltf.scene.visible = false;
+		}
+		else if(event.target.id === 'fan'){
+			gltf.scene.visible = false;
+		}
+    });
+    });
+     
+     loader.load('s2obj.glb',function(gltf){
+    scene.add(gltf.scene);  
+        	gltf.scene.visible = false;
+
+  stepList.addEventListener('click', function(){
+    for (var i = 0; i < allSteps.length; i ++)
+	if (event.target.id === 'sp2') {
+		gltf.scene.visible = true;
+	}
+
+	else {
+		gltf.scene.visible = false;
+	}
+	});
+
+
+     fanList.addEventListener('click', function(){
+    for (var i = 0; i < allSteps.length; i ++)
+	if (event.target.id === 'sf2'){
+		gltf.scene.visible = true;
+	}
+	else {
+		gltf.scene.visible = false;
+	}
+	});
+menu.addEventListener('click', function(){
+		if (event.target.id === 'printhead'){
+			gltf.scene.visible = false;
+		}
+		else if(event.target.id === 'fan'){
+			gltf.scene.visible = false;
+		}
+    });
+    });
+     
+         loader.load('s3arrow.glb',function(gltf){
+    scene.add(gltf.scene);  
+     gltf.scene.visible = false;
+
+    stepList.addEventListener('click', function(){
+    for (var i = 0; i < allSteps.length; i ++)
+	if (event.target.id === 'sp3'){
+		gltf.scene.visible = true;
+	}
+	else {
+		gltf.scene.visible = false;
+	}
+	});
+	menu.addEventListener('click', function(){
+		if (event.target.id === 'printhead'){
+			gltf.scene.visible = false;
+		}
+		else if(event.target.id === 'fan'){
+			gltf.scene.visible = false;
+		}
+    });
+    });
+     
+     loader.load('s3obj.glb',function(gltf){
+    scene.add(gltf.scene);  
+
+    stepList.addEventListener('click', function(){
+    for (var i = 0; i < allSteps.length; i ++)
+	if (event.target.id === 'sp3'){
+		gltf.scene.visible = true;
+	}
+	else {
+		gltf.scene.visible = false;
+	}
+	});
+
+	 fanList.addEventListener('click', function(){
+    for (var i = 0; i < allSteps.length; i ++)
+	if (event.target.id === 'sf3'){
+		gltf.scene.visible = true;
+	}
+	else if (event.target.id === 'sf2'){
+		gltf.scene.visible = true;
+	}
+	else if (event.target.id === 'sf4'){
+		gltf.scene.visible = true;
+	}
+	else if (event.target.id === 'sf5'){
+		gltf.scene.visible = true;
+	}
+	else {
+		gltf.scene.visible = false;
+	}
+	});
+	menu.addEventListener('click', function(){
+		if (event.target.id === 'printhead'){
+			gltf.scene.visible = false;
+		}
+		else if(event.target.id === 'fan'){
+			gltf.scene.visible = false;
+		}
+    });
+    });
+     
+         loader.load('s4arrow.glb',function(gltf){
+    scene.add(gltf.scene);  
+     gltf.scene.visible = false;
+
+    stepList.addEventListener('click', function(){
+    for (var i = 0; i < allSteps.length; i ++)
+	if (event.target.id === 'sp4'){
+		gltf.scene.visible = true;
+	}
+	else {
+		gltf.scene.visible = false;
+	}
+	});
+	menu.addEventListener('click', function(){
+		if (event.target.id === 'printhead'){
+			gltf.scene.visible = false;
+		}
+		else if(event.target.id === 'fan'){
+			gltf.scene.visible = false;
+		}
+    });
+    });
+     
+     loader.load('s4obj.glb',function(gltf){
+    scene.add(gltf.scene);  
+
+     stepList.addEventListener('click', function(){
+    for (var i = 0; i < allSteps.length; i ++)
+	if (event.target.id === 'sp4'){
+		gltf.scene.visible = true;
+	}
+	else {
+		gltf.scene.visible = false;
+	}
+	});
+     menu.addEventListener('click', function(){
+		if (event.target.id === 'printhead'){
+			gltf.scene.visible = false;
+		}
+		else if(event.target.id === 'fan'){
+			gltf.scene.visible = false;
+		}
+    });
+    });
+
+         loader.load('s5arrow.glb',function(gltf){
+    scene.add(gltf.scene);  
+     gltf.scene.visible = false;
+
+    stepList.addEventListener('click', function(){
+    for (var i = 0; i < allSteps.length; i ++)
+	if (event.target.id === 'sp5'){
+		gltf.scene.visible = true;
+	}
+	else {
+		gltf.scene.visible = false;
+	}
+	});
+	menu.addEventListener('click', function(){
+		if (event.target.id === 'printhead'){
+			gltf.scene.visible = false;
+		}
+		else if(event.target.id === 'fan'){
+			gltf.scene.visible = false;
+		}
+    });
+    });
+     
+     loader.load('s5obj.glb',function(gltf){
+    scene.add(gltf.scene);  
+        	gltf.scene.visible = false;
+
+
+    stepList.addEventListener('click', function(){
+    for (var i = 0; i < allSteps.length; i ++)
+	if (event.target.id === 'sp5'){
+		gltf.scene.visible = true;
+	}
+	else {
+		gltf.scene.visible = false;
+	}
+	});
+	menu.addEventListener('click', function(){
+		if (event.target.id === 'printhead'){
+			gltf.scene.visible = false;
+		}
+		else if(event.target.id === 'fan'){
+			gltf.scene.visible = false;
+		}
+    });
+    });
+
+     loader.load('s5clearobj.glb',function(gltf){
+    scene.add(gltf.scene);  
+        	gltf.scene.visible = false;
+
+    stepList.addEventListener('click', function(){
+    for (var i = 0; i < allSteps.length; i ++)
+	if (event.target.id === 'sp5'){
+		gltf.scene.visible = true;
+	}
+	else {
+		gltf.scene.visible = false;
+	}
+	});
+	menu.addEventListener('click', function(){
+		if (event.target.id === 'printhead'){
+			gltf.scene.visible = false;
+		}
+		else if(event.target.id === 'fan'){
+			gltf.scene.visible = false;
+		}
+    });
+    });
+     
+         loader.load('s6arrow.glb',function(gltf){
+    scene.add(gltf.scene);  
+     gltf.scene.visible = false;
+
+    stepList.addEventListener('click', function(){
+    for (var i = 0; i < allSteps.length; i ++)
+	if (event.target.id === 'sp6'){
+		gltf.scene.visible = true;
+	}
+	else {
+		gltf.scene.visible = false;
+	}
+	});
+	menu.addEventListener('click', function(){
+		if (event.target.id === 'printhead'){
+			gltf.scene.visible = false;
+		}
+		else if(event.target.id === 'fan'){
+			gltf.scene.visible = false;
+		}
+    });
+    });
+     
+     loader.load('s6obj.glb',function(gltf){
+    scene.add(gltf.scene);  
+        	gltf.scene.visible = false;
+
+
+    stepList.addEventListener('click', function(){
+    for (var i = 0; i < allSteps.length; i ++)
+	if (event.target.id === 'sp6'){
+		gltf.scene.visible = true;
+	}
+	else {
+		gltf.scene.visible = false;
+	}
+	});
+	menu.addEventListener('click', function(){
+		if (event.target.id === 'printhead'){
+			gltf.scene.visible = false;
+		}
+		else if(event.target.id === 'fan'){
+			gltf.scene.visible = false;
+		}
+    });
+    });
+     
+
+         loader.load('s7arrow.glb',function(gltf){
+    scene.add(gltf.scene);  
+     gltf.scene.visible = false;
+
+    stepList.addEventListener('click', function(){
+    for (var i = 0; i < allSteps.length; i ++)
+	if (event.target.id === 'sp7'){
+		gltf.scene.visible = true;
+	}
+	else {
+		gltf.scene.visible = false;
+	}
+	});
+fanList.addEventListener('click', function(){
+    for (var i = 0; i < allSteps.length; i ++)
+	if (event.target.id === 'sf6'){
+		gltf.scene.visible = true;
+	}
+	else {
+		gltf.scene.visible = false;
+	}
+	});
+
+	menu.addEventListener('click', function(){
+		if (event.target.id === 'printhead'){
+			gltf.scene.visible = false;
+		}
+		else if(event.target.id === 'fan'){
+			gltf.scene.visible = false;
+		}
+    });
+    });
+     
+     loader.load('s7obj.glb',function(gltf){
+    scene.add(gltf.scene);  
+        	gltf.scene.visible = false;
+
+
+     stepList.addEventListener('click', function(){
+    for (var i = 0; i < allSteps.length; i ++)
+	if (event.target.id === 'sp7'){
+		gltf.scene.visible = true;
+	}
+	else {
+		gltf.scene.visible = false;
+	}
+	});
+
+     fanList.addEventListener('click', function(){
+    for (var i = 0; i < allSteps.length; i ++)
+	if (event.target.id === 'sf6'){
+		gltf.scene.visible = true;
+	}
+	else {
+		gltf.scene.visible = false;
+	}
+	});
+     menu.addEventListener('click', function(){
+		if (event.target.id === 'printhead'){
+			gltf.scene.visible = false;
+		}
+		else if(event.target.id === 'fan'){
+			gltf.scene.visible = false;
+		}
+    });
+    });
+     
+
+       loader.load('21arrow.glb',function(gltf){
+    scene.add(gltf.scene);  
+        	gltf.scene.visible = false;
+
+
+     fanList.addEventListener('click', function(){
+    for (var i = 0; i < allSteps.length; i ++)
+	if (event.target.id === 'sf3'){
+		gltf.scene.visible = true;
+	}
+	else {
+		gltf.scene.visible = false;
+	}
+	});
+     menu.addEventListener('click', function(){
+		if (event.target.id === 'printhead'){
+			gltf.scene.visible = false;
+		}
+		else if(event.target.id === 'fan'){
+			gltf.scene.visible = false;
+		}
+    });
+    });
+     
+
+
+       loader.load('21obj.glb',function(gltf){
+    scene.add(gltf.scene);  
+        	gltf.scene.visible = false;
+
+
+     fanList.addEventListener('click', function(){
+    for (var i = 0; i < allSteps.length; i ++)
+	if (event.target.id === 'sf3'){
+		gltf.scene.visible = true;
+	}
+	else {
+		gltf.scene.visible = false;
+	}
+	});
+     menu.addEventListener('click', function(){
+		if (event.target.id === 'printhead'){
+			gltf.scene.visible = false;
+		}
+		else if(event.target.id === 'fan'){
+			gltf.scene.visible = false;
+		}
+    });
+    });
+     
+  loader.load('22arrow.glb',function(gltf){
+    scene.add(gltf.scene);  
+        	gltf.scene.visible = false;
+
+
+     fanList.addEventListener('click', function(){
+    for (var i = 0; i < allSteps.length; i ++)
+	if (event.target.id === 'sf4'){
+		gltf.scene.visible = true;
+	}
+	else {
+		gltf.scene.visible = false;
+	}
+	});
+     menu.addEventListener('click', function(){
+		if (event.target.id === 'printhead'){
+			gltf.scene.visible = false;
+		}
+		else if(event.target.id === 'fan'){
+			gltf.scene.visible = false;
+		}
+    });
+    });
+     
+
+
+       loader.load('22obj.glb',function(gltf){
+    scene.add(gltf.scene);  
+        	gltf.scene.visible = false;
+
+
+     fanList.addEventListener('click', function(){
+    for (var i = 0; i < allSteps.length; i ++)
+	if (event.target.id === 'sf4'){
+		gltf.scene.visible = true;
+	}
+	else {
+		gltf.scene.visible = false;
+	}
+	});
+     menu.addEventListener('click', function(){
+		if (event.target.id === 'printhead'){
+			gltf.scene.visible = false;
+		}
+		else if(event.target.id === 'fan'){
+			gltf.scene.visible = false;
+		}
+    });
+    });
+     
+
+       loader.load('23arrow.glb',function(gltf){
+    scene.add(gltf.scene);  
+        	gltf.scene.visible = false;
+
+
+     fanList.addEventListener('click', function(){
+    for (var i = 0; i < allSteps.length; i ++)
+	if (event.target.id === 'sf5'){
+		gltf.scene.visible = true;
+	}
+	else {
+		gltf.scene.visible = false;
+	}
+	});
+     menu.addEventListener('click', function(){
+		if (event.target.id === 'printhead'){
+			gltf.scene.visible = false;
+		}
+		else if(event.target.id === 'fan'){
+			gltf.scene.visible = false;
+		}
+    });
+    });
+     
+
+     
+     
+
+
+     //end model object code here
+  function resizeRendererToDisplaySize(renderer) {
+    const canvas = renderer.domElement;
+    const pixelRatio = window.devicePixelRatio;
+    const width  = canvas.clientWidth  * pixelRatio | 0;
+    const height = canvas.clientHeight * pixelRatio | 0;
+    const needResize = canvas.width !== width || canvas.height !== height;
+    if (needResize) {
+      renderer.setSize(width, height, false);
+    }
+    return needResize;
   }
-  requestAnimationFrame(render);
 
-}
+  if (resizeRendererToDisplaySize(renderer)) {
+      const canvas = renderer.domElement;
+      camera.aspect = canvas.clientWidth / canvas.clientHeight;
+      camera.updateProjectionMatrix();
+    }
 
-main();
+      var animate = function () {
+        requestAnimationFrame( animate );
+      controls.update();
+
+        renderer.render( scene, camera );
+      };
+
+
+      animate();

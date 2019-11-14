@@ -4,11 +4,11 @@
 	 <link rel = "stylesheet"
    type = "text/css"
    href = "style.css" />
-<!--    <script src="menu.js"></script>
- -->
-	   <script src="https://r105.threejsfundamentals.org/threejs/resources/threejs/r105/three.min.js"></script>
 
-   <script src="scene.js"></script>
+
+   <script src="three.min.js"></script>    
+    <script src="GLTFLoader.js" ></script>
+    <script src="OrbitControls.js" ></script>
 	</head>
 
 <body>
@@ -16,9 +16,9 @@
 <div id='menu'>
 <ul id="process">
 	<li id="printhead" class="hl">Replace Printhead</li>
-	<!-- <li id="fan" class="hl"> Replace Cooling Fan</li>
-	<li id="sensor" class="hl">Replace Leveling Sensor</li> -->
-</ul>
+	<li id="fan" class="hl"> Replace Cooling Fan</li>
+<!-- 	<li id="sensor" class="hl">Replace Leveling Sensor</li>
+ --></ul>
 </div>
 
 <div id='list1' class='stepList'>
@@ -35,7 +35,7 @@
 </ol>
 </div>
 
-<!-- <div id='list2' class='stepList'>
+<div id='list2' class='stepList'>
 
 <ol id='stepsF'>
 <li id='sf1' class='steps'>STEP 1</li>
@@ -44,10 +44,12 @@
 <li id='sf4' class='steps'>STEP 4</li>
 <li id='sf5' class='steps'>STEP 5</li>
 <li id='sf6' class='steps'>STEP 6</li>
+<li id='sf7' class='steps'>STEP 7</li>
+
 </ol>
 </div>
 
-<div id='list3' class='stepList'>
+<!-- <div id='list3' class='stepList'>
 <ol id='stepsS'>
 <li id='ss1' class='steps'>STEP 1</li>
 <li id='ss2' class='steps'>STEP 2</li>
@@ -57,8 +59,8 @@
 <li id='ss6' class='steps'>STEP 6</li>
 <li id='ss7' class='steps'>STEP 7</li>
 </ol>
-</div>
- -->
+</div> -->
+
 <div id='content'>
 <div id='prep' class='container'>
 	<b>PRE-SERVICE PREPARATION</b>
@@ -67,16 +69,16 @@ Use proper anti-static precautions when
 performing this replacement. Discharge
 static electricity before beginning. Work on a static-free
 surface
-
+</p>
 <p>
-Tools Required:
+Tools Required:</p>
 <ol class="intro" >
 <li>Scissors</li>
 <li>2mm Hex bit or Hex wrench (Allen key)</li>
 <li>2.5mm Hex bit or Hex wrench (Allen key)</li>
 <li>3/32 inches Flathead bit or screwdriver</li>
 <li>T10 Torx bit or screwdriver (no longer than 4 inches)</li>
-</ul>
+</ul></ol>
 </div>
 
 <div id='step1' class='container'>
@@ -121,9 +123,6 @@ Allen key. Ensure that the screws once fully unscrewed, should
 still be left inserted in the extruder chassis hole.
 <li>Pull the extruder motor assembly away from the printer
 (vertically).
-<li>Cut the filament as close to the nozzle tube top as
-possible and dispose of that piece of filament.
-
 </ol>
 </div>
 
@@ -205,6 +204,85 @@ to load filament.
 </ol>
 
 </div>
+
+
+<div id='fan1' class='container'>
+	<b>Step 1: Bring Printer to Safe State for Service
+</b>
+<p><ol class="text" >
+<li>Turn off the printer.
+<li>Unplug the printer.
+</ol>
+
+</div>
+
+<div id='fan2' class='container'>
+	<b>Step 2: Remove Top Cover on the Extruder
+</b>
+<p><ol class="text" >
+<li>Cut the filament just before the intake on the top of the extruder.
+<li>Remove screw located on the right side hole using the
+T10 Torx screwdriver. 
+<li> Unscrew the two screws on the top of the filament
+guide bracket using the 2.5mm Hex wrench.
+<li>Remove the top cover.
+<li>Carefully unplug filament run out switch from the
+extruder circuit board, ensuring to pull from the plastic
+plug and not the wires; pulling the wires can damage
+the connection to the extruder. 
+</ol>
+</div>
+
+<div id='fan3' class='container'>
+	<b>Step 3: Disconnect and Remove Fan
+</b>
+<p><ol class="text" >
+<li>Unplug the fan connector.
+<li>Remove the two mounting screws.
+</ol>
+</div>
+
+<div id='fan4' class='container'>
+	<b>Step 4: Disconnect and Remove Fan
+</b>
+<p><ol class="text" >
+
+<li>Remove the fan and bezel from the printhead chassis.	
+<li>Remove the fan from the bezel.
+</ol>
+</div>
+
+<div id='fan5' class='container'>
+	<b>Step 5: Mount and Connect New Fan
+</b>
+<p><ol class="text" >
+<li>Insert new fan into the bezel.
+<li>Mount the fan and bezel to the printhead chassis.
+<li>Plug fan connector into circuit board.
+</ol>
+</div>
+
+<div id='fan6' class='container'>
+	<b>Step 6: Replace Top Cover
+</b>
+<p><ol class="text" >
+<li>Attach the filament runout switch wires of the cover to
+the extruder circuit board.
+<li>Place the new top cover over the extruder.
+<li>Replace the two 2mm screws onto the cover. 
+</ol>
+</div>
+<div id='fan7' class='container'>
+	<b>Step 7: Test the Machine
+</b>
+<p><ol class="text" >
+<li>Plug in and turn on the 3D45.
+<li>Navigate to “Filament” and follow the on screen instructions
+to load filament.
+<li>Build the “Test Print” file on the machine to ensure the
+3D45 printer is working correctly.
+</ol>
+</div>
 <!-- <div id='annotation'>
 
 </div> -->
@@ -213,18 +291,22 @@ to load filament.
 
 <div id='threeD'>
 canvas element goes here
-<canvas id='objectScene' style="width:60%; height:80%"></canvas>
+<canvas id='objectScene' style="width:100%; height:100%"></canvas>
 </div>
 
    <script src="menu.js"></script>
 
 </body>
+ 
+  <script src="scene.js" ></script>
+
 </html>
 
 <!-- https://stackoverflow.com/questions/29884485/threejs-canvas-size-based-on-container/45046955#45046955 -->
 
-<!-- https://modelconverter.com/convert.html -->
 
 <!--intructions for converintg obj to gltf https://github.com/AnalyticalGraphicsInc/obj2gltf -->
 
 <!-- https://threejs.org/docs/#examples/en/loaders/GLTFLoader -->
+
+<!-- for local viewing follow https://jasonwatmore.com/post/2016/06/22/nodejs-setup-simple-http-server-local-web-server -->
