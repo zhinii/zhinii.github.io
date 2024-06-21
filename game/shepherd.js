@@ -24,11 +24,20 @@ const sheepOriginalWidth = 150 * 1.25;
 const sheepOriginalHeight = 150 * 1.25;
 
 const sheepSprites = [
-    { img: new Image(), x: originalWidth, y: shepherd.y + 200, width: sheepOriginalWidth, height: sheepOriginalHeight, speed: 5, frameX: 0, caught: false },
-    { img: new Image(), x: originalWidth, y: shepherd.y + 200, width: sheepOriginalWidth, height: sheepOriginalHeight, speed: 5, frameX: 0, caught: false }
+    { img: new Image(), x: originalWidth, y: shepherd.y + 200, width: sheepOriginalWidth, height: sheepOriginalHeight, speed: 5, frameX: 0, caught: false, loaded: false },
+    { img: new Image(), x: originalWidth, y: shepherd.y + 200, width: sheepOriginalWidth, height: sheepOriginalHeight, speed: 5, frameX: 0, caught: false, loaded: false }
 ];
 sheepSprites[0].img.src = 'pictures/sheep1.png';
 sheepSprites[1].img.src = 'pictures/sheep2.png';
+
+sheepSprites.forEach(sheep => {
+    sheep.img.onload = () => {
+        sheep.loaded = true;
+    };
+    sheep.img.onerror = () => {
+        console.error(`Failed to load image: ${sheep.img.src}`);
+    };
+});
 
 const standSprite = new Image();
 standSprite.src = 'pictures/stand1.png';
@@ -157,7 +166,9 @@ function handleJump() {
 }
 
 function drawSprite(img, sX, sY, sWidth, sHeight, dX, dY, dWidth, dHeight) {
-    ctx.drawImage(img, sX, sY, sWidth, sHeight, dX, dY, dWidth, dHeight);
+    if (img.complete && img.naturalWidth !== 0) { // Ensure the image is fully loaded
+        ctx.drawImage(img, sX, sY, sWidth, sHeight, dX, dY, dWidth, dHeight);
+    }
 }
 
 function checkCollision(shepherd, sheep) {
@@ -182,7 +193,7 @@ function checkCollision(shepherd, sheep) {
 
 function spawnSheep() {
     const randomSheep = Math.random() > 0.5 ? sheepSprites[0] : sheepSprites[1];
-    randomSheep.x = originalWidth * scale;
+    randomSheep.x = originalWidth;
     randomSheep.y = sheepSprites[0].y; // Use dynamically adjusted y position
     randomSheep.caught = false;
 }
@@ -199,7 +210,7 @@ function updateSheep() {
                 }
             }
             if (sheep.x + sheep.width < 0) {
-                sheep.x = originalWidth * scale;
+                sheep.x = originalWidth;
                 sheep.y = sheepSprites[0].y; // Use dynamically adjusted y position
                 sheep.caught = false;
             }
@@ -209,9 +220,9 @@ function updateSheep() {
 
 function drawSheep() {
     sheepSprites.forEach((sheep) => {
-        if (!sheep.caught) {
+        if (!sheep.caught && sheep.loaded) {
             const currentSheepSprite = sheep.frameX === 0 ? sheepSprites[0].img : sheepSprites[1].img;
-            ctx.drawImage(currentSheepSprite, sheep.x, sheep.y, sheep.width, sheep.height);
+            drawSprite(currentSheepSprite, 0, 0, currentSheepSprite.naturalWidth, currentSheepSprite.naturalHeight, sheep.x, sheep.y, sheep.width, sheep.height);
         }
     });
 }
