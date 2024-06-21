@@ -301,13 +301,44 @@ function endGame() {
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     
     ctx.fillStyle = 'white';
-    ctx.font = '48px Arial';
     ctx.textAlign = 'center';
-    ctx.fillText("You caught all of Masani's sheep!", canvas.width / 2, canvas.height / 2);
     
-    // Optionally, add a restart button or instructions
-    ctx.font = '24px Arial';
-    ctx.fillText("Refresh the page to play again", canvas.width / 2, canvas.height / 2 + 50);
+    // Dynamic font size based on canvas width
+    const baseFontSize = Math.min(canvas.width / 20, 48);
+    ctx.font = `${baseFontSize}px Arial`;
+
+    const message = "You caught all of Masani's sheep!";
+    const subMessage = "Refresh the page to play again";
+
+    // Word wrap function
+    function wrapText(context, text, x, y, maxWidth, lineHeight) {
+        const words = text.split(' ');
+        let line = '';
+
+        for(let n = 0; n < words.length; n++) {
+            const testLine = line + words[n] + ' ';
+            const metrics = context.measureText(testLine);
+            const testWidth = metrics.width;
+            if (testWidth > maxWidth && n > 0) {
+                context.fillText(line, x, y);
+                line = words[n] + ' ';
+                y += lineHeight;
+            }
+            else {
+                line = testLine;
+            }
+        }
+        context.fillText(line, x, y);
+        return y;
+    }
+
+    // Draw main message
+    let y = canvas.height / 2 - baseFontSize;
+    y = wrapText(ctx, message, canvas.width / 2, y, canvas.width * 0.9, baseFontSize * 1.2);
+
+    // Draw sub message
+    ctx.font = `${baseFontSize * 0.5}px Arial`;
+    wrapText(ctx, subMessage, canvas.width / 2, y + baseFontSize, canvas.width * 0.9, baseFontSize * 0.6);
 }
 
 // Game starts here
