@@ -1,5 +1,6 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
+const popup = document.getElementById('popup');
 
 const originalWidth = 1400;
 const originalHeight = 933;
@@ -36,27 +37,23 @@ jumpSprite.src = 'pictures/jump.png';
 const bgImage = new Image();
 bgImage.src = 'pictures/bg.jpg';
 
-let keys = [];
 let frameCount = 0;
 let lastTouchTime = 0;
+let gameStarted = false;
+
+function startGame() {
+    popup.style.display = 'none';
+    gameStarted = true;
+    shepherd.moving = true;
+}
 
 window.addEventListener('keydown', (e) => {
-    keys[e.key] = true;
-    shepherd.moving = true;
     if (e.key === ' ') {
         if (!shepherd.jumping) {
             shepherd.jumping = true;
             shepherd.jumpStartY = shepherd.y;
             shepherd.jumpProgress = 0;
         }
-    }
-});
-
-window.addEventListener('keyup', (e) => {
-    delete keys[e.key];
-    shepherd.moving = false;
-    if (!keys['ArrowRight'] && !keys['ArrowLeft']) {
-        shepherd.moving = false;
     }
 });
 
@@ -72,15 +69,8 @@ canvas.addEventListener('touchstart', (e) => {
             shepherd.jumpStartY = shepherd.y;
             shepherd.jumpProgress = 0;
         }
-    } else {
-        // Single touch start
-        shepherd.moving = true;
     }
     lastTouchTime = currentTime;
-});
-
-canvas.addEventListener('touchend', (e) => {
-    shepherd.moving = false;
 });
 
 function resizeCanvas() {
@@ -95,14 +85,6 @@ function resizeCanvas() {
 
     shepherd.x = (originalWidth * scale) / 2 - (shepherd.width * scale) / 2;
     shepherd.y = (originalHeight * scale) - (600 * scale); // Adjusted for new starting position
-}
-
-function moveShepherd() {
-    if (keys['ArrowRight'] || keys['ArrowLeft'] || shepherd.moving) {
-        shepherd.moving = true;
-    } else {
-        shepherd.moving = false;
-    }
 }
 
 function handleSpriteFrame() {
@@ -146,20 +128,22 @@ function drawSprite(img, sX, sY, sWidth, sHeight, dX, dY, dWidth, dHeight) {
 function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(bgImage, 0, 0, canvas.width, canvas.height); // Draw background image
-    moveShepherd();
-    handleJump();
-    if (shepherd.jumping) {
-        drawSprite(jumpSprite, 0, 0, jumpSprite.width, jumpSprite.height, shepherd.x, shepherd.y, shepherd.width * scale, shepherd.height * scale);
-    } else {
-        if (shepherd.moving) {
-            drawSprite(walkSprites[shepherd.frameX], 0, 0, walkSprites[shepherd.frameX].width, walkSprites[shepherd.frameX].height, shepherd.x, shepherd.y, shepherd.width * scale, shepherd.height * scale);
+    if (gameStarted) {
+        handleJump();
+        if (shepherd.jumping) {
+            drawSprite(jumpSprite, 0, 0, jumpSprite.width, jumpSprite.height, shepherd.x, shepherd.y, shepherd.width * scale, shepherd.height * scale);
         } else {
-            drawSprite(standSprite, 0, 0, standSprite.width, standSprite.height, shepherd.x, shepherd.y, shepherd.width * scale, shepherd.height * scale);
+            if (shepherd.moving) {
+                drawSprite(walkSprites[shepherd.frameX], 0, 0, walkSprites[shepherd.frameX].width, walkSprites[shepherd.frameX].height, shepherd.x, shepherd.y, shepherd.width * scale, shepherd.height * scale);
+            } else {
+                drawSprite(standSprite, 0, 0, standSprite.width, standSprite.height, shepherd.x, shepherd.y, shepherd.width * scale, shepherd.height * scale);
+            }
         }
+        handleSpriteFrame();
     }
-    handleSpriteFrame();
     requestAnimationFrame(animate);
 }
 
 resizeCanvas();
 animate();
+popup.style.display = 'block';
