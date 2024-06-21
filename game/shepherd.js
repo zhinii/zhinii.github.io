@@ -38,6 +38,7 @@ bgImage.src = 'pictures/bg.jpg';
 
 let keys = [];
 let frameCount = 0;
+let touchStartTime = 0;
 
 window.addEventListener('keydown', (e) => {
     keys[e.key] = true;
@@ -60,6 +61,28 @@ window.addEventListener('keyup', (e) => {
 });
 
 window.addEventListener('resize', resizeCanvas);
+
+canvas.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 1) {
+        const touchDuration = new Date().getTime() - touchStartTime;
+        if (touchDuration < 300) {
+            // Double touch detected
+            if (!shepherd.jumping) {
+                shepherd.jumping = true;
+                shepherd.jumpStartY = shepherd.y;
+                shepherd.jumpProgress = 0;
+            }
+        } else {
+            // Single touch start
+            shepherd.moving = true;
+            touchStartTime = new Date().getTime();
+        }
+    }
+});
+
+canvas.addEventListener('touchend', (e) => {
+    shepherd.moving = false;
+});
 
 function resizeCanvas() {
     const windowWidth = window.innerWidth;
