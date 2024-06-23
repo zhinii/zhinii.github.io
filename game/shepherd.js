@@ -5,15 +5,18 @@ const ctx = canvas.getContext('2d');
 // Constants
 const ORIGINAL_WIDTH = 1400;
 const ORIGINAL_HEIGHT = 933;
-const SHEEP_SPAWN_INTERVAL = 3000;
-const COYOTE_SPAWN_INTERVAL = 7000;
-const JUMP_DURATION = 1;
+const JUMP_DURATION = 1.2;
 const JUMP_HEIGHT = 325;
 const SHEEP_POOL_SIZE = 3;
 const COYOTE_POOL_SIZE = 2;
 const WINNING_SCORE = 15;
 const WEED_POOL_SIZE = 1;
-const WEED_SPAWN_INTERVAL = 9000; // Same as coyote to prevent simultaneous spawn
+
+// New spawning system variables
+let lastSpawnTime = 0;
+const MIN_SPAWN_INTERVAL = 2000; // 2 seconds in milliseconds
+let spawnChance = 0.1; // Initial spawn chance (10%)
+const SPAWN_CHANCE_INCREASE = 0.01; // Increase spawn chance by 1% for each sheep caught
 
 // Preload assets
 const assetSources = [
@@ -33,9 +36,9 @@ const assetSources = [
     'pictures/weed4.png'
 ];
 
-
 const assets = {};
 let assetsLoaded = 0;
+let restartButton;
 
 assetSources.forEach(src => {
     const img = new Image();
@@ -108,7 +111,6 @@ function createWeed() {
     };
 }
 
-
 function createShepherd() {
     return {
         x: ORIGINAL_WIDTH / 2 - 150,
@@ -117,9 +119,9 @@ function createShepherd() {
         height: 450,
         frameX: 0,
         frameTimer: 0,
-        frameDuration: 1000 / 12,  // Duration each frame should be displayed (for 12 frames per second)
+        frameDuration: 1000 / 12,
         speed: 200,
-        moving: true,  // Indicates whether the shepherd is moving
+        moving: true,
         jumping: false,
         jumpProgress: 0,
         active: true
@@ -146,14 +148,22 @@ function init() {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
     window.addEventListener('keydown', handleKeyDown);
-    canvas.addEventListener('touchstart', handleTouch);
-    
+    canvas.addEventListener('touchstart', handleTouch, { passive: false });
+    canvas.addEventListener('click', handleCanvasClick);
+
     lastTime = performance.now();
     startGame();
     gameLoop(lastTime);
 }
 
 
+function handleClick(e) {
+    // Check if the shepherd is not already jumping
+    if (!shepherd.jumping) {
+        shepherd.jumping = true;
+        shepherd.jumpProgress = 0;
+    }
+}
 
 function resizeCanvas() {
     const windowWidth = window.innerWidth;
@@ -166,7 +176,7 @@ function resizeCanvas() {
     canvas.style.marginLeft = `${(windowWidth - canvas.width) / 2}px`;
     canvas.style.marginTop = `${(windowHeight - canvas.height) / 2}px`;
 
-    shepherd.x = (ORIGINAL_WIDTH / 2 - shepherd.width / 2) * scale;
+      shepherd.x = (ORIGINAL_WIDTH / 2 - 150) * scale;
     shepherd.y = (ORIGINAL_HEIGHT - 600) * scale;
 
     sheepPool.forEach(sheep => {
@@ -183,10 +193,10 @@ function resizeCanvas() {
         coyote.speed = 250 * scale;
     });
     weedPool.forEach(weed => {
-        weed.y = (ORIGINAL_HEIGHT - 380) * scale; // Adjust Y position
+        weed.y = (ORIGINAL_HEIGHT - 380) * scale;
         weed.width = 150 * scale;
         weed.height = 150 * scale;
-        weed.speed = 350 * scale; // Adjust speed
+        weed.speed = 350 * scale;
     });
 }
 
@@ -198,14 +208,13 @@ function handleKeyDown(e) {
 }
 
 function handleTouch(e) {
-    const currentTime = Date.now();
-    if (currentTime - lastTouchTime < 300) {
-        if (!shepherd.jumping) {
-            shepherd.jumping = true;
-            shepherd.jumpProgress = 0;
-        }
+    e.preventDefault(); // Prevent default touch behavior
+
+    // Check if the shepherd is not already jumping
+    if (!shepherd.jumping) {
+        shepherd.jumping = true;
+        shepherd.jumpProgress = 0;
     }
-    lastTouchTime = currentTime;
 }
 
 function startGame() {
@@ -213,16 +222,35 @@ function startGame() {
     gameState = 'playing';
     shepherd.moving = true;
 
-    spawnSheep();
-    setInterval(spawnSheep, SHEEP_SPAWN_INTERVAL);
+    scheduleNextSpawn();
+}
 
-    setInterval(() => {
-        if (Math.random() < 0.5) {
-            spawnCoyote();
+function scheduleNextSpawn() {
+    const now = Date.now();
+    const timeSinceLastSpawn = now - lastSpawnTime;
+    
+    if (timeSinceLastSpawn >= MIN_SPAWN_INTERVAL) {
+        if (Math.random() < spawnChance) {
+            spawnRandomEntity();
+            lastSpawnTime = now;
+            console.log("Spawned entity, new spawn chance:", spawnChance);
         } else {
-            spawnWeed();
+            console.log("Spawn check failed, current chance:", spawnChance);
         }
-    }, COYOTE_SPAWN_INTERVAL);
+    }
+    
+    setTimeout(scheduleNextSpawn, 100);
+}
+
+function spawnRandomEntity() {
+    const rand = Math.random();
+    if (rand < 0.7) { // 70% chance for sheep
+        spawnSheep();
+    } else if (rand < 0.85) { // 15% chance for coyote
+        spawnCoyote();
+    } else { // 15% chance for weed
+        spawnWeed();
+    }
 }
 
 function spawnSheep() {
@@ -232,6 +260,8 @@ function spawnSheep() {
         availableSheep.y = (ORIGINAL_HEIGHT - 380) * scale;
         availableSheep.caught = false;
         availableSheep.active = true;
+    } else {
+        console.log("No available sheep in the pool!");
     }
 }
 
@@ -253,7 +283,6 @@ function spawnWeed() {
     }
 }
 
-
 function updateGame(currentTime) {
     if (gameState !== 'playing') return;
 
@@ -263,10 +292,9 @@ function updateGame(currentTime) {
     handleJump(deltaTime);
     updateSheep(deltaTime);
     updateCoyotes(deltaTime);
-    updateWeeds(deltaTime);  // Add this line
+    updateWeeds(deltaTime);
     handleSpriteFrame(deltaTime);
 }
-
 
 function handleJump(dt) {
     if (shepherd.jumping) {
@@ -285,21 +313,21 @@ function handleJump(dt) {
 
 function updateSheep(dt) {
     sheepPool.forEach(sheep => {
-        if (sheep.active && !sheep.caught) {
+        if (sheep.active) {
             sheep.x -= sheep.speed * dt;
             
-            if (checkCollision(shepherd, sheep)) {
-                if (!shepherd.jumping) {
-                    sheep.caught = true;
-                    sheepCounter++;
-                    if (sheepCounter >= WINNING_SCORE) {
-                        endGame('win');
-                    }
+            if (checkCollision(shepherd, sheep) && !shepherd.jumping && !sheep.caught) {
+                sheep.caught = true;
+                sheepCounter++;
+                spawnChance = Math.min(spawnChance + SPAWN_CHANCE_INCREASE, 1);
+                if (sheepCounter >= WINNING_SCORE) {
+                    endGame('win');
                 }
             }
             
             if (sheep.x + sheep.width * scale < 0) {
                 sheep.active = false;
+                sheep.caught = false;  // Reset caught status
             }
         }
     });
@@ -330,7 +358,7 @@ function updateWeeds(dt) {
 
             if (checkCollision(shepherd, weed)) {
                 if (!shepherd.jumping) {
-                    endGame('lose');
+                    endGame('weed'); // Changed from 'lose' to 'weed'
                 }
             }
 
@@ -341,7 +369,6 @@ function updateWeeds(dt) {
     });
 }
 
-
 function handleSpriteFrame(dt) {
     // Shepherd animation
     if (shepherd.moving) {
@@ -349,8 +376,8 @@ function handleSpriteFrame(dt) {
         console.log("Shepherd frameTimer:", shepherd.frameTimer, "Frame Duration:", shepherd.frameDuration);
         if (shepherd.frameTimer >= shepherd.frameDuration) {
             shepherd.frameTimer = 0;
-            shepherd.frameX = (shepherd.frameX + 1) % 4;  // Cycle through walking frames
-            console.log("Shepherd frameX updated:", shepherd.frameX);  // Log frame update
+            shepherd.frameX = (shepherd.frameX + 1) % 4;
+            console.log("Shepherd frameX updated:", shepherd.frameX);
         }
     }
 
@@ -360,7 +387,7 @@ function handleSpriteFrame(dt) {
             sheep.frameTimer += dt * 1000;
             if (sheep.frameTimer >= sheep.frameDuration) {
                 sheep.frameTimer = 0;
-                sheep.frameX = 1 - sheep.frameX; // Toggle between frame 0 and 1
+                sheep.frameX = 1 - sheep.frameX;
             }
         }
     });
@@ -371,7 +398,7 @@ function handleSpriteFrame(dt) {
             coyote.frameTimer += dt * 1000;
             if (coyote.frameTimer >= coyote.frameDuration) {
                 coyote.frameTimer = 0;
-                coyote.frameX = 1 - coyote.frameX; // Toggle between frame 0 and 1
+                coyote.frameX = 1 - coyote.frameX;
             }
         }
     });
@@ -382,12 +409,11 @@ function handleSpriteFrame(dt) {
             weed.frameTimer += dt * 1000;
             if (weed.frameTimer >= weed.frameDuration) {
                 weed.frameTimer = 0;
-                weed.frameX = (weed.frameX + 1) % 4; // Cycle through frames 0 to 3
+                weed.frameX = (weed.frameX + 1) % 4;
             }
         }
     });
 }
-
 
 function checkCollision(shepherd, animal) {
     const shepherdMidX = shepherd.x + (shepherd.width * scale) / 2;
@@ -413,7 +439,7 @@ function drawGame() {
     if (gameState === 'playing') {
         drawSheep();
         drawCoyotes();
-        drawWeeds();  // Add this line
+        drawWeeds();
         drawShepherd();
         drawScore();
     } else {
@@ -429,8 +455,6 @@ function drawWeeds() {
         }
     });
 }
-
-
 function drawSheep() {
     sheepPool.forEach(sheep => {
         if (sheep.active && !sheep.caught) {
@@ -456,9 +480,14 @@ function drawShepherd() {
     } else if (shepherd.moving) {
         sprite = assets[`walk${shepherd.frameX + 1}.png`];
     }
-        console.log("Drawing shepherd with sprite:", sprite.src);  // Log the sprite being drawn
+    console.log("Drawing shepherd with sprite:", sprite.src);
 
-    ctx.drawImage(sprite, Math.round(shepherd.x), Math.round(shepherd.y), shepherd.width * scale, shepherd.height * scale);
+    ctx.drawImage(sprite, 
+        Math.round(shepherd.x), 
+        Math.round(shepherd.y), 
+        shepherd.width * scale, 
+        shepherd.height * scale
+    );
 }
 
 function drawScore() {
@@ -479,36 +508,56 @@ function drawEndScreen() {
 
     let message, subMessage;
     if (gameState === 'lost') {
-        message = "Oh no! A coyote got you!";
-        subMessage = "Refresh the page to play again";
+        if (loseReason === 'weed') {
+            message = "You got taken out by a tumble weed!";
+        } else {
+            message = "Oh no! A coyote got you!";
+        }
+        subMessage = "Click the button below to play again";
     } else {
         message = "You caught all of Masani's sheep!";
-        subMessage = "Refresh the page to play again";
+        subMessage = "Click the button below to play again";
     }
 
     let y = canvas.height / 2 - baseFontSize;
     y = wrapText(ctx, message, canvas.width / 2, y, canvas.width * 0.9, baseFontSize * 1.2);
 
     ctx.font = `${baseFontSize * 0.5}px Arial`;
-    wrapText(ctx, subMessage, canvas.width / 2, y + baseFontSize, canvas.width * 0.9, baseFontSize * 0.6);
+    y = wrapText(ctx, subMessage, canvas.width / 2, y + baseFontSize, canvas.width * 0.9, baseFontSize * 0.6);
+
+    // Draw restart button
+    const buttonWidth = 200;
+    const buttonHeight = 50;
+    const buttonX = canvas.width / 2 - buttonWidth / 2;
+    const buttonY = y + baseFontSize;
+
+    ctx.fillStyle = 'green';
+    ctx.fillRect(buttonX, buttonY, buttonWidth, buttonHeight);
+    
+    ctx.fillStyle = 'white';
+    ctx.font = `${baseFontSize * 0.5}px Arial`;
+    ctx.fillText('Restart Game', canvas.width / 2, buttonY + buttonHeight / 2 + baseFontSize * 0.2);
+
+    // Store button coordinates for click detection
+    restartButton = {x: buttonX, y: buttonY, width: buttonWidth, height: buttonHeight};
 }
 
 function gameLoop(currentTime) {
     if (gameState === 'playing') {
         updateGame(currentTime);
-        const dt = (currentTime - lastTime) / 1000; // Calculate delta time
+        const dt = (currentTime - lastTime) / 1000;
         console.log("Calling handleSpriteFrame with delta time:", dt);
-        handleSpriteFrame(dt); // Pass delta time in seconds
-        lastTime = currentTime; // Update lastTime
+        handleSpriteFrame(dt);
+        lastTime = currentTime;
     }
     drawGame();
     requestAnimationFrame(gameLoop);
 }
 
-
 function endGame(reason) {
     gameStarted = false;
     gameState = reason === 'win' ? 'won' : 'lost';
+    loseReason = reason; // Add this line to store the specific lose reason
     
     for (let i = 1; i < 99999; i++) {
         window.clearInterval(i);
@@ -525,7 +574,7 @@ function wrapText(context, text, x, y, maxWidth, lineHeight) {
         const testWidth = metrics.width;
         if (testWidth > maxWidth && n > 0) {
             context.fillText(line, x, y);
-            line = words[n] + ' ';
+            line = words[n] + ' '; 
             y += lineHeight;
         }
         else {
@@ -534,6 +583,48 @@ function wrapText(context, text, x, y, maxWidth, lineHeight) {
     }
     context.fillText(line, x, y);
     return y;
+}
+
+canvas.addEventListener('click', handleCanvasClick);
+
+function handleCanvasClick(e) {
+    if (gameState !== 'playing' && restartButton) {
+        const rect = canvas.getBoundingClientRect();
+        const clickX = e.clientX - rect.left;
+        const clickY = e.clientY - rect.top;
+
+        if (clickX >= restartButton.x && clickX <= restartButton.x + restartButton.width &&
+            clickY >= restartButton.y && clickY <= restartButton.y + restartButton.height) {
+            restartGame();
+        }
+    }
+}
+
+function restartGame() {
+    // Reset game variables
+    sheepCounter = 0;
+    spawnChance = 0.1;
+    lastSpawnTime = 0;
+    gameState = 'playing';
+    
+    // Reset shepherd
+    shepherd = createShepherd();
+
+    // Apply current scale to shepherd's position
+    shepherd.x *= scale;
+    shepherd.y *= scale;
+    
+    // Reset entity pools
+    sheepPool.forEach(sheep => sheep.active = false);
+    coyotePool.forEach(coyote => coyote.active = false);
+    weedPool.forEach(weed => weed.active = false);
+    
+    // Restart spawning
+    scheduleNextSpawn();
+    
+    // Restart game loop
+    lastTime = performance.now();
+    gameLoop(lastTime);
 }
 
 // Game starts here
