@@ -26,6 +26,17 @@
             cursor: pointer;
             margin: 0 5px;
         }
+        #sliderContainer {
+            width: 250px;
+            margin-top: 10px;
+        }
+        #weaveSlider {
+            width: 100%;
+        }
+        #instructions {
+            margin-top: 5px;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -39,16 +50,22 @@
             <div class="color-box" style="background-color: #ff00ff;" data-color="#ff00ff"></div>
             <div class="color-box" style="background-color: #00ffff;" data-color="#00ffff"></div>
         </div>
-        <button id="drawButton">Draw</button>
+        <button id="drawButton" disabled>Draw</button>
+    </div>
+    <div id="sliderContainer">
+        <input type="range" id="weaveSlider" min="0" max="250" value="0">
+        <div id="instructions">Drag the slider to set the weave length for the current row. Select a color and press "Draw" to weave.</div>
     </div>
 
     <script>
         const canvas = document.getElementById('loomCanvas');
         const ctx = canvas.getContext('2d');
         const drawButton = document.getElementById('drawButton');
+        const weaveSlider = document.getElementById('weaveSlider');
         let selectedColor = '#ff0000';
         let currentY = canvas.height;
         let rowCount = 0;
+        let currentX = 0;
 
         // Draw the initial loom with vertical lines
         function drawLoom() {
@@ -74,26 +91,31 @@
             });
         });
 
+        weaveSlider.addEventListener('input', () => {
+            drawButton.disabled = (weaveSlider.value <= currentX);
+        });
+
         drawButton.addEventListener('click', drawLines);
 
         function drawLines() {
-            for (let i = 0; i < 10; i++) {
-                if (currentY <= 0) {
-                    alert("The loom is full! Refresh the page to start again.");
-                    drawButton.disabled = true;
-                    return;
-                }
-                ctx.fillStyle = selectedColor;
-                for (let x = 0; x < canvas.width; x += 6) {
-                    if (rowCount % 2 === 0) {
-                        ctx.fillRect(x, currentY - 3, 4, 3);
-                    } else {
-                        ctx.fillRect(x + 3, currentY - 3, 4, 3);
-                    }
-                }
-                currentY -= 3;
-                rowCount++;
+            if (currentY <= 0) {
+                alert("The loom is full! Refresh the page to start again.");
+                drawButton.disabled = true;
+                return;
             }
+            const maxWeave = parseInt(weaveSlider.value, 10);
+            ctx.fillStyle = selectedColor;
+            for (let x = currentX; x < maxWeave; x += 3) {
+                ctx.fillRect(x, currentY - 3, 3, 3);
+            }
+            currentX = maxWeave;
+            if (currentX >= canvas.width) {
+                currentY -= 3;
+                currentX = 0;
+                rowCount++;
+                weaveSlider.value = 0;
+            }
+            drawButton.disabled = true;
         }
 
         // Initialize the loom and the first selected color
