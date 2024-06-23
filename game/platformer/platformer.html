@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Platformer Game</title>
+    <style>
+        body { margin: 0; overflow: hidden; }
+        canvas { display: block; background: lightblue; margin: 0 auto; }
+        .controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 20px;
+        }
+        .button {
+            width: 100px; /* 200% bigger */
+            height: 100px; /* 200% bigger */
+            background: gray;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 48px; /* 200% bigger */
+            color: white;
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas"></canvas>
+    <div class="controls">
+        <div class="button" id="leftButton">⬅️</div>
+        <div class="button" id="jumpButton">⬆️</div>
+        <div class="button" id="rightButton">➡️</div>
+    </div>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const leftButton = document.getElementById('leftButton');
+        const rightButton = document.getElementById('rightButton');
+        const jumpButton = document.getElementById('jumpButton');
+
+        const ORIGINAL_WIDTH = 1400;
+        const ORIGINAL_HEIGHT = 933;
+        const SHEEP_POOL_SIZE = 5;
+        const COYOTE_POOL_SIZE = 2;
+        const WEED_POOL_SIZE = 1;
+        const GRAVITY = 0.5;
+
+        let lastSpawnTime = 0;
+        const MIN_SPAWN_INTERVAL = 5000; // 5 seconds in milliseconds
+        let spawnChance = 0.1; // Initial spawn chance (10%)
+        const SPAWN_CHANCE_INCREASE = 0.01; // Increase spawn chance by 1% for each sheep caught
+
+        const navajoNumbers = [
+            "ádin",
+            "Tʼááłáʼí", // 1
+            "Naakí",    // 2
+            "Taaʼ",     // 3
+            "Dį́į́ʼ",    // 4
+            "Ashdlaʼ",  // 5
+            "Hastą́ą́", // 6
+            "Tsostsʼid",// 7
+            "Tseebíí", // 8
+            "Náhástʼéí",// 9
+            "Neeznáá",   // 10
+            "Łaʼtsʼáadah",// 11
+            "Naakitsʼáadah",  // 12
+            "Tááʼtsʼáadah", // 13
+            "Dį́į́ʼtsʼáadah",// 14
+            "Ashdlaʼáadah" // 15
+        ];
+
+        const assets = {};
+        const assetSources = [
+            'pictures/sheep1.png',
+            'pictures/sheep2.png',
+            'pictures/walk1.png',
+            'pictures/walk2.png',
+            'pictures/walk3.png',
+            'pictures/walk4.png',
+            'pictures/jump.png', 
+            'pictures/bg.jpg',
+            'pictures/coyote1.png',
+            'pictures/coyote2.png',
+            'pictures/weed1.png',
+            'pictures/weed2.png',
+            'pictures/weed3.png',
+            'pictures/weed4.png'
+        ];
+        let assetsLoaded = 0;
+
+        assetSources.forEach(src => {
+            const img = new Image();
+            img.onload = () => {
+                assetsLoaded++;
+                if (assetsLoaded === assetSources.length) {
+                    init();
+                }
+            };
+            img.src = src;
+            assets[src.split('/').pop()] = img;
+        });
+
+        let scale = 1;
+        let frameCount = 0;
+        let lastTime = 0;
+        let deltaTime = 0;
+
+        let shepherd, camera;
+        const sheepPool = [];
+        const coyotePool = [];
+        const weedPool = [];
+        const platforms = [
+            { x: 100, y: 800, width: 300, height: 20 },
+            { x: 500, y: 600, width: 200, height: 20 },
+            { x: 800, y: 700, width: 150, height: 20 },
+            { x: 1100, y: 500, width: 250, height: 20 }
+        ];
+
+        let sheepCaught = 0;
+
+        function createShepherd() {
+            return {
+                x: 150,
+                y: 150,
+                width: 100, // 100% bigger
+                height: 100, // 100% bigger
+                speed: 2.5, // 50% slower
+                jumpSpeed: 10, // Adjust this value to change jump height
+                jumping: false,
+                vy: 0,
+                frameX: 0,
+                frameTimer: 0,
+                frameDuration: 100,
+                direction: 1 // 1: right, -1: left
+            };
+        }
+
+        function createSheep(x, y) {
+            return {
+                x: x,
+                y: y,
+                width: 75, // 50% larger
+                height: 75, // 50% larger
+                speed: 1, // 50% slower
+                direction: 1,
+                frameX: 0,
+                frameTimer: 0,
+                frameDuration: 500,
+                walkDistance: 50,
+                walked: 0,
+                caught: false,
+                active: true
+            };
+        }
+
+        function createCoyote() {
+            return {
+                x: ORIGINAL_WIDTH,
+                y: ORIGINAL_HEIGHT - 330,
+                width: 75, // 50% smaller
+                height: 75, // 50% smaller
+                speed: 2, // 50% slower
+                frameX: 0,
+                frameTimer: 0,
+                frameDuration: 500,
+                active: true
+            };
+        }
+
+        function createWeed() {
+            return {
+                x: ORIGINAL_WIDTH,
+                y: ORIGINAL_HEIGHT - 330,
+                width: 75, // 50% smaller
+                height: 75, // 50% smaller
+                speed: 1.75, // 50% slower
+                frameX: 0,
+                frameTimer: 0,
+                frameDuration: 500,
+                active: true
+            };
+        }
+
+        function init() {
+            shepherd = createShepherd();
+            camera = { x: 0, y: 0, width: canvas.width, height: canvas.height };
+
+            for (let i = 0; i < SHEEP_POOL_SIZE; i++) {
+                const platform = platforms[Math.floor(Math.random() * platforms.length)];
+                sheepPool.push(createSheep(platform.x + Math.random() * (platform.width - 75), platform.y - 75));
+            }
+
+            for (let i = 0; i < COYOTE_POOL_SIZE; i++) {
+                coyotePool.push(createCoyote());
+            }
+
+            for (let i = 0; i < WEED_POOL_SIZE; i++) {
+                weedPool.push(createWeed());
+            }
+
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            window.addEventListener('keydown', handleKeyDown);
+            window.addEventListener('keyup', handleKeyUp);
+            canvas.addEventListener('touchstart', handleTouch, { passive: false });
+
+            leftButton.addEventListener('touchstart', () => keys['ArrowLeft'] = true, { passive: false });
+            leftButton.addEventListener('touchend', () => keys['ArrowLeft'] = false, { passive: false });
+            rightButton.addEventListener('touchstart', () => keys['ArrowRight'] = true, { passive: false });
+            rightButton.addEventListener('touchend', () => keys['ArrowRight'] = false, { passive: false });
+            jumpButton.addEventListener('touchstart', () => keys['ArrowUp'] = true, { passive: false });
+            jumpButton.addEventListener('touchend', () => keys['ArrowUp'] = false, { passive: false });
+
+            lastTime = performance.now();
+            gameLoop();
+        }
+
+        function resizeCanvas() {
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+            scale = Math.min(windowWidth / ORIGINAL_WIDTH, windowHeight / ORIGINAL_HEIGHT);
+
+            canvas.width = ORIGINAL_WIDTH * scale;
+            canvas.height = ORIGINAL_HEIGHT * scale;
+
+            canvas.style.marginLeft = `${(windowWidth - canvas.width) / 2}px`;
+            canvas.style.marginTop = `${(windowHeight - canvas.height) / 2}px`;
+        }
+
+        let keys = {};
+
+        function handleKeyDown(e) {
+            keys[e.code] = true;
+        }
+
+        function handleKeyUp(e) {
+            keys[e.code] = false;
+        }
+
+        function handleTouch(e) {
+            e.preventDefault(); // Prevent default touch behavior
+            if (!shepherd.jumping) {
+                shepherd.jumping = true;
+                shepherd.vy = -shepherd.jumpSpeed;
+            }
+        }
+
+        function update() {
+            // Update player position and physics
+            let moving = false;
+            if (keys['ArrowLeft']) {
+                shepherd.x -= shepherd.speed;
+                shepherd.direction = -1;
+                moving = true;
+            }
+            if (keys['ArrowRight']) {
+                shepherd.x += shepherd.speed;
+                shepherd.direction = 1;
+                moving = true;
+            }
+            if (keys['ArrowUp'] && !shepherd.jumping) {
+                shepherd.jumping = true;
+                shepherd.vy = -shepherd.jumpSpeed;
+            }
+
+            shepherd.vy += GRAVITY;
+            shepherd.y += shepherd.vy;
+
+            if (shepherd.y > ORIGINAL_HEIGHT - shepherd.height) {
+                shepherd.y = ORIGINAL_HEIGHT - shepherd.height;
+                shepherd.jumping = false;
+                shepherd.vy = 0;
+            }
+
+            platforms.forEach(platform => {
+                if (shepherd.x < platform.x + platform.width &&
+                    shepherd.x + shepherd.width > platform.x &&
+                    shepherd.y < platform.y + platform.height &&
+                    shepherd.y + shepherd.height > platform.y) {
+                    shepherd.jumping = false;
+                    shepherd.vy = 0;
+                    shepherd.y = platform.y - shepherd.height;
+                }
+            });
+
+            // Update animation frame if moving
+            if (moving && !shepherd.jumping) {
+                shepherd.frameTimer += deltaTime * 1000;
+                if (shepherd.frameTimer >= shepherd.frameDuration) {
+                    shepherd.frameTimer = 0;
+                    shepherd.frameX = (shepherd.frameX + 1) % 4; // 4 walking frames
+                }
+            } else if (!shepherd.jumping) {
+                shepherd.frameX = 0; // reset to the first frame when not moving
+            }
+
+            // Update sheep
+            sheepPool.forEach(sheep => {
+                if (sheep.active) {
+                    sheep.x += sheep.speed * sheep.direction;
+                    sheep.walked += sheep.speed * sheep.direction;
+                    if (Math.abs(sheep.walked) >= sheep.walkDistance) {
+                        sheep.direction *= -1;
+                        sheep.walked = 0;
+                    }
+                    sheep.frameTimer += deltaTime * 1000;
+                    if (sheep.frameTimer >= sheep.frameDuration) {
+                        sheep.frameTimer = 0;
+                        sheep.frameX = (sheep.frameX + 1) % 2; // Toggle between 0 and 1
+                    }
+
+                    // Check for collision with shepherd
+                    if (checkCollision(shepherd, sheep)) {
+                        sheep.caught = true;
+                        sheep.active = false;
+                        sheepCaught++;
+                    }
+                }
+            });
+
+            // Update coyote
+            coyotePool.forEach(coyote => {
+                if (coyote.active) {
+                    coyote.x -= coyote.speed;
+                    if (coyote.x < -coyote.width) {
+                        coyote.active = false;
+                    }
+                    coyote.frameTimer += deltaTime * 1000;
+                    if (coyote.frameTimer >= coyote.frameDuration) {
+                        coyote.frameTimer = 0;
+                        coyote.frameX = (coyote.frameX + 1) % 2;
+                    }
+                }
+            });
+
+            // Update weed
+            weedPool.forEach(weed => {
+                if (weed.active) {
+                    weed.x -= weed.speed;
+                    if (weed.x < -weed.width) {
+                        weed.active = false;
+                    }
+                    weed.frameTimer += deltaTime * 1000;
+                    if (weed.frameTimer >= weed.frameDuration) {
+                        weed.frameTimer = 0;
+                        weed.frameX = (weed.frameX + 1) % 4;
+                    }
+                }
+            });
+
+            // Update camera
+            camera.x = shepherd.x - camera.width / 2;
+            camera.y = shepherd.y - camera.height / 2;
+
+            camera.x = Math.max(0, Math.min(camera.x, ORIGINAL_WIDTH - camera.width));
+            camera.y = Math.max(0, Math.min(camera.y, ORIGINAL_HEIGHT - camera.height));
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.save();
+            ctx.translate(-camera.x, -camera.y);
+
+            // Draw background
+            ctx.drawImage(assets['bg.jpg'], 0, 0, ORIGINAL_WIDTH, ORIGINAL_HEIGHT);
+
+            // Draw platforms
+            ctx.fillStyle = 'brown';
+            platforms.forEach(platform => {
+                ctx.fillRect(platform.x, platform.y, platform.width, platform.height);
+            });
+
+            // Draw shepherd
+            ctx.save();
+            if (shepherd.direction === -1) {
+                ctx.scale(-1, 1);
+                if (shepherd.jumping) {
+                    ctx.drawImage(assets['jump.png'], -shepherd.x - shepherd.width, shepherd.y, shepherd.width, shepherd.height);
+                } else {
+                    ctx.drawImage(assets[`walk${shepherd.frameX + 1}.png`], -shepherd.x - shepherd.width, shepherd.y, shepherd.width, shepherd.height);
+                }
+            } else {
+                if (shepherd.jumping) {
+                    ctx.drawImage(assets['jump.png'], shepherd.x, shepherd.y, shepherd.width, shepherd.height);
+                } else {
+                    ctx.drawImage(assets[`walk${shepherd.frameX + 1}.png`], shepherd.x, shepherd.y, shepherd.width, shepherd.height);
+                }
+            }
+            ctx.restore();
+
+            // Draw sheep
+            sheepPool.forEach(sheep => {
+                if (sheep.active) {
+                    ctx.save();
+                    if (sheep.direction === -1) {
+                        ctx.scale(-1, 1);
+                        ctx.drawImage(assets[`sheep${sheep.frameX + 1}.png`], -sheep.x - sheep.width, sheep.y, sheep.width, sheep.height);
+                    } else {
+                        ctx.drawImage(assets[`sheep${sheep.frameX + 1}.png`], sheep.x, sheep.y, sheep.width, sheep.height);
+                    }
+                    ctx.restore();
+                }
+            });
+
+            // Draw coyotes
+            coyotePool.forEach(coyote => {
+                if (coyote.active) {
+                    let coyoteSprite = assets[`coyote${coyote.frameX + 1}.png`];
+                    ctx.drawImage(coyoteSprite, coyote.x, coyote.y, coyote.width, coyote.height);
+                }
+            });
+
+            // Draw weeds
+            weedPool.forEach(weed => {
+                if (weed.active) {
+                    let weedSprite = assets[`weed${weed.frameX + 1}.png`];
+                    ctx.drawImage(weedSprite, weed.x, weed.y, weed.width, weed.height);
+                }
+            });
+
+            // Draw score
+            drawScore();
+
+            ctx.restore();
+        }
+
+        function drawScore() {
+            ctx.fillStyle = 'black';
+            const fontSize = Math.min(canvas.width / 50, 24); // Adjust font size based on canvas width
+            ctx.font = `bold ${fontSize}px Arial`; // Make the text bold
+            ctx.textAlign = 'right';
+
+            const xPosition = canvas.width - 20; // 20 pixels from the right edge
+            const yPosition = 50; // 50 pixels from the top edge
+
+            ctx.fillText(`Sheep caught: ${sheepCaught}`, xPosition, yPosition);
+
+            if (sheepCaught >= 0 && sheepCaught <= 15) {
+                ctx.fillText(`Dibé: ${navajoNumbers[sheepCaught]}`, xPosition, yPosition + fontSize + 10);
+            }
+        }
+
+        function checkCollision(shepherd, sheep) {
+            return (
+                shepherd.x < sheep.x + sheep.width &&
+                shepherd.x + shepherd.width > sheep.x &&
+                shepherd.y < sheep.y + sheep.height &&
+                shepherd.y + shepherd.height > sheep.y
+            );
+        }
+
+        function gameLoop() {
+            const currentTime = performance.now();
+            deltaTime = (currentTime - lastTime) / 1000;
+            lastTime = currentTime;
+
+            update();
+            draw();
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        init();
+    </script>
+</body>
+</html>
