@@ -36,6 +36,27 @@ const assetSources = [
     'pictures/weed4.png'
 ];
 
+
+const navajoNumbers = [
+    "ádin",
+    "Tʼááłáʼí", // 1
+    "Naaki",    // 2
+    "Taaʼ",     // 3
+    "Dį́į́ʼ",    // 4
+    "Ashdlaʼ",  // 5
+    "Hastą́ą́", // 6
+    "Tsostsʼid",// 7
+    "Tsebįįzh", // 8
+    "Náhástʼéí",// 9
+    "Nezníí",   // 10
+    "Łaʼtsʼáadah",// 11
+    "Naadiin",  // 12
+    "Taaʼdiin", // 13
+    "Dį́į́ʼdiin",// 14
+    "Ashdlaʼdiin" // 15
+];
+
+
 const assets = {};
 let assetsLoaded = 0;
 let restartButton;
@@ -493,7 +514,11 @@ function drawShepherd() {
 function drawScore() {
     ctx.fillStyle = 'black';
     ctx.font = '24px Arial';
-    ctx.fillText(`Sheep caught: ${sheepCounter}`, canvas.width - 200, 50);
+    ctx.fillText(`Sheep caught: ${sheepCounter}`, canvas.width - 250, 50);
+
+    if (sheepCounter >= 0 && sheepCounter <= 15) {
+        ctx.fillText(`Dibé: ${navajoNumbers[sheepCounter ]}`, canvas.width - 250, 80);
+    }
 }
 
 function drawEndScreen() {
@@ -515,7 +540,7 @@ function drawEndScreen() {
         }
         subMessage = "Click the button below to play again";
     } else {
-        message = "You caught all of Masani's sheep!";
+        message = "Nizhóní!! You caught all of Masani's sheep!";
         subMessage = "Click the button below to play again";
     }
 
