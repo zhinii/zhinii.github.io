@@ -40,20 +40,20 @@ const assetSources = [
 const navajoNumbers = [
     "ádin",
     "Tʼááłáʼí", // 1
-    "Naaki",    // 2
+    "Naakí",    // 2
     "Taaʼ",     // 3
     "Dį́į́ʼ",    // 4
     "Ashdlaʼ",  // 5
     "Hastą́ą́", // 6
     "Tsostsʼid",// 7
-    "Tsebįįzh", // 8
+    "Tseebíí", // 8
     "Náhástʼéí",// 9
-    "Nezníí",   // 10
+    "Neeznáá",   // 10
     "Łaʼtsʼáadah",// 11
-    "Naadiin",  // 12
-    "Taaʼdiin", // 13
-    "Dį́į́ʼdiin",// 14
-    "Ashdlaʼdiin" // 15
+    "Naakitsʼáadah",  // 12
+    "Tááʼtsʼáadah", // 13
+    "Dį́į́ʼtsʼáadah",// 14
+    "Ashdlaʼáadah" // 15
 ];
 
 
@@ -153,19 +153,19 @@ function createShepherd() {
 function init() {
     shepherd = createShepherd();
     console.log("Shepherd initialized:", shepherd);
-    
+
     for (let i = 0; i < SHEEP_POOL_SIZE; i++) {
         sheepPool.push(createSheep());
     }
-    
+
     for (let i = 0; i < COYOTE_POOL_SIZE; i++) {
         coyotePool.push(createCoyote());
     }
-    
+
     for (let i = 0; i < WEED_POOL_SIZE; i++) {
         weedPool.push(createWeed());
     }
-    
+
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
     window.addEventListener('keydown', handleKeyDown);
@@ -173,18 +173,38 @@ function init() {
     canvas.addEventListener('click', handleCanvasClick);
 
     lastTime = performance.now();
-    startGame();
+    gameState = 'initial'; // Set initial game state to 'initial'
+    loseReason = 'initial'; // Set an initial lose reason
+    drawGame(); // Draw the initial game screen
     gameLoop(lastTime);
 }
 
 
-function handleClick(e) {
-    // Check if the shepherd is not already jumping
-    if (!shepherd.jumping) {
-        shepherd.jumping = true;
-        shepherd.jumpProgress = 0;
+
+function handleCanvasClick(e) {
+    e.preventDefault(); // Prevent default touch behavior
+
+    const rect = canvas.getBoundingClientRect();
+    let clickX, clickY;
+
+    if (e.type === 'click') {
+        clickX = e.clientX - rect.left;
+        clickY = e.clientY - rect.top;
+    } else if (e.type === 'touchstart') {
+        clickX = e.touches[0].clientX - rect.left;
+        clickY = e.touches[0].clientY - rect.top;
+    }
+
+    if (restartButton && clickX >= restartButton.x && clickX <= restartButton.x + restartButton.width &&
+        clickY >= restartButton.y && clickY <= restartButton.y + restartButton.height) {
+        if (gameState === 'initial') {
+            startGame();
+        } else {
+            restartGame();
+        }
     }
 }
+
 
 function resizeCanvas() {
     const windowWidth = window.innerWidth;
@@ -243,8 +263,14 @@ function startGame() {
     gameState = 'playing';
     shepherd.moving = true;
 
+    // Remove event listeners for button press
+    canvas.removeEventListener('click', handleCanvasClick);
+    canvas.removeEventListener('touchstart', handleCanvasClick);
+
     scheduleNextSpawn();
 }
+
+
 
 function scheduleNextSpawn() {
     const now = Date.now();
@@ -358,13 +384,13 @@ function updateCoyotes(dt) {
     coyotePool.forEach(coyote => {
         if (coyote.active) {
             coyote.x -= coyote.speed * dt;
-            
+
             if (checkCollision(shepherd, coyote)) {
                 if (!shepherd.jumping) {
-                    endGame('lose');
+                    endGame('coyote'); // Set the lose reason to 'coyote'
                 }
             }
-            
+
             if (coyote.x + coyote.width * scale < 0) {
                 coyote.active = false;
             }
@@ -379,7 +405,7 @@ function updateWeeds(dt) {
 
             if (checkCollision(shepherd, weed)) {
                 if (!shepherd.jumping) {
-                    endGame('weed'); // Changed from 'lose' to 'weed'
+                    endGame('weed'); // Set the lose reason to 'weed'
                 }
             }
 
@@ -389,6 +415,7 @@ function updateWeeds(dt) {
         }
     });
 }
+
 
 function handleSpriteFrame(dt) {
     // Shepherd animation
@@ -468,6 +495,8 @@ function drawGame() {
     }
 }
 
+
+
 function drawWeeds() {
     weedPool.forEach(weed => {
         if (weed.active) {
@@ -513,59 +542,75 @@ function drawShepherd() {
 
 function drawScore() {
     ctx.fillStyle = 'black';
-    ctx.font = '24px Arial';
-    ctx.fillText(`Sheep caught: ${sheepCounter}`, canvas.width - 250, 50);
+    const fontSize = Math.min(canvas.width / 50, 24); // Adjust font size based on canvas width
+    ctx.font = `bold ${fontSize}px Arial`; // Make the text bold
+    ctx.textAlign = 'right';
+
+    const xPosition = canvas.width - 20; // 20 pixels from the right edge
+    const yPosition = 50; // 50 pixels from the top edge
+
+    ctx.fillText(`Sheep caught: ${sheepCounter}`, xPosition, yPosition);
 
     if (sheepCounter >= 0 && sheepCounter <= 15) {
-        ctx.fillText(`Dibé: ${navajoNumbers[sheepCounter ]}`, canvas.width - 250, 80);
+        ctx.fillText(`Dibé: ${navajoNumbers[sheepCounter]}`, xPosition, yPosition + fontSize + 10);
     }
 }
 
 function drawEndScreen() {
     ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
-    
+
     ctx.fillStyle = 'white';
     ctx.textAlign = 'center';
-    
+
     const baseFontSize = Math.min(canvas.width / 20, 48);
     ctx.font = `${baseFontSize}px Arial`;
 
     let message, subMessage;
     if (gameState === 'lost') {
         if (loseReason === 'weed') {
-            message = "You got taken out by a tumble weed!";
-        } else {
+            message = "You got taken out by a tumbleweed!";
+            subMessage = "Click the button below to play again";
+        } else if (loseReason === 'coyote') {
             message = "Oh no! A coyote got you!";
+            subMessage = "Click the button below to play again";
         }
-        subMessage = "Click the button below to play again";
-    } else {
+    } else if (gameState === 'won') {
         message = "Nizhóní!! You caught all of Masani's sheep!";
         subMessage = "Click the button below to play again";
+    } else if (gameState === 'initial') {
+        message = "Masani lost her sheep. Help her catch them.";
+        subMessage = "Avoid tumbleweeds and coyotes.";
     }
 
     let y = canvas.height / 2 - baseFontSize;
     y = wrapText(ctx, message, canvas.width / 2, y, canvas.width * 0.9, baseFontSize * 1.2);
 
-    ctx.font = `${baseFontSize * 0.5}px Arial`;
-    y = wrapText(ctx, subMessage, canvas.width / 2, y + baseFontSize, canvas.width * 0.9, baseFontSize * 0.6);
+    if (subMessage) {
+        ctx.font = `${baseFontSize * 0.5}px Arial`;
+        wrapText(ctx, subMessage, canvas.width / 2, y + baseFontSize, canvas.width * 0.9, baseFontSize * 0.6);
+    }
 
     // Draw restart button
     const buttonWidth = 200;
     const buttonHeight = 50;
     const buttonX = canvas.width / 2 - buttonWidth / 2;
-    const buttonY = y + baseFontSize;
+    const buttonY = y + baseFontSize * 2;
 
     ctx.fillStyle = 'green';
     ctx.fillRect(buttonX, buttonY, buttonWidth, buttonHeight);
-    
+
     ctx.fillStyle = 'white';
     ctx.font = `${baseFontSize * 0.5}px Arial`;
-    ctx.fillText('Restart Game', canvas.width / 2, buttonY + buttonHeight / 2 + baseFontSize * 0.2);
+    ctx.fillText('Start Game', canvas.width / 2, buttonY + buttonHeight / 2 + baseFontSize * 0.2);
 
     // Store button coordinates for click detection
     restartButton = {x: buttonX, y: buttonY, width: buttonWidth, height: buttonHeight};
 }
+
+
+
+
 
 function gameLoop(currentTime) {
     if (gameState === 'playing') {
@@ -582,12 +627,19 @@ function gameLoop(currentTime) {
 function endGame(reason) {
     gameStarted = false;
     gameState = reason === 'win' ? 'won' : 'lost';
-    loseReason = reason; // Add this line to store the specific lose reason
-    
+    loseReason = reason; // Store the specific lose reason
+
+    // Add event listeners for button press
+    canvas.addEventListener('click', handleCanvasClick);
+    canvas.addEventListener('touchstart', handleCanvasClick, { passive: false });
+
     for (let i = 1; i < 99999; i++) {
         window.clearInterval(i);
     }
 }
+
+
+
 
 function wrapText(context, text, x, y, maxWidth, lineHeight) {
     const words = text.split(' ');
@@ -611,46 +663,65 @@ function wrapText(context, text, x, y, maxWidth, lineHeight) {
 }
 
 canvas.addEventListener('click', handleCanvasClick);
+canvas.addEventListener('touchstart', handleCanvasClick, { passive: false });
+
 
 function handleCanvasClick(e) {
-    if (gameState !== 'playing' && restartButton) {
-        const rect = canvas.getBoundingClientRect();
-        const clickX = e.clientX - rect.left;
-        const clickY = e.clientY - rect.top;
+    e.preventDefault(); // Prevent default touch behavior
 
-        if (clickX >= restartButton.x && clickX <= restartButton.x + restartButton.width &&
-            clickY >= restartButton.y && clickY <= restartButton.y + restartButton.height) {
+    const rect = canvas.getBoundingClientRect();
+    let clickX, clickY;
+
+    if (e.type === 'click') {
+        clickX = e.clientX - rect.left;
+        clickY = e.clientY - rect.top;
+    } else if (e.type === 'touchstart') {
+        clickX = e.touches[0].clientX - rect.left;
+        clickY = e.touches[0].clientY - rect.top;
+    }
+
+    if (restartButton && clickX >= restartButton.x && clickX <= restartButton.x + restartButton.width &&
+        clickY >= restartButton.y && clickY <= restartButton.y + restartButton.height) {
+        if (gameState === 'initial') {
+            startGame();
+        } else {
             restartGame();
         }
     }
 }
+
+
 
 function restartGame() {
     // Reset game variables
     sheepCounter = 0;
     spawnChance = 0.1;
     lastSpawnTime = 0;
-    gameState = 'playing';
-    
+    gameState = 'initial'; // Set game state to 'initial'
+    loseReason = 'initial'; // Reset lose reason
+
     // Reset shepherd
     shepherd = createShepherd();
 
     // Apply current scale to shepherd's position
     shepherd.x *= scale;
     shepherd.y *= scale;
-    
+
     // Reset entity pools
     sheepPool.forEach(sheep => sheep.active = false);
     coyotePool.forEach(coyote => coyote.active = false);
     weedPool.forEach(weed => weed.active = false);
-    
-    // Restart spawning
-    scheduleNextSpawn();
-    
+
+// Add event listeners for button press
+    canvas.addEventListener('click', handleCanvasClick);
+    canvas.addEventListener('touchstart', handleCanvasClick, { passive: false });
+
     // Restart game loop
     lastTime = performance.now();
-    gameLoop(lastTime);
+    drawGame(); // Draw the initial game screen
 }
+
+
 
 // Game starts here
 init();
