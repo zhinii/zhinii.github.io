@@ -66,6 +66,7 @@
         let currentY = canvas.height;
         let rowCount = 0;
         let currentX = 0;
+        const rows = []; // Store drawn rows
 
         // Draw the initial loom with vertical lines
         function drawLoom() {
@@ -81,6 +82,29 @@
             }
         }
 
+        // Draw stored rows
+        function drawRows() {
+            rows.forEach(row => {
+                ctx.fillStyle = row.color;
+                row.positions.forEach(pos => {
+                    ctx.fillRect(pos.x, pos.y, 3, 3);
+                });
+            });
+        }
+
+        // Draw the dashed line
+        function drawDashedLine() {
+            const maxWeave = parseInt(weaveSlider.value, 10);
+            ctx.setLineDash([5, 3]);
+            ctx.beginPath();
+            ctx.moveTo(maxWeave, 0);
+            ctx.lineTo(maxWeave, canvas.height);
+            ctx.strokeStyle = 'red';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+            ctx.setLineDash([]);
+        }
+
         document.querySelectorAll('.color-box').forEach(box => {
             box.addEventListener('click', (e) => {
                 selectedColor = e.target.getAttribute('data-color');
@@ -93,6 +117,9 @@
 
         weaveSlider.addEventListener('input', () => {
             drawButton.disabled = (weaveSlider.value <= currentX);
+            drawLoom();
+            drawRows();
+            drawDashedLine();
         });
 
         drawButton.addEventListener('click', drawLines);
@@ -104,10 +131,13 @@
                 return;
             }
             const maxWeave = parseInt(weaveSlider.value, 10);
+            const row = { color: selectedColor, positions: [] };
             ctx.fillStyle = selectedColor;
             for (let x = currentX; x < maxWeave; x += 3) {
                 ctx.fillRect(x, currentY - 3, 3, 3);
+                row.positions.push({ x: x, y: currentY - 3 });
             }
+            rows.push(row);
             currentX = maxWeave;
             if (currentX >= canvas.width) {
                 currentY -= 3;
@@ -116,10 +146,14 @@
                 weaveSlider.value = 0;
             }
             drawButton.disabled = true;
+            drawLoom();
+            drawRows();
+            drawDashedLine();
         }
 
         // Initialize the loom and the first selected color
         drawLoom();
+        drawDashedLine();
         document.querySelector('.color-box').style.border = '2px solid black';
     </script>
 </body>
