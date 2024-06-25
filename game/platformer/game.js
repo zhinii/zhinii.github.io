@@ -136,7 +136,7 @@ function setupMobileControls(jumpCallback) {
     style.textContent = `
         #mobileControls {
             position: fixed;
-            bottom: 20px;
+            bottom: 0px;
             left: 0;
             right: 0;
             height: ${MOBILE_CONTROLS_HEIGHT}px;
