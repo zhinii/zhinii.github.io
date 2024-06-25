@@ -1,5 +1,3 @@
-// mobileControls.js
-
 let leftPressed = false;
 let rightPressed = false;
 
@@ -23,14 +21,21 @@ function setupMobileControls(jumpCallback) {
     const leftJumpBtn = document.getElementById('leftJumpBtn');
     const rightJumpBtn = document.getElementById('rightJumpBtn');
 
-    leftBtn.addEventListener('touchstart', () => { leftPressed = true; });
+    leftBtn.addEventListener('touchstart', () => {
+        leftPressed = true;
+        navigator.vibrate(50); // Vibrate for 50 milliseconds
+    });
     leftBtn.addEventListener('touchend', () => { leftPressed = false; });
 
-    rightBtn.addEventListener('touchstart', () => { rightPressed = true; });
+    rightBtn.addEventListener('touchstart', () => {
+        rightPressed = true;
+        navigator.vibrate(50); // Vibrate for 50 milliseconds
+    });
     rightBtn.addEventListener('touchend', () => { rightPressed = false; });
 
     function jump() {
         jumpCallback();
+        navigator.vibrate(50); // Vibrate for 50 milliseconds
     }
 
     leftJumpBtn.addEventListener('touchstart', jump);
