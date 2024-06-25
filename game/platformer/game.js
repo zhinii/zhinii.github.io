@@ -22,7 +22,7 @@ jumpSprite.src = 'pictures/jump.png';
 
 let characterX;
 let characterY;
-let speed = 5;
+let speed = 2;
 let jumping = false;
 let jumpSpeed = 0;
 let gravity = 0.5;
@@ -42,7 +42,7 @@ let characterScale = INITIAL_SCALE;
 let bgScale = 1;
 
 // Character position relative to bottom
-const CHARACTER_BOTTOM_OFFSET_PERCENT = 0.24;// 24% from bottom, adjust as needed
+const CHARACTER_BOTTOM_OFFSET_PERCENT = 0.24; // 24% from bottom, adjust as needed
 const CHARACTER_INITIAL_X_PERCENT = 0.51; // 51% from left, adjust as needed
 
 // Store the initial window dimensions
@@ -129,6 +129,13 @@ function setupMobileControls(jumpCallback) {
             border: none;
             background-color: rgba(255, 255, 255, 0.5);
             color: #000;
+            -webkit-user-select: none; /* Safari */
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
+        }
+        #mobileControls button:active {
+            background-color: rgba(200, 200, 200, 0.5);
         }
     `;
     document.head.appendChild(style);
