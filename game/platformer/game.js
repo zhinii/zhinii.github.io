@@ -161,8 +161,9 @@ function setupMobileControls(jumpCallback) {
             width: 80px;
             height: 80px;
             margin: 5px;
-            font-size: 40px;
-            border-radius: 50%;
+            font-size: 50px;
+            font-weight: bold;
+            border-radius: 20%;
             border: none;
             background-color: rgba(255, 255, 255, 0.5);
             color: #000;
