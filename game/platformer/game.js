@@ -42,7 +42,7 @@ let characterScale = INITIAL_SCALE;
 let bgScale = 1;
 
 // Character position relative to bottom
-const CHARACTER_BOTTOM_OFFSET_PERCENT = 0.24; // 24% from bottom, adjust as needed
+const CHARACTER_BOTTOM_OFFSET_PERCENT = 0.24;// 24% from bottom, adjust as needed
 const CHARACTER_INITIAL_X_PERCENT = 0.51; // 51% from left, adjust as needed
 
 // Store the initial window dimensions
@@ -137,9 +137,11 @@ function setupMobileControls(jumpCallback) {
 function keyDownHandler(e) {
     if (e.key === 'ArrowRight') {
         isWalking = true;
+        rightPressed = true;
         direction = 'right';
     } else if (e.key === 'ArrowLeft') {
         isWalking = true;
+        leftPressed = true;
         direction = 'left';
     } else if (e.key === ' ') {
         if (!jumping) {
@@ -150,8 +152,12 @@ function keyDownHandler(e) {
 }
 
 function keyUpHandler(e) {
-    if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+    if (e.key === 'ArrowRight') {
         isWalking = false;
+        rightPressed = false;
+    } else if (e.key === 'ArrowLeft') {
+        isWalking = false;
+        leftPressed = false;
     }
 }
 
@@ -202,21 +208,6 @@ function update() {
         }
     } else {
         isWalking = false;
-    }
-    if (isWalking) {
-        if (direction === 'right') {
-            if (characterX < canvas.width / 2 || bgX <= -bg.width * bgScale + canvas.width + 10) {
-                characterX += speed;
-            } else {
-                bgX -= speed;
-            }
-        } else if (direction === 'left') {
-            if (characterX > canvas.width / 2 || bgX >= 0) {
-                characterX -= speed;
-            } else {
-                bgX += speed;
-            }
-        }
     }
 
     if (jumping) {
