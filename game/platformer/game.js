@@ -22,10 +22,7 @@ jumpSprite.src = 'pictures/jump.png';
 
 let characterX;
 let characterY;
-let speed = 2;
 let jumping = false;
-let jumpSpeed = 0;
-let gravity = 0.5;
 let currentFrame = 0;
 let frameCount = 0;
 let direction = 'right';
@@ -37,17 +34,30 @@ const characterWidth = 50;
 const characterHeight = 50;
 
 // Scaling factors
-const INITIAL_SCALE = 2.5; // Initial scale value for the character
+const INITIAL_SCALE = 5; // Initial scale value for the character
 let characterScale = INITIAL_SCALE;
 let bgScale = 1;
 
+// Base values for speed and jumping
+const BASE_SPEED = 8;
+const BASE_JUMP_SPEED = -14;
+const BASE_GRAVITY = 0.5;
+
+// Scaled values
+let speed = BASE_SPEED;
+let jumpSpeed = BASE_JUMP_SPEED;
+let gravity = BASE_GRAVITY;
+
 // Character position relative to bottom
-const CHARACTER_BOTTOM_OFFSET_PERCENT = 0.24; // 24% from bottom, adjust as needed
+const CHARACTER_BOTTOM_OFFSET_PERCENT = 0.28; // 24% from bottom, adjust as needed
 const CHARACTER_INITIAL_X_PERCENT = 0.51; // 51% from left, adjust as needed
 
 // Store the initial window dimensions
 let initialWindowWidth = window.innerWidth;
 let initialWindowHeight = window.innerHeight;
+
+// Mobile controls height
+const MOBILE_CONTROLS_HEIGHT = 200;
 
 document.addEventListener('keydown', keyDownHandler);
 document.addEventListener('keyup', keyUpHandler);
@@ -62,12 +72,12 @@ function setupMobileControls(jumpCallback) {
     mobileControls.id = 'mobileControls';
     mobileControls.innerHTML = `
         <div class="controlGroup left">
-            <button id="leftBtn">Left</button>
-            <button id="leftJumpBtn">Jump</button>
+            <button id="leftBtn">⟵ </button>
+            <button id="leftJumpBtn">↶</button>
         </div>
         <div class="controlGroup right">
-            <button id="rightBtn">Right</button>
-            <button id="rightJumpBtn">Jump</button>
+            <button id="rightBtn"> ⟶</button>
+            <button id="rightJumpBtn">↷</button>
         </div>
     `;
     document.body.appendChild(mobileControls);
@@ -77,27 +87,51 @@ function setupMobileControls(jumpCallback) {
     const leftJumpBtn = document.getElementById('leftJumpBtn');
     const rightJumpBtn = document.getElementById('rightJumpBtn');
 
+    function setButtonColor(button, isPressed) {
+        button.style.backgroundColor = isPressed ? 'rgba(0, 255, 0, 0.5)' : 'rgba(255, 255, 255, 0.5)';
+    }
+
     leftBtn.addEventListener('touchstart', () => {
         leftPressed = true;
-        navigator.vibrate(50); // Vibrate for 50 milliseconds
+        setButtonColor(leftBtn, true);
+        navigator.vibrate(50);
     });
-    leftBtn.addEventListener('touchend', () => { leftPressed = false; });
+    leftBtn.addEventListener('touchend', () => {
+        leftPressed = false;
+        setButtonColor(leftBtn, false);
+    });
 
     rightBtn.addEventListener('touchstart', () => {
         rightPressed = true;
-        navigator.vibrate(50); // Vibrate for 50 milliseconds
+        setButtonColor(rightBtn, true);
+        navigator.vibrate(50);
     });
-    rightBtn.addEventListener('touchend', () => { rightPressed = false; });
+    rightBtn.addEventListener('touchend', () => {
+        rightPressed = false;
+        setButtonColor(rightBtn, false);
+    });
 
     function jump() {
         jumpCallback();
-        navigator.vibrate(50); // Vibrate for 50 milliseconds
+        navigator.vibrate(50);
     }
 
-    leftJumpBtn.addEventListener('touchstart', jump);
-    rightJumpBtn.addEventListener('touchstart', jump);
+    leftJumpBtn.addEventListener('touchstart', () => {
+        jump();
+        setButtonColor(leftJumpBtn, true);
+    });
+    leftJumpBtn.addEventListener('touchend', () => {
+        setButtonColor(leftJumpBtn, false);
+    });
 
-    // Add CSS styles programmatically
+    rightJumpBtn.addEventListener('touchstart', () => {
+        jump();
+        setButtonColor(rightJumpBtn, true);
+    });
+    rightJumpBtn.addEventListener('touchend', () => {
+        setButtonColor(rightJumpBtn, false);
+    });
+
     const style = document.createElement('style');
     style.textContent = `
         #mobileControls {
@@ -105,9 +139,12 @@ function setupMobileControls(jumpCallback) {
             bottom: 20px;
             left: 0;
             right: 0;
+            height: ${MOBILE_CONTROLS_HEIGHT}px;
             display: flex;
             justify-content: space-between;
             pointer-events: none;
+                        z-index: 20; // Higher than the HUD
+
         }
         .controlGroup {
             display: flex;
@@ -124,18 +161,22 @@ function setupMobileControls(jumpCallback) {
             width: 80px;
             height: 80px;
             margin: 5px;
-            font-size: 16px;
+            font-size: 40px;
             border-radius: 50%;
             border: none;
             background-color: rgba(255, 255, 255, 0.5);
             color: #000;
-            -webkit-user-select: none; /* Safari */
-            -moz-user-select: none; /* Firefox */
-            -ms-user-select: none; /* Internet Explorer/Edge */
-            user-select: none; /* Non-prefixed version, currently supported by Chrome and Opera */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            transition: background-color 0.1s ease;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         #mobileControls button:active {
-            background-color: rgba(200, 200, 200, 0.5);
+            background-color: rgba(0, 255, 0, 0.5) !important;
         }
     `;
     document.head.appendChild(style);
@@ -151,10 +192,7 @@ function keyDownHandler(e) {
         leftPressed = true;
         direction = 'left';
     } else if (e.key === ' ') {
-        if (!jumping) {
-            jumping = true;
-            jumpSpeed = -10;
-        }
+        jump();
     }
 }
 
@@ -169,11 +207,8 @@ function keyUpHandler(e) {
 }
 
 function resizeCanvas() {
-    const oldWidth = canvas.width;
-    const oldHeight = canvas.height;
-
     canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    canvas.height = window.innerHeight - MOBILE_CONTROLS_HEIGHT;
 
     console.log(`Canvas size: ${canvas.width} x ${canvas.height}`);
 
@@ -181,7 +216,7 @@ function resizeCanvas() {
     bgScale = canvas.height / bg.height;
 
     // Calculate character scale based on the same logic as the background
-    characterScale = (canvas.height / initialWindowHeight) * INITIAL_SCALE;
+    characterScale = INITIAL_SCALE * (canvas.height / bg.height);
 
     // Adjust character X position to maintain center
     characterX = (canvas.width * CHARACTER_INITIAL_X_PERCENT) - ((characterWidth * characterScale) / 2);
@@ -189,11 +224,14 @@ function resizeCanvas() {
     // Set character Y position based on the defined percentage
     characterY = canvas.height - (canvas.height * CHARACTER_BOTTOM_OFFSET_PERCENT);
 
-    // Adjust background position
-    bgX = (bgX / oldWidth) * canvas.width;
+    // Scale speed and jumping based on character scale
+    speed = BASE_SPEED * (characterScale / INITIAL_SCALE);
+    jumpSpeed = BASE_JUMP_SPEED * (characterScale / INITIAL_SCALE);
+    gravity = BASE_GRAVITY * (characterScale / INITIAL_SCALE);
 
     console.log(`Character position: (${characterX}, ${characterY})`);
     console.log(`Character scale: ${characterScale}`);
+    console.log(`Speed: ${speed}, Jump Speed: ${jumpSpeed}, Gravity: ${gravity}`);
 }
 
 function update() {
@@ -276,7 +314,7 @@ function draw() {
 function jump() {
     if (!jumping) {
         jumping = true;
-        jumpSpeed = -10;
+        jumpSpeed = BASE_JUMP_SPEED * (characterScale / INITIAL_SCALE);
     }
 }
 
@@ -286,6 +324,32 @@ function gameLoop() {
     requestAnimationFrame(gameLoop);
 }
 
+function drawHUD() {
+    const hudCanvas = document.createElement('canvas');
+    hudCanvas.width = window.innerWidth;
+    hudCanvas.height = MOBILE_CONTROLS_HEIGHT;
+    hudCanvas.style.position = 'fixed';
+    hudCanvas.style.bottom = '0';
+    hudCanvas.style.left = '0';
+    hudCanvas.style.zIndex = '10'; // Ensure it's above the game canvas
+    document.body.appendChild(hudCanvas);
+
+    const hudCtx = hudCanvas.getContext('2d');
+    hudCtx.fillStyle = 'rgba(0, 0, 0, 0.5)'; // Semi-transparent black
+    hudCtx.fillRect(0, 0, hudCanvas.width, hudCanvas.height);
+
+    // Add some placeholder text
+    hudCtx.fillStyle = 'white';
+    hudCtx.font = '20px Arial';
+    const text = 'HUD Placeholder';
+    const textWidth = hudCtx.measureText(text).width;
+    const xPosition = (hudCanvas.width - textWidth) / 2;
+    const yPosition = (hudCanvas.height / 2) + 10; // Adjust for vertical centering
+
+    hudCtx.fillText(text, xPosition, yPosition);
+}
+
+
 let loadedImages = 0;
 const totalImages = walkSprites.length + 2; // +2 for bg and jumpSprite
 
@@ -293,17 +357,28 @@ function imageLoaded() {
     loadedImages++;
     if (loadedImages === totalImages) {
         initialWindowWidth = window.innerWidth;
-        initialWindowHeight = window.innerHeight;
+        initialWindowHeight = window.innerHeight - MOBILE_CONTROLS_HEIGHT;
         
-        // Set initial character scale
-        characterScale = INITIAL_SCALE;
+        // Set canvas size before calculating scales
+        canvas.width = initialWindowWidth;
+        canvas.height = initialWindowHeight;
+        
+        // Calculate initial scales
+        bgScale = canvas.height / bg.height;
+        characterScale = INITIAL_SCALE * (canvas.height / bg.height);
         
         // Set initial character position
         characterX = (initialWindowWidth * CHARACTER_INITIAL_X_PERCENT) - ((characterWidth * characterScale) / 2);
         characterY = initialWindowHeight - (initialWindowHeight * CHARACTER_BOTTOM_OFFSET_PERCENT);
         
+        // Calculate scaled speed and jumping
+        speed = BASE_SPEED * (characterScale / INITIAL_SCALE);
+        jumpSpeed = BASE_JUMP_SPEED * (characterScale / INITIAL_SCALE);
+        gravity = BASE_GRAVITY * (characterScale / INITIAL_SCALE);
+        
         setupMobileControls(jump);
-        resizeCanvas();
+        resizeCanvas(); // Call resizeCanvas to ensure everything is set correctly
+        drawHUD();
         gameLoop();
     }
 }
