@@ -1,3 +1,5 @@
+// game.js
+
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
@@ -40,8 +42,8 @@ let characterScale = INITIAL_SCALE;
 let bgScale = 1;
 
 // Character position relative to bottom
-const CHARACTER_BOTTOM_OFFSET_PERCENT = 0.24 // 20% from bottom, adjust as needed
-const CHARACTER_INITIAL_X_PERCENT = 0.51 // 50% from left, adjust as needed
+const CHARACTER_BOTTOM_OFFSET_PERCENT = 0.24; // 24% from bottom, adjust as needed
+const CHARACTER_INITIAL_X_PERCENT = 0.51; // 51% from left, adjust as needed
 
 // Store the initial window dimensions
 let initialWindowWidth = window.innerWidth;
@@ -50,6 +52,87 @@ let initialWindowHeight = window.innerHeight;
 document.addEventListener('keydown', keyDownHandler);
 document.addEventListener('keyup', keyUpHandler);
 window.addEventListener('resize', resizeCanvas, false);
+
+// Mobile controls
+let leftPressed = false;
+let rightPressed = false;
+
+function setupMobileControls(jumpCallback) {
+    const mobileControls = document.createElement('div');
+    mobileControls.id = 'mobileControls';
+    mobileControls.innerHTML = `
+        <div class="controlGroup left">
+            <button id="leftBtn">Left</button>
+            <button id="leftJumpBtn">Jump</button>
+        </div>
+        <div class="controlGroup right">
+            <button id="rightBtn">Right</button>
+            <button id="rightJumpBtn">Jump</button>
+        </div>
+    `;
+    document.body.appendChild(mobileControls);
+
+    const leftBtn = document.getElementById('leftBtn');
+    const rightBtn = document.getElementById('rightBtn');
+    const leftJumpBtn = document.getElementById('leftJumpBtn');
+    const rightJumpBtn = document.getElementById('rightJumpBtn');
+
+    leftBtn.addEventListener('touchstart', () => {
+        leftPressed = true;
+        navigator.vibrate(50); // Vibrate for 50 milliseconds
+    });
+    leftBtn.addEventListener('touchend', () => { leftPressed = false; });
+
+    rightBtn.addEventListener('touchstart', () => {
+        rightPressed = true;
+        navigator.vibrate(50); // Vibrate for 50 milliseconds
+    });
+    rightBtn.addEventListener('touchend', () => { rightPressed = false; });
+
+    function jump() {
+        jumpCallback();
+        navigator.vibrate(50); // Vibrate for 50 milliseconds
+    }
+
+    leftJumpBtn.addEventListener('touchstart', jump);
+    rightJumpBtn.addEventListener('touchstart', jump);
+
+    // Add CSS styles programmatically
+    const style = document.createElement('style');
+    style.textContent = `
+        #mobileControls {
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            pointer-events: none;
+        }
+        .controlGroup {
+            display: flex;
+            flex-direction: column;
+            pointer-events: auto;
+        }
+        .controlGroup.left {
+            margin-left: 20px;
+        }
+        .controlGroup.right {
+            margin-right: 20px;
+        }
+        #mobileControls button {
+            width: 80px;
+            height: 80px;
+            margin: 5px;
+            font-size: 16px;
+            border-radius: 50%;
+            border: none;
+            background-color: rgba(255, 255, 255, 0.5);
+            color: #000;
+        }
+    `;
+    document.head.appendChild(style);
+}
 
 function keyDownHandler(e) {
     if (e.key === 'ArrowRight') {
@@ -71,6 +154,7 @@ function keyUpHandler(e) {
         isWalking = false;
     }
 }
+
 function resizeCanvas() {
     const oldWidth = canvas.width;
     const oldHeight = canvas.height;
@@ -100,6 +184,25 @@ function resizeCanvas() {
 }
 
 function update() {
+    if (leftPressed) {
+        isWalking = true;
+        direction = 'left';
+        if (characterX > canvas.width / 2 || bgX >= 0) {
+            characterX -= speed;
+        } else {
+            bgX += speed;
+        }
+    } else if (rightPressed) {
+        isWalking = true;
+        direction = 'right';
+        if (characterX < canvas.width / 2 || bgX <= -bg.width * bgScale + canvas.width + 10) {
+            characterX += speed;
+        } else {
+            bgX -= speed;
+        }
+    } else {
+        isWalking = false;
+    }
     if (isWalking) {
         if (direction === 'right') {
             if (characterX < canvas.width / 2 || bgX <= -bg.width * bgScale + canvas.width + 10) {
@@ -172,6 +275,13 @@ function draw() {
     ctx.restore(); // Restore the original state
 }
 
+function jump() {
+    if (!jumping) {
+        jumping = true;
+        jumpSpeed = -10;
+    }
+}
+
 function gameLoop() {
     update();
     draw();
@@ -194,6 +304,7 @@ function imageLoaded() {
         characterX = (initialWindowWidth * CHARACTER_INITIAL_X_PERCENT) - ((characterWidth * characterScale) / 2);
         characterY = initialWindowHeight - (initialWindowHeight * CHARACTER_BOTTOM_OFFSET_PERCENT);
         
+        setupMobileControls(jump);
         resizeCanvas();
         gameLoop();
     }
