@@ -580,7 +580,7 @@ function drawEndScreen() {
         subMessage = "Click the button below to play again";
     } else if (gameState === 'initial') {
         message = "Masani lost her sheep. Help her catch them.";
-        subMessage = "Avoid tumbleweeds and coyotes.";
+        subMessage = "Avoid tumbleweeds and coyotes. Use pacebar to jump or tap if on mobile device.";
     }
 
     let y = canvas.height / 2 - baseFontSize;
