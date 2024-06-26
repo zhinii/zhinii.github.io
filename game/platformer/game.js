@@ -1,5 +1,3 @@
-// game.js
-
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
@@ -67,25 +65,31 @@ window.addEventListener('resize', resizeCanvas, false);
 let leftPressed = false;
 let rightPressed = false;
 
+function isMobile() {
+    return /Mobi|Android/i.test(navigator.userAgent);
+}
+
+function isLandscape() {
+    return window.innerWidth > window.innerHeight;
+}
+
 function setupMobileControls(jumpCallback) {
     const mobileControls = document.createElement('div');
     mobileControls.id = 'mobileControls';
     mobileControls.innerHTML = `
-        <div class="controlGroup left">
-            <button id="leftBtn">⟵ </button>
-            <button id="leftJumpBtn">↶</button>
+        <div id="leftControls" class="controlGroup left">
+            <button id="leftBtn">⟵</button>
+            <button id="rightBtn">⟶</button>
         </div>
-        <div class="controlGroup right">
-            <button id="rightBtn"> ⟶</button>
-            <button id="rightJumpBtn">↷</button>
+        <div id="rightControls" class="controlGroup right">
+            <button id="jumpBtn">↷</button>
         </div>
     `;
     document.body.appendChild(mobileControls);
 
     const leftBtn = document.getElementById('leftBtn');
     const rightBtn = document.getElementById('rightBtn');
-    const leftJumpBtn = document.getElementById('leftJumpBtn');
-    const rightJumpBtn = document.getElementById('rightJumpBtn');
+    const jumpBtn = document.getElementById('jumpBtn');
 
     function setButtonColor(button, isPressed) {
         button.style.backgroundColor = isPressed ? 'rgba(0, 255, 0, 0.5)' : 'rgba(255, 255, 255, 0.5)';
@@ -111,51 +115,36 @@ function setupMobileControls(jumpCallback) {
         setButtonColor(rightBtn, false);
     });
 
-    function jump() {
+    jumpBtn.addEventListener('touchstart', () => {
         jumpCallback();
+        setButtonColor(jumpBtn, true);
         navigator.vibrate(50);
-    }
-
-    leftJumpBtn.addEventListener('touchstart', () => {
-        jump();
-        setButtonColor(leftJumpBtn, true);
     });
-    leftJumpBtn.addEventListener('touchend', () => {
-        setButtonColor(leftJumpBtn, false);
-    });
-
-    rightJumpBtn.addEventListener('touchstart', () => {
-        jump();
-        setButtonColor(rightJumpBtn, true);
-    });
-    rightJumpBtn.addEventListener('touchend', () => {
-        setButtonColor(rightJumpBtn, false);
+    jumpBtn.addEventListener('touchend', () => {
+        setButtonColor(jumpBtn, false);
     });
 
     const style = document.createElement('style');
     style.textContent = `
         #mobileControls {
             position: fixed;
-            bottom: 0px;
+            bottom: 0;
             left: 0;
             right: 0;
-            height: ${MOBILE_CONTROLS_HEIGHT}px;
             display: flex;
             justify-content: space-between;
             pointer-events: none;
-                        z-index: 20; // Higher than the HUD
-
+            z-index: 20; // Higher than the HUD
         }
         .controlGroup {
             display: flex;
-            flex-direction: column;
             pointer-events: auto;
         }
-        .controlGroup.left {
-            margin-left: 20px;
+        #leftControls {
+            flex-direction: column;
         }
-        .controlGroup.right {
-            margin-right: 20px;
+        #rightControls {
+            flex-direction: column;
         }
         #mobileControls button {
             width: 80px;
@@ -171,6 +160,8 @@ function setupMobileControls(jumpCallback) {
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
+            -webkit-touch-callout: none;
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0); // Remove tap highlight color
             transition: background-color 0.1s ease;
             display: flex;
             justify-content: center;
@@ -181,6 +172,56 @@ function setupMobileControls(jumpCallback) {
         }
     `;
     document.head.appendChild(style);
+
+    updateControlLayout();
+}
+
+
+function updateControlLayout() {
+    const mobileControls = document.getElementById('mobileControls');
+    const leftControls = document.getElementById('leftControls');
+    const rightControls = document.getElementById('rightControls');
+
+    if (isMobile()) {
+        mobileControls.style.display = 'flex';
+
+        if (isLandscape()) {
+            // Landscape mode
+            mobileControls.style.flexDirection = 'row';
+            mobileControls.style.height = `${window.innerHeight * 0.30}px`; // 30% of the screen height
+            mobileControls.style.bottom = '0';
+
+            leftControls.style.flexDirection = 'column';
+            leftControls.style.position = 'fixed';
+            leftControls.style.left = '20px';
+            leftControls.style.top = `${window.innerHeight * 0.35}px`; // 50% of the canvas height (which is 70% of the screen height)
+            leftControls.style.transform = 'translateY(-50%)';
+
+            rightControls.style.flexDirection = 'column';
+            rightControls.style.position = 'fixed';
+            rightControls.style.right = '20px';
+            rightControls.style.top = `${window.innerHeight * 0.35}px`; // 50% of the canvas height (which is 70% of the screen height)
+            rightControls.style.transform = 'translateY(-50%)';
+        } else {
+            // Portrait mode
+            mobileControls.style.flexDirection = 'row';
+            mobileControls.style.height = `${MOBILE_CONTROLS_HEIGHT}px`;
+
+            leftControls.style.flexDirection = 'column';
+            leftControls.style.position = 'absolute';
+            leftControls.style.left = '20px';
+            leftControls.style.bottom = '20px';
+            leftControls.style.transform = 'none';
+
+            rightControls.style.flexDirection = 'column';
+            rightControls.style.position = 'absolute';
+            rightControls.style.right = '20px';
+            rightControls.style.bottom = '20px';
+            rightControls.style.transform = 'none';
+        }
+    } else {
+        mobileControls.style.display = 'none';
+    }
 }
 
 function keyDownHandler(e) {
@@ -206,10 +247,23 @@ function keyUpHandler(e) {
         leftPressed = false;
     }
 }
-
 function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight - MOBILE_CONTROLS_HEIGHT;
+    if (isMobile() && isLandscape()) {
+        const controlWidth = 100; // Approximate width of the control buttons including margins
+        const availableWidth = window.innerWidth - (2 * controlWidth); // Width between the control buttons
+        canvas.height = window.innerHeight * 0.70; // 70% of the screen height
+        canvas.width = availableWidth;
+        canvas.style.position = 'absolute';
+        canvas.style.left = `${controlWidth}px`; // Position canvas between the control buttons
+    } else if (isMobile()) {
+        canvas.height = window.innerHeight - MOBILE_CONTROLS_HEIGHT; // Default height in portrait mode
+        canvas.width = window.innerWidth;
+        canvas.style.position = 'static';
+    } else {
+        canvas.height = window.innerHeight - 200; // 200 pixels for desktop HUD
+        canvas.width = window.innerWidth;
+        canvas.style.position = 'static';
+    }
 
     console.log(`Canvas size: ${canvas.width} x ${canvas.height}`);
 
@@ -233,7 +287,10 @@ function resizeCanvas() {
     console.log(`Character position: (${characterX}, ${characterY})`);
     console.log(`Character scale: ${characterScale}`);
     console.log(`Speed: ${speed}, Jump Speed: ${jumpSpeed}, Gravity: ${gravity}`);
+
+    updateControlLayout();
 }
+
 
 function update() {
     if (leftPressed) {
@@ -324,11 +381,15 @@ function gameLoop() {
     draw();
     requestAnimationFrame(gameLoop);
 }
-
 function drawHUD() {
     const hudCanvas = document.createElement('canvas');
+    hudCanvas.id = 'hudCanvas';
+    if (isMobile() && isLandscape()) {
+        hudCanvas.height = window.innerHeight * 0.30; // 30% of the screen height in landscape mode
+    } else {
+        hudCanvas.height = 200; // Default height in desktop and portrait mode
+    }
     hudCanvas.width = window.innerWidth;
-    hudCanvas.height = MOBILE_CONTROLS_HEIGHT;
     hudCanvas.style.position = 'fixed';
     hudCanvas.style.bottom = '0';
     hudCanvas.style.left = '0';
@@ -358,7 +419,7 @@ function imageLoaded() {
     loadedImages++;
     if (loadedImages === totalImages) {
         initialWindowWidth = window.innerWidth;
-        initialWindowHeight = window.innerHeight - MOBILE_CONTROLS_HEIGHT;
+        initialWindowHeight = window.innerHeight - (isMobile() && isLandscape() ? window.innerHeight * 0.30 : MOBILE_CONTROLS_HEIGHT);
         
         // Set canvas size before calculating scales
         canvas.width = initialWindowWidth;
