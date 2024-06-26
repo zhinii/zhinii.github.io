@@ -247,14 +247,18 @@ function keyUpHandler(e) {
         leftPressed = false;
     }
 }
+
+
+const LANDSCAPE_GAME_WIDTH_PERCENT = 0.60; // Change this value to adjust the width percentage of the game in landscape mode
+
 function resizeCanvas() {
     if (isMobile() && isLandscape()) {
         const controlWidth = 100; // Approximate width of the control buttons including margins
-        const availableWidth = window.innerWidth - (2 * controlWidth); // Width between the control buttons
+        const availableWidth = window.innerWidth * LANDSCAPE_GAME_WIDTH_PERCENT; // Width between the control buttons
         canvas.height = window.innerHeight * 0.70; // 70% of the screen height
         canvas.width = availableWidth;
         canvas.style.position = 'absolute';
-        canvas.style.left = `${controlWidth}px`; // Position canvas between the control buttons
+        canvas.style.left = `${(window.innerWidth - availableWidth) / 2}px`; // Center the canvas
     } else if (isMobile()) {
         canvas.height = window.innerHeight - MOBILE_CONTROLS_HEIGHT; // Default height in portrait mode
         canvas.width = window.innerWidth;
@@ -274,7 +278,7 @@ function resizeCanvas() {
     characterScale = INITIAL_SCALE * (canvas.height / bg.height);
 
     // Adjust character X position to maintain center
-    characterX = (canvas.width * CHARACTER_INITIAL_X_PERCENT) - ((characterWidth * characterScale) / 2);
+    characterX = 50;
 
     // Set character Y position based on the defined percentage
     characterY = canvas.height - (canvas.height * CHARACTER_BOTTOM_OFFSET_PERCENT);
