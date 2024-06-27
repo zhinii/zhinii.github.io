@@ -332,6 +332,8 @@ function combinePlatforms(platforms) {
 }
 
 function checkPlatformCollision() {
+    let onPlatform = false;
+
     platforms.forEach(platform => {
         const scaledPlatform = {
             x: platform.x * bgScale,
@@ -340,18 +342,82 @@ function checkPlatformCollision() {
             height: platform.height * bgScale
         };
 
-        if (characterY + characterHeight * characterScale >= scaledPlatform.y && 
-            characterY <= scaledPlatform.y + scaledPlatform.height &&
-            characterX + characterWidth * characterScale >= scaledPlatform.x && 
-            characterX <= scaledPlatform.x + scaledPlatform.width) {
+        if (
+            characterY + characterHeight * characterScale >= scaledPlatform.y &&
+            characterY + characterHeight * characterScale <= scaledPlatform.y + scaledPlatform.height &&
+            characterX + characterWidth * characterScale > scaledPlatform.x &&
+            characterX < scaledPlatform.x + scaledPlatform.width
+        ) {
+            // If falling, stop at the platform
             if (jumpSpeed > 0) {
                 jumping = false;
                 characterY = scaledPlatform.y - characterHeight * characterScale;
                 jumpSpeed = 0;
+                onPlatform = true;
             }
         }
     });
+
+    // If the character is not on any platform and not jumping, it should fall
+    if (!onPlatform && !jumping) {
+        jumping = true;
+        jumpSpeed = 0; // Start falling
+    }
 }
+
+function update() {
+    if (leftPressed) {
+        isWalking = true;
+        direction = 'left';
+        if (characterX > canvas.width / 2 || bgX >= 0) {
+            characterX -= speed;
+        } else {
+            bgX += speed;
+        }
+    } else if (rightPressed) {
+        isWalking = true;
+        direction = 'right';
+        if (characterX < canvas.width / 2 || bgX <= -bg.width * bgScale + canvas.width + 10) {
+            characterX += speed;
+        } else {
+            bgX -= speed;
+        }
+    } else {
+        isWalking = false;
+    }
+
+    if (jumping) {
+        characterY += jumpSpeed;
+        jumpSpeed += gravity;
+        if (characterY > canvas.height - (canvas.height * CHARACTER_BOTTOM_OFFSET_PERCENT)) {
+            characterY = canvas.height - (canvas.height * CHARACTER_BOTTOM_OFFSET_PERCENT);
+            jumping = false;
+        }
+    }
+
+    if (isWalking && !jumping) {
+        frameCount++;
+        if (frameCount % 5 === 0) {
+            currentFrame = (currentFrame + 1) % walkSprites.length;
+        }
+    } else if (!isWalking) {
+        currentFrame = 0;
+    }
+
+    checkPlatformCollision();
+
+    if (bgX > 0) bgX = 0;
+    if (bgX < -bg.width * bgScale + canvas.width) bgX = -bg.width * bgScale + canvas.width;
+    if (characterX < 10) characterX = 10;
+    if (characterX > canvas.width - characterWidth * characterScale - 10) characterX = canvas.width - characterWidth * characterScale - 10;
+}
+
+function gameLoop() {
+    update();
+    draw();
+    requestAnimationFrame(gameLoop);
+}
+
 
 function update() {
     if (leftPressed) {
