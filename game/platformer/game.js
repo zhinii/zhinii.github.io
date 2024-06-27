@@ -334,29 +334,14 @@ function combinePlatforms(platforms) {
 let onPlatform = false;
 let currentPlatform = null;
 
-function isOnPlatform() {
-    for (let platform of platforms) {
-        const scaledPlatform = {
-            x: platform.x * bgScale,
-            y: platform.y * bgScale,
-            width: platform.width * bgScale,
-            height: platform.height * bgScale
-        };
-
-        if (characterY + characterHeight * characterScale === scaledPlatform.y &&
-            characterX + characterWidth * characterScale > scaledPlatform.x && 
-            characterX < scaledPlatform.x + scaledPlatform.width) {
-            currentPlatform = scaledPlatform;
-            return true;
-        }
-    }
-    currentPlatform = null;
-    return false;
+function isOnGround() {
+    return characterY >= canvas.height - (canvas.height * CHARACTER_BOTTOM_OFFSET_PERCENT);
 }
 
 function checkPlatformCollision() {
-    let landed = false;
-    
+    let landedOnPlatform = false;
+    currentPlatform = null;
+
     for (let platform of platforms) {
         const scaledPlatform = {
             x: platform.x * bgScale,
@@ -365,34 +350,30 @@ function checkPlatformCollision() {
             height: platform.height * bgScale
         };
 
-        // Check for landing on platform
-        if (jumpSpeed > 0 &&
-            characterY + characterHeight * characterScale <= scaledPlatform.y &&
+        // Check if character is above and close to platform
+        if (characterY + characterHeight * characterScale <= scaledPlatform.y &&
             characterY + characterHeight * characterScale + jumpSpeed >= scaledPlatform.y &&
             characterX + characterWidth * characterScale > scaledPlatform.x && 
             characterX < scaledPlatform.x + scaledPlatform.width) {
             
-            jumping = false;
-            characterY = scaledPlatform.y - characterHeight * characterScale;
-            jumpSpeed = 0;
-            landed = true;
-            currentPlatform = scaledPlatform;
-            break;
+            // Only land if moving downwards
+            if (jumpSpeed > 0) {
+                landedOnPlatform = true;
+                currentPlatform = scaledPlatform;
+                characterY = scaledPlatform.y - characterHeight * characterScale;
+                break;
+            }
         }
     }
 
-    onPlatform = landed || isOnPlatform();
+    // Update onPlatform status
+    onPlatform = landedOnPlatform;
 
-    // Check if character has walked off the current platform
-    if (currentPlatform && (characterX + characterWidth * characterScale <= currentPlatform.x || 
-        characterX >= currentPlatform.x + currentPlatform.width)) {
-        onPlatform = false;
-        currentPlatform = null;
-    }
-
-    // If not on any platform and not jumping, start falling
-    if (!onPlatform && !jumping) {
+    // If not on a platform and not on ground, keep falling
+    if (!onPlatform && !isOnGround()) {
         jumping = true;
+    } else {
+        jumping = false;
         jumpSpeed = 0;
     }
 }
@@ -418,6 +399,7 @@ function update() {
         isWalking = false;
     }
 
+    // Apply gravity
     if (jumping) {
         characterY += jumpSpeed;
         jumpSpeed += gravity;
@@ -425,10 +407,20 @@ function update() {
 
     checkPlatformCollision();
 
+    // Check if character has walked off the current platform
+    if (currentPlatform && (characterX + characterWidth * characterScale <= currentPlatform.x || 
+        characterX >= currentPlatform.x + currentPlatform.width)) {
+        onPlatform = false;
+        currentPlatform = null;
+        jumping = true;
+        jumpSpeed = 0;  // Start falling
+    }
+
+    // Prevent character from going through the ground
     if (characterY > canvas.height - (canvas.height * CHARACTER_BOTTOM_OFFSET_PERCENT)) {
         characterY = canvas.height - (canvas.height * CHARACTER_BOTTOM_OFFSET_PERCENT);
         jumping = false;
-        onPlatform = false;
+        jumpSpeed = 0;
     }
 
     if (isWalking && !jumping) {
@@ -447,7 +439,7 @@ function update() {
 }
 
 function jump() {
-    if (!jumping && (onPlatform || characterY === canvas.height - (canvas.height * CHARACTER_BOTTOM_OFFSET_PERCENT))) {
+    if (!jumping && (onPlatform || isOnGround())) {
         jumping = true;
         onPlatform = false;
         currentPlatform = null;
