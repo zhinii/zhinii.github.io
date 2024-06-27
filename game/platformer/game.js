@@ -362,7 +362,6 @@ function checkPlatformCollision() {
                 currentPlatform = scaledPlatform;
                 characterY = scaledPlatform.y - characterHeight * characterScale;
                 jumpSpeed = 0;
-                jumping = false;  // Set jumping to false when landing on a platform
                 break;
             }
         }
@@ -371,11 +370,12 @@ function checkPlatformCollision() {
     // Update onPlatform status
     onPlatform = landedOnPlatform;
 
-// Directly manage the jumping state
+    // Directly manage the jumping state
     if (onPlatform) {
+        console.log("Landed on platform");
         jumping = false;
     }
-    
+
     // If not on a platform and not on ground, keep falling
     if (!onPlatform && !isOnGround()) {
         jumping = true;
@@ -403,7 +403,7 @@ function update() {
         }
     }
 
-    // Apply gravity
+    // Apply gravity if the character is jumping
     if (jumping) {
         characterY += jumpSpeed;
         jumpSpeed += gravity;
@@ -414,6 +414,7 @@ function update() {
     // Check if character has walked off the current platform
     if (currentPlatform && (characterX + characterWidth * characterScale <= currentPlatform.x || 
         characterX >= currentPlatform.x + currentPlatform.width)) {
+        console.log("Walked off platform");
         onPlatform = false;
         currentPlatform = null;
         jumping = true;
@@ -440,10 +441,14 @@ function update() {
     if (bgX < -bg.width * bgScale + canvas.width) bgX = -bg.width * bgScale + canvas.width;
     if (characterX < 10) characterX = 10;
     if (characterX > canvas.width - characterWidth * characterScale - 10) characterX = canvas.width - characterWidth * characterScale - 10;
+
+    // Debug logs
+    console.log(`Character state: jumping=${jumping}, onPlatform=${onPlatform}, isWalking=${isWalking}, characterY=${characterY}`);
 }
 
 function jump() {
     if (!jumping && (onPlatform || isOnGround())) {
+        console.log("Jump initiated");
         jumping = true;
         onPlatform = false;
         currentPlatform = null;
