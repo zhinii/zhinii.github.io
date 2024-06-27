@@ -335,7 +335,6 @@ function isOnGround() {
 function checkPlatformCollision() {
     let landedOnPlatform = false;
     currentPlatform = null;
-
     const threshold = 0.1; // Threshold to account for minor inaccuracies
 
     for (let platform of platforms) {
@@ -351,7 +350,7 @@ function checkPlatformCollision() {
             characterY + characterHeight * characterScale + jumpSpeed >= scaledPlatform.y - threshold &&
             characterX + characterWidth * characterScale > scaledPlatform.x && 
             characterX < scaledPlatform.x + scaledPlatform.width) {
-            
+
             // Only land if moving downwards
             if (jumpSpeed > 0) {
                 landedOnPlatform = true;
@@ -371,22 +370,25 @@ function checkPlatformCollision() {
 
     // Directly manage the jumping state
     if (onPlatform) {
-        if (jumping !== wasJumping) {
+        if (!hasLanded) {
             console.log("Landed on platform check 2");
+            jumping = false;
+            hasLanded = true;
         }
-        jumping = false;
-        wasJumping = false;
     } else {
         if (!isOnGround()) {
             jumping = true;
-            wasJumping = true;
+            hasLanded = false;
         }
     }
 }
 
 
+
 function update() {
-   
+    console.log("Updating game state");
+    console.log(`Character state before update: jumping=${jumping}, onPlatform=${onPlatform}, isWalking=${isWalking}, characterY=${characterY}`);
+
     isWalking = false;  // Reset at the start of each frame
 
     if (leftPressed) {
@@ -422,7 +424,6 @@ function update() {
         onPlatform = false;
         currentPlatform = null;
         jumping = true;
-        wasJumping = true;
         jumpSpeed = 0;  // Start falling
     }
 
@@ -430,7 +431,6 @@ function update() {
     if (characterY > canvas.height - (canvas.height * CHARACTER_BOTTOM_OFFSET_PERCENT)) {
         characterY = canvas.height - (canvas.height * CHARACTER_BOTTOM_OFFSET_PERCENT);
         jumping = false;
-        wasJumping = false;
         jumpSpeed = 0;
     }
 
@@ -448,8 +448,10 @@ function update() {
     if (characterX < 10) characterX = 10;
     if (characterX > canvas.width - characterWidth * characterScale - 10) characterX = canvas.width - characterWidth * characterScale - 10;
 
-    // Debug logs
+    // Log updated state
+    console.log(`Character state after update: jumping=${jumping}, onPlatform=${onPlatform}, isWalking=${isWalking}, characterY=${characterY}`);
 }
+
 
 function jump() {
     if (!jumping && (onPlatform || isOnGround())) {
