@@ -35,22 +35,17 @@
             transform: translateY(-50%);
             height: 140px;
         }
-      .container {
-    max-width: 1000px;
-    margin: 2em auto;
-    padding: 2em;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 0 15px rgba(0,0,0,0.1);
-    padding-bottom: 100px; /* Add this line */
-}
-         .contact a {
-            color: #fff;
-            text-decoration: none;
-            font-weight: bold;
+        .container {
+            max-width: 1000px;
+            margin: 2em auto;
+            padding: 2em;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
         }
-        .contact a:hover {
-            text-decoration: underline;
+        .container p {
+            line-height: 1.6;
+            margin-bottom: 1.5em;
         }
         h1, h2, h3 {
             color: #5b47b6;
@@ -66,10 +61,6 @@
         }
         h3 {
             font-size: 1.5em;
-        }
-        p {
-            line-height: 1.6;
-            margin-bottom: 1.5em;
         }
         a {
             color: #5b47b6;
@@ -95,9 +86,32 @@
             padding: 1em 0;
             background-color: #5b47b6;
             color: white;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
+        }
+        .contact a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .contact a:hover {
+            text-decoration: underline;
+        }
+        @media (max-width: 768px) {
+            .container {
+                padding: 1em;
+                margin: 1em;
+            }
+            .company-name {
+                font-size: 2em;
+            }
+            .tagline {
+                font-size: 1em;
+            }
+            .logo {
+                height: 40px;
+            }
+            .game-links a {
+                padding: 0.5em;
+            }
         }
     </style>
 </head>
@@ -111,6 +125,10 @@
         <section>
             <h2>Introduction</h2>
             <p>Welcome to the future of game development where artificial intelligence revolutionizes the creation process. Discover how AI transforms ideas into interactive experiences, making game development more accessible, efficient, and innovative.</p>
+        </section>
+        <section>
+            <h2>Initial State and Vision</h2>
+            <p>The initial state of our project is to build a mobile app that allows users to create basic HTML5 games. This app will be simple enough for even the most amateur users to create games, while also being powerful enough to excite more experienced developers. Our vision is to foster a community where users can share and post their creations, similar to an Instagram-like platform, generating buzz and creating a vibrant ecosystem of game creators.</p>
         </section>
         <section>
             <h2>Benefits of AI in Game Development</h2>
@@ -133,19 +151,14 @@
             <h2>What AI Excels At</h2>
             <h3>Coding</h3>
             <p>AI can automate and enhance various coding tasks, from generating boilerplate code to optimizing algorithms. It assists developers by suggesting improvements, identifying bugs, and even writing entire code blocks based on high-level descriptions. This accelerates the development process and reduces the likelihood of errors.</p>
-
             <h3>Image Generation</h3>
-            <p>AI excels in generating high-quality images based on textual descriptions or existing styles. Tools like DALL-E and Midjourney can create realistic or stylized visuals, concept art, and game assets. This capability allows for rapid prototyping and the creation of unique, customized graphics tailored to specific themes and aesthetics.</p>
-
+            <p>AI excels in generating high-quality images based on textual descriptions or existing styles. Tools like DALL-E and MidJourney can create realistic or stylized visuals, concept art, and game assets. This capability allows for rapid prototyping and the creation of unique, customized graphics tailored to specific themes and aesthetics.</p>
             <h3>Music Generation</h3>
             <p>AI can compose music in various genres, moods, and styles. It can generate background scores, sound effects, and entire soundtracks that enhance the immersive experience of a game. AI-driven music tools analyze existing compositions to create harmonious and innovative pieces, ensuring a high-quality auditory experience.</p>
-
             <h3>Natural Language Processing</h3>
             <p>AI-powered natural language processing (NLP) enables the creation of realistic dialogues, in-game tutorials, and dynamic narratives. It allows for the development of non-player characters (NPCs) that can engage in meaningful conversations with players, enhancing interactivity and immersion.</p>
-
             <h3>Procedural Content Generation</h3>
             <p>AI can generate entire game worlds, levels, and environments procedurally, providing endless variability and replayability. This reduces the workload on developers and allows for the creation of vast, intricate game settings that adapt to player actions and preferences.</p>
-
             <h3>Player Behavior Analysis</h3>
             <p>AI analyzes player behavior and feedback to adjust game difficulty, recommend strategies, and personalize content. This ensures that each player has a unique and enjoyable experience, maintaining engagement and satisfaction.</p>
         </section>
@@ -153,10 +166,8 @@
             <h2>Example AI-Driven Games</h2>
             <p>These prototypes were created by a finance professional, demonstrating the potential of AI in game development. All game art and code were developed by AI, with the human simply assembling the pieces created.</p>
             <div class="game-links">
-                <a href="zhinii.github.io/game
-/2dSideScoller">2d sidescroller - all art and code generated by AI</a>
-                <a href="zhinii.github.io/game
-/platformer">2d platformer - all art and code generated by AI</a>
+                <a href="https://zhinii.github.io/game/2dSideScroller/">Game Link 1 - 2d Side scroller, all art and code AI generated</a>
+                <a href="https://zhinii.github.io/game/platformer/">Game Link 2 - 2d platformer, all art and code AI generated</a>
             </div>
         </section>
         <section>
