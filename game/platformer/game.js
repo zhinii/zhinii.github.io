@@ -362,7 +362,7 @@ function checkPlatformCollision() {
                 currentPlatform = scaledPlatform;
                 characterY = scaledPlatform.y - characterHeight * characterScale;
                 jumpSpeed = 0;
-                jumping = false;  // Update jumping state here
+                jumping = false;  // Set jumping to false when landing on a platform
                 break;
             }
         }
@@ -376,6 +376,7 @@ function checkPlatformCollision() {
         jumping = true;
     }
 }
+
 
 function update() {
     isWalking = false;  // Reset at the start of each frame
