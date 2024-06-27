@@ -24,7 +24,7 @@ platformsImg.src = 'pictures/platforms.png';
 let platforms = [];
 
 // Character variables
-let characterX, characterY, jumping = false, currentFrame = 0, frameCount = 0, direction = 'right', isWalking = false;
+let characterX, characterY, jumping = false, wasJumping = false, currentFrame = 0, frameCount = 0, direction = 'right', isWalking = false;
 let bgX = 0;
 
 // Character dimensions
@@ -368,13 +368,15 @@ function checkPlatformCollision() {
 
     // Directly manage the jumping state
     if (onPlatform) {
-        console.log("Landed on platform check 2");
+        if (jumping !== wasJumping) console.log("Landed on platform check 2");
         jumping = false;
+        wasJumping = false;
     }
 
     // If not on a platform and not on ground, keep falling
     if (!onPlatform && !isOnGround()) {
         jumping = true;
+        wasJumping = true;
     }
 }
 
@@ -415,6 +417,7 @@ function update() {
         onPlatform = false;
         currentPlatform = null;
         jumping = true;
+        wasJumping = true;
         jumpSpeed = 0;  // Start falling
     }
 
@@ -422,6 +425,7 @@ function update() {
     if (characterY > canvas.height - (canvas.height * CHARACTER_BOTTOM_OFFSET_PERCENT)) {
         characterY = canvas.height - (canvas.height * CHARACTER_BOTTOM_OFFSET_PERCENT);
         jumping = false;
+        wasJumping = false;
         jumpSpeed = 0;
     }
 
