@@ -376,6 +376,8 @@ function checkPlatformCollision() {
         jumpSpeed = 0; // Start falling
     }
 }
+
+
 function update() {
     if (leftPressed) {
         isWalking = true;
@@ -438,59 +440,6 @@ function update() {
     if (characterX > canvas.width - characterWidth * characterScale - 10) characterX = canvas.width - characterWidth * characterScale - 10;
 }
 
-function gameLoop() {
-    update();
-    draw();
-    requestAnimationFrame(gameLoop);
-}
-
-
-function update() {
-    if (leftPressed) {
-        isWalking = true;
-        direction = 'left';
-        if (characterX > canvas.width / 2 || bgX >= 0) {
-            characterX -= speed;
-        } else {
-            bgX += speed;
-        }
-    } else if (rightPressed) {
-        isWalking = true;
-        direction = 'right';
-        if (characterX < canvas.width / 2 || bgX <= -bg.width * bgScale + canvas.width + 10) {
-            characterX += speed;
-        } else {
-            bgX -= speed;
-        }
-    } else {
-        isWalking = false;
-    }
-
-    if (jumping) {
-        characterY += jumpSpeed;
-        jumpSpeed += gravity;
-        if (characterY > canvas.height - (canvas.height * CHARACTER_BOTTOM_OFFSET_PERCENT)) {
-            characterY = canvas.height - (canvas.height * CHARACTER_BOTTOM_OFFSET_PERCENT);
-            jumping = false;
-        }
-    }
-
-    if (isWalking && !jumping) {
-        frameCount++;
-        if (frameCount % 5 === 0) {
-            currentFrame = (currentFrame + 1) % walkSprites.length;
-        }
-    } else if (!isWalking) {
-        currentFrame = 0;
-    }
-
-    checkPlatformCollision();
-
-    if (bgX > 0) bgX = 0;
-    if (bgX < -bg.width * bgScale + canvas.width) bgX = -bg.width * bgScale + canvas.width;
-    if (characterX < 10) characterX = 10;
-    if (characterX > canvas.width - characterWidth * characterScale - 10) characterX = canvas.width - characterWidth * characterScale - 10;
-}
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
