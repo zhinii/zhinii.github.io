@@ -335,7 +335,8 @@ function isOnGround() {
 function checkPlatformCollision() {
     let landedOnPlatform = false;
     currentPlatform = null;
-    const threshold = 0.1; // Threshold to account for minor inaccuracies
+
+    const buffer = 0.1; // Buffer to avoid minor inaccuracies
 
     for (let platform of platforms) {
         const scaledPlatform = {
@@ -346,11 +347,11 @@ function checkPlatformCollision() {
         };
 
         // Check if character is above and close to platform
-        if (characterY + characterHeight * characterScale <= scaledPlatform.y + threshold &&
-            characterY + characterHeight * characterScale + jumpSpeed >= scaledPlatform.y - threshold &&
+        if (characterY + characterHeight * characterScale <= scaledPlatform.y + buffer &&
+            characterY + characterHeight * characterScale + jumpSpeed >= scaledPlatform.y - buffer &&
             characterX + characterWidth * characterScale > scaledPlatform.x && 
             characterX < scaledPlatform.x + scaledPlatform.width) {
-
+            
             // Only land if moving downwards
             if (jumpSpeed > 0) {
                 landedOnPlatform = true;
@@ -370,20 +371,18 @@ function checkPlatformCollision() {
 
     // Directly manage the jumping state
     if (onPlatform) {
-        if (!hasLanded) {
+        if (jumping !== wasJumping) {
             console.log("Landed on platform check 2");
-            jumping = false;
-            hasLanded = true;
         }
+        jumping = false;
+        wasJumping = false;
     } else {
         if (!isOnGround()) {
             jumping = true;
-            hasLanded = false;
+            wasJumping = true;
         }
     }
 }
-
-
 
 function update() {
     console.log("Updating game state");
@@ -424,6 +423,7 @@ function update() {
         onPlatform = false;
         currentPlatform = null;
         jumping = true;
+        wasJumping = true;
         jumpSpeed = 0;  // Start falling
     }
 
@@ -431,6 +431,7 @@ function update() {
     if (characterY > canvas.height - (canvas.height * CHARACTER_BOTTOM_OFFSET_PERCENT)) {
         characterY = canvas.height - (canvas.height * CHARACTER_BOTTOM_OFFSET_PERCENT);
         jumping = false;
+        wasJumping = false;
         jumpSpeed = 0;
     }
 
