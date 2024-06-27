@@ -330,7 +330,9 @@ function combinePlatforms(platforms) {
     console.log(`Combined into ${combinedPlatforms.length} platforms`);
     return combinedPlatforms;
 }
+
 let onPlatform = false;
+let currentPlatform = null;
 
 function isOnPlatform() {
     for (let platform of platforms) {
@@ -344,9 +346,11 @@ function isOnPlatform() {
         if (characterY + characterHeight * characterScale === scaledPlatform.y &&
             characterX + characterWidth * characterScale > scaledPlatform.x && 
             characterX < scaledPlatform.x + scaledPlatform.width) {
+            currentPlatform = scaledPlatform;
             return true;
         }
     }
+    currentPlatform = null;
     return false;
 }
 
@@ -363,8 +367,8 @@ function checkPlatformCollision() {
 
         // Check for landing on platform
         if (jumpSpeed > 0 &&
-            characterY + characterHeight * characterScale >= scaledPlatform.y && 
-            characterY + characterHeight * characterScale <= scaledPlatform.y + jumpSpeed &&
+            characterY + characterHeight * characterScale <= scaledPlatform.y &&
+            characterY + characterHeight * characterScale + jumpSpeed >= scaledPlatform.y &&
             characterX + characterWidth * characterScale > scaledPlatform.x && 
             characterX < scaledPlatform.x + scaledPlatform.width) {
             
@@ -372,11 +376,19 @@ function checkPlatformCollision() {
             characterY = scaledPlatform.y - characterHeight * characterScale;
             jumpSpeed = 0;
             landed = true;
+            currentPlatform = scaledPlatform;
             break;
         }
     }
 
     onPlatform = landed || isOnPlatform();
+
+    // Check if character has walked off the current platform
+    if (currentPlatform && (characterX + characterWidth * characterScale <= currentPlatform.x || 
+        characterX >= currentPlatform.x + currentPlatform.width)) {
+        onPlatform = false;
+        currentPlatform = null;
+    }
 
     // If not on any platform and not jumping, start falling
     if (!onPlatform && !jumping) {
@@ -413,12 +425,6 @@ function update() {
 
     checkPlatformCollision();
 
-    // Handle falling off platforms
-    if (!jumping && !onPlatform) {
-        jumping = true;
-        jumpSpeed = 0;
-    }
-
     if (characterY > canvas.height - (canvas.height * CHARACTER_BOTTOM_OFFSET_PERCENT)) {
         characterY = canvas.height - (canvas.height * CHARACTER_BOTTOM_OFFSET_PERCENT);
         jumping = false;
@@ -444,6 +450,7 @@ function jump() {
     if (!jumping && (onPlatform || characterY === canvas.height - (canvas.height * CHARACTER_BOTTOM_OFFSET_PERCENT))) {
         jumping = true;
         onPlatform = false;
+        currentPlatform = null;
         jumpSpeed = BASE_JUMP_SPEED * (characterScale / INITIAL_SCALE);
     }
 }
