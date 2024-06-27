@@ -362,10 +362,10 @@ function checkPlatformCollision() {
                 currentPlatform = scaledPlatform;
                 characterY = scaledPlatform.y - characterHeight * characterScale;
                 jumpSpeed = 0;
+                jumping = false;  // Update jumping state here
                 break;
             }
         }
-        
     }
 
     // Update onPlatform status
@@ -374,8 +374,6 @@ function checkPlatformCollision() {
     // If not on a platform and not on ground, keep falling
     if (!onPlatform && !isOnGround()) {
         jumping = true;
-    } else if (jumpSpeed === 0) {  // Only reset jumping if we've stopped moving vertically
-        jumping = false;
     }
 }
 
