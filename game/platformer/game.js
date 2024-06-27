@@ -379,6 +379,8 @@ function checkPlatformCollision() {
 }
 
 function update() {
+        isWalking = false;  // Reset at the start of each frame
+
     if (leftPressed) {
         isWalking = true;
         direction = 'left';
