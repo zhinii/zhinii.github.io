@@ -290,9 +290,6 @@ function extractPlatformsFromImage(image) {
     const imageData = tempCtx.getImageData(0, 0, image.width, image.height);
     const data = imageData.data;
 
-    platforms = [];
-    let currentPlatform = null;
-
     for (let y = 0; y < image.height; y++) {
         for (let x = 0; x < image.width; x++) {
             const index = (y * image.width + x) * 4;
@@ -302,33 +299,12 @@ function extractPlatformsFromImage(image) {
             const a = data[index + 3];
 
             if (r === 255 && g === 255 && b === 255 && a === 255) {
-                // Found a white pixel
-                if (currentPlatform && currentPlatform.y === y && currentPlatform.x + currentPlatform.width === x) {
-                    // Extend the current platform
-                    currentPlatform.width += 1;
-                } else {
-                    // Start a new platform
-                    if (currentPlatform) {
-                        platforms.push(currentPlatform);
-                    }
-                    currentPlatform = { x: x, y: y, width: 1, height: 1 };
-                }
-            } else {
-                // End the current platform if we're on a different color pixel
-                if (currentPlatform) {
-                    platforms.push(currentPlatform);
-                    currentPlatform = null;
-                }
+                platforms.push({ x: x, y: y, width: 1, height: 1 });
             }
-        }
-
-        // If there was a platform being built at the end of the row, push it
-        if (currentPlatform) {
-            platforms.push(currentPlatform);
-            currentPlatform = null;
         }
     }
 
+    platforms = combinePlatforms(platforms);
     console.log(`Extracted ${platforms.length} platforms`);
 }
 
@@ -356,8 +332,6 @@ function combinePlatforms(platforms) {
 }
 
 function checkPlatformCollision() {
-    let onPlatform = false;
-
     platforms.forEach(platform => {
         const scaledPlatform = {
             x: platform.x * bgScale,
@@ -366,30 +340,17 @@ function checkPlatformCollision() {
             height: platform.height * bgScale
         };
 
-        // Character's center position
-        const characterCenterX = characterX + (characterWidth * characterScale) / 2;
-
-        if (
-            characterY + characterHeight * characterScale >= scaledPlatform.y &&
-            characterY + characterHeight * characterScale <= scaledPlatform.y + scaledPlatform.height &&
-            characterCenterX > scaledPlatform.x &&
-            characterCenterX < scaledPlatform.x + scaledPlatform.width
-        ) {
-            // If falling, stop at the platform
+        if (characterY + characterHeight * characterScale >= scaledPlatform.y && 
+            characterY <= scaledPlatform.y + scaledPlatform.height &&
+            characterX + characterWidth * characterScale >= scaledPlatform.x && 
+            characterX <= scaledPlatform.x + scaledPlatform.width) {
             if (jumpSpeed > 0) {
                 jumping = false;
                 characterY = scaledPlatform.y - characterHeight * characterScale;
                 jumpSpeed = 0;
-                onPlatform = true;
             }
         }
     });
-
-    // If the character is not on any platform and not jumping, it should fall
-    if (!onPlatform && !jumping) {
-        jumping = true;
-        jumpSpeed = 0; // Start falling
-    }
 }
 
 function update() {
