@@ -350,6 +350,9 @@ function checkPlatformCollision() {
             height: platform.height * bgScale
         };
 
+        // Log the platform details
+        console.log(`Checking platform at (${scaledPlatform.x}, ${scaledPlatform.y}) with size (${scaledPlatform.width}, ${scaledPlatform.height})`);
+
         // Check if character is above and close to platform
         if (characterY + characterHeight * characterScale <= scaledPlatform.y &&
             characterY + characterHeight * characterScale + jumpSpeed >= scaledPlatform.y &&
@@ -362,6 +365,7 @@ function checkPlatformCollision() {
                 currentPlatform = scaledPlatform;
                 characterY = scaledPlatform.y - characterHeight * characterScale;
                 jumpSpeed = 0;
+                console.log("Landed on platform");
                 break;
             }
         }
