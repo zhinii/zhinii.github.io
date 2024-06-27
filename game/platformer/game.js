@@ -330,9 +330,10 @@ function combinePlatforms(platforms) {
     console.log(`Combined into ${combinedPlatforms.length} platforms`);
     return combinedPlatforms;
 }
+let onPlatform = false;
 
-function checkPlatformCollision() {
-    platforms.forEach(platform => {
+function isOnPlatform() {
+    for (let platform of platforms) {
         const scaledPlatform = {
             x: platform.x * bgScale,
             y: platform.y * bgScale,
@@ -340,17 +341,48 @@ function checkPlatformCollision() {
             height: platform.height * bgScale
         };
 
-        if (characterY + characterHeight * characterScale >= scaledPlatform.y && 
-            characterY <= scaledPlatform.y + scaledPlatform.height &&
-            characterX + characterWidth * characterScale >= scaledPlatform.x && 
-            characterX <= scaledPlatform.x + scaledPlatform.width) {
-            if (jumpSpeed > 0) {
-                jumping = false;
-                characterY = scaledPlatform.y - characterHeight * characterScale;
-                jumpSpeed = 0;
-            }
+        if (characterY + characterHeight * characterScale === scaledPlatform.y &&
+            characterX + characterWidth * characterScale > scaledPlatform.x && 
+            characterX < scaledPlatform.x + scaledPlatform.width) {
+            return true;
         }
-    });
+    }
+    return false;
+}
+
+function checkPlatformCollision() {
+    let landed = false;
+    
+    for (let platform of platforms) {
+        const scaledPlatform = {
+            x: platform.x * bgScale,
+            y: platform.y * bgScale,
+            width: platform.width * bgScale,
+            height: platform.height * bgScale
+        };
+
+        // Check for landing on platform
+        if (jumpSpeed > 0 &&
+            characterY + characterHeight * characterScale >= scaledPlatform.y && 
+            characterY + characterHeight * characterScale <= scaledPlatform.y + jumpSpeed &&
+            characterX + characterWidth * characterScale > scaledPlatform.x && 
+            characterX < scaledPlatform.x + scaledPlatform.width) {
+            
+            jumping = false;
+            characterY = scaledPlatform.y - characterHeight * characterScale;
+            jumpSpeed = 0;
+            landed = true;
+            break;
+        }
+    }
+
+    onPlatform = landed || isOnPlatform();
+
+    // If not on any platform and not jumping, start falling
+    if (!onPlatform && !jumping) {
+        jumping = true;
+        jumpSpeed = 0;
+    }
 }
 
 function update() {
@@ -377,10 +409,20 @@ function update() {
     if (jumping) {
         characterY += jumpSpeed;
         jumpSpeed += gravity;
-        if (characterY > canvas.height - (canvas.height * CHARACTER_BOTTOM_OFFSET_PERCENT)) {
-            characterY = canvas.height - (canvas.height * CHARACTER_BOTTOM_OFFSET_PERCENT);
-            jumping = false;
-        }
+    }
+
+    checkPlatformCollision();
+
+    // Handle falling off platforms
+    if (!jumping && !onPlatform) {
+        jumping = true;
+        jumpSpeed = 0;
+    }
+
+    if (characterY > canvas.height - (canvas.height * CHARACTER_BOTTOM_OFFSET_PERCENT)) {
+        characterY = canvas.height - (canvas.height * CHARACTER_BOTTOM_OFFSET_PERCENT);
+        jumping = false;
+        onPlatform = false;
     }
 
     if (isWalking && !jumping) {
@@ -392,12 +434,18 @@ function update() {
         currentFrame = 0;
     }
 
-    checkPlatformCollision();
-
     if (bgX > 0) bgX = 0;
     if (bgX < -bg.width * bgScale + canvas.width) bgX = -bg.width * bgScale + canvas.width;
     if (characterX < 10) characterX = 10;
     if (characterX > canvas.width - characterWidth * characterScale - 10) characterX = canvas.width - characterWidth * characterScale - 10;
+}
+
+function jump() {
+    if (!jumping && (onPlatform || characterY === canvas.height - (canvas.height * CHARACTER_BOTTOM_OFFSET_PERCENT))) {
+        jumping = true;
+        onPlatform = false;
+        jumpSpeed = BASE_JUMP_SPEED * (characterScale / INITIAL_SCALE);
+    }
 }
 
 function draw() {
@@ -425,12 +473,7 @@ function draw() {
     ctx.restore();
 }
 
-function jump() {
-    if (!jumping) {
-        jumping = true;
-        jumpSpeed = BASE_JUMP_SPEED * (characterScale / INITIAL_SCALE);
-    }
-}
+
 
 function gameLoop() {
     update();
