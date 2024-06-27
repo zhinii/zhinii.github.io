@@ -262,7 +262,6 @@ function resizeCanvas() {
         canvas.style.position = 'static';
     }
 
-    console.log(`Canvas size: ${canvas.width} x ${canvas.height}`);
 
     bgScale = canvas.height / bg.height;
     characterScale = INITIAL_SCALE * (canvas.height / bg.height);
@@ -274,9 +273,6 @@ function resizeCanvas() {
     jumpSpeed = BASE_JUMP_SPEED * (characterScale / INITIAL_SCALE);
     gravity = BASE_GRAVITY * (characterScale / INITIAL_SCALE);
 
-    console.log(`Character position: (${characterX}, ${characterY})`);
-    console.log(`Character scale: ${characterScale}`);
-    console.log(`Speed: ${speed}, Jump Speed: ${jumpSpeed}, Gravity: ${gravity}`);
 
     updateControlLayout();
 }
@@ -305,7 +301,6 @@ function extractPlatformsFromImage(image) {
     }
 
     platforms = combinePlatforms(platforms);
-    console.log(`Extracted ${platforms.length} platforms`);
 }
 
 function combinePlatforms(platforms) {
@@ -327,7 +322,6 @@ function combinePlatforms(platforms) {
         combinedPlatforms.push(currentPlatform);
     }
 
-    console.log(`Combined into ${combinedPlatforms.length} platforms`);
     return combinedPlatforms;
 }
 
@@ -350,8 +344,6 @@ function checkPlatformCollision() {
             height: platform.height * bgScale
         };
 
-        // Log the platform details
-        console.log(`Checking platform at (${scaledPlatform.x}, ${scaledPlatform.y}) with size (${scaledPlatform.width}, ${scaledPlatform.height})`);
 
         // Check if character is above and close to platform
         if (characterY + characterHeight * characterScale <= scaledPlatform.y &&
@@ -365,7 +357,7 @@ function checkPlatformCollision() {
                 currentPlatform = scaledPlatform;
                 characterY = scaledPlatform.y - characterHeight * characterScale;
                 jumpSpeed = 0;
-                console.log("Landed on platform");
+                console.log("Landed on platform check 1");
                 break;
             }
         }
@@ -376,7 +368,7 @@ function checkPlatformCollision() {
 
     // Directly manage the jumping state
     if (onPlatform) {
-        console.log("Landed on platform");
+        console.log("Landed on platform check 2");
         jumping = false;
     }
 
@@ -387,7 +379,7 @@ function checkPlatformCollision() {
 }
 
 function update() {
-    console.log("Updating game state");
+   
     isWalking = false;  // Reset at the start of each frame
 
     if (leftPressed) {
@@ -448,7 +440,6 @@ function update() {
     if (characterX > canvas.width - characterWidth * characterScale - 10) characterX = canvas.width - characterWidth * characterScale - 10;
 
     // Debug logs
-    console.log(`Character state: jumping=${jumping}, onPlatform=${onPlatform}, isWalking=${isWalking}, characterY=${characterY}`);
 }
 
 function jump() {
@@ -489,7 +480,6 @@ function draw() {
 }
 
 function gameLoop() {
-    console.log("Running game loop");
     update();
     draw();
     requestAnimationFrame(gameLoop);
