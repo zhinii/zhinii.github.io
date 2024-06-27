@@ -361,6 +361,7 @@ function checkPlatformCollision() {
                 landedOnPlatform = true;
                 currentPlatform = scaledPlatform;
                 characterY = scaledPlatform.y - characterHeight * characterScale;
+                jumpSpeed = 0;
                 break;
             }
         }
@@ -371,7 +372,7 @@ function checkPlatformCollision() {
     onPlatform = landedOnPlatform;
 
     // If not on a platform and not on ground, keep falling
-  if (!onPlatform && !isOnGround()) {
+    if (!onPlatform && !isOnGround()) {
         jumping = true;
     } else if (jumpSpeed === 0) {  // Only reset jumping if we've stopped moving vertically
         jumping = false;
@@ -379,7 +380,7 @@ function checkPlatformCollision() {
 }
 
 function update() {
-        isWalking = false;  // Reset at the start of each frame
+    isWalking = false;  // Reset at the start of each frame
 
     if (leftPressed) {
         isWalking = true;
@@ -397,8 +398,6 @@ function update() {
         } else {
             bgX -= speed;
         }
-    } else {
-        isWalking = false;
     }
 
     // Apply gravity
@@ -475,8 +474,6 @@ function draw() {
 
     ctx.restore();
 }
-
-
 
 function gameLoop() {
     update();
