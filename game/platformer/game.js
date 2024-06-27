@@ -377,7 +377,6 @@ function checkPlatformCollision() {
     }
 }
 
-
 function update() {
     isWalking = false;  // Reset at the start of each frame
 
