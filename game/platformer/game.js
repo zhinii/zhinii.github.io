@@ -364,17 +364,17 @@ function checkPlatformCollision() {
                 break;
             }
         }
+        
     }
 
     // Update onPlatform status
     onPlatform = landedOnPlatform;
 
     // If not on a platform and not on ground, keep falling
-    if (!onPlatform && !isOnGround()) {
+  if (!onPlatform && !isOnGround()) {
         jumping = true;
-    } else {
+    } else if (jumpSpeed === 0) {  // Only reset jumping if we've stopped moving vertically
         jumping = false;
-        jumpSpeed = 0;
     }
 }
 
@@ -467,8 +467,10 @@ function draw() {
 
     if (jumping) {
         ctx.drawImage(jumpSprite, drawX, drawY, scaledWidth, scaledHeight);
-    } else {
+    } else if (isWalking) {
         ctx.drawImage(walkSprites[currentFrame], drawX, drawY, scaledWidth, scaledHeight);
+    } else {
+        ctx.drawImage(walkSprites[0], drawX, drawY, scaledWidth, scaledHeight);  // Use first frame as idle pose
     }
 
     ctx.restore();
