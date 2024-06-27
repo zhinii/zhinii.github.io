@@ -18,21 +18,21 @@ walkSprites[3].src = 'pictures/walk4.png';
 const jumpSprite = new Image();
 jumpSprite.src = 'pictures/jump.png';
 
-let characterX;
-let characterY;
-let jumping = false;
-let currentFrame = 0;
-let frameCount = 0;
-let direction = 'right';
-let isWalking = false;
-let bgX = 0; // Initial background position
+const platformsImg = new Image();
+platformsImg.src = 'pictures/platforms.png';
+
+let platforms = [];
+
+// Character variables
+let characterX, characterY, jumping = false, currentFrame = 0, frameCount = 0, direction = 'right', isWalking = false;
+let bgX = 0;
 
 // Character dimensions
 const characterWidth = 50;
 const characterHeight = 50;
 
 // Scaling factors
-const INITIAL_SCALE = 5; // Initial scale value for the character
+const INITIAL_SCALE = 5;
 let characterScale = INITIAL_SCALE;
 let bgScale = 1;
 
@@ -47,8 +47,8 @@ let jumpSpeed = BASE_JUMP_SPEED;
 let gravity = BASE_GRAVITY;
 
 // Character position relative to bottom
-const CHARACTER_BOTTOM_OFFSET_PERCENT = 0.28; // 24% from bottom, adjust as needed
-const CHARACTER_INITIAL_X_PERCENT = 0.51; // 51% from left, adjust as needed
+const CHARACTER_BOTTOM_OFFSET_PERCENT = 0.28;
+const CHARACTER_INITIAL_X_PERCENT = 0.51;
 
 // Store the initial window dimensions
 let initialWindowWidth = window.innerWidth;
@@ -134,7 +134,7 @@ function setupMobileControls(jumpCallback) {
             display: flex;
             justify-content: space-between;
             pointer-events: none;
-            z-index: 20; // Higher than the HUD
+            z-index: 20;
         }
         .controlGroup {
             display: flex;
@@ -156,12 +156,9 @@ function setupMobileControls(jumpCallback) {
             border: none;
             background-color: rgba(255, 255, 255, 0.5);
             color: #000;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
             user-select: none;
             -webkit-touch-callout: none;
-            -webkit-tap-highlight-color: rgba(0, 0, 0, 0); // Remove tap highlight color
+            -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
             transition: background-color 0.1s ease;
             display: flex;
             justify-content: center;
@@ -176,7 +173,6 @@ function setupMobileControls(jumpCallback) {
     updateControlLayout();
 }
 
-
 function updateControlLayout() {
     const mobileControls = document.getElementById('mobileControls');
     const leftControls = document.getElementById('leftControls');
@@ -186,24 +182,22 @@ function updateControlLayout() {
         mobileControls.style.display = 'flex';
 
         if (isLandscape()) {
-            // Landscape mode
             mobileControls.style.flexDirection = 'row';
-            mobileControls.style.height = `${window.innerHeight * 0.30}px`; // 30% of the screen height
+            mobileControls.style.height = `${window.innerHeight * 0.30}px`;
             mobileControls.style.bottom = '0';
 
             leftControls.style.flexDirection = 'column';
             leftControls.style.position = 'fixed';
             leftControls.style.left = '20px';
-            leftControls.style.top = `${window.innerHeight * 0.35}px`; // 50% of the canvas height (which is 70% of the screen height)
+            leftControls.style.top = `${window.innerHeight * 0.35}px`;
             leftControls.style.transform = 'translateY(-50%)';
 
             rightControls.style.flexDirection = 'column';
             rightControls.style.position = 'fixed';
             rightControls.style.right = '20px';
-            rightControls.style.top = `${window.innerHeight * 0.35}px`; // 50% of the canvas height (which is 70% of the screen height)
+            rightControls.style.top = `${window.innerHeight * 0.35}px`;
             rightControls.style.transform = 'translateY(-50%)';
         } else {
-            // Portrait mode
             mobileControls.style.flexDirection = 'row';
             mobileControls.style.height = `${MOBILE_CONTROLS_HEIGHT}px`;
 
@@ -248,42 +242,34 @@ function keyUpHandler(e) {
     }
 }
 
-
-const LANDSCAPE_GAME_WIDTH_PERCENT = 0.60; // Change this value to adjust the width percentage of the game in landscape mode
+const LANDSCAPE_GAME_WIDTH_PERCENT = 0.60;
 
 function resizeCanvas() {
     if (isMobile() && isLandscape()) {
-        const controlWidth = 100; // Approximate width of the control buttons including margins
-        const availableWidth = window.innerWidth * LANDSCAPE_GAME_WIDTH_PERCENT; // Width between the control buttons
-        canvas.height = window.innerHeight * 0.70; // 70% of the screen height
+        const controlWidth = 100;
+        const availableWidth = window.innerWidth * LANDSCAPE_GAME_WIDTH_PERCENT;
+        canvas.height = window.innerHeight * 0.70;
         canvas.width = availableWidth;
         canvas.style.position = 'absolute';
-        canvas.style.left = `${(window.innerWidth - availableWidth) / 2}px`; // Center the canvas
+        canvas.style.left = `${(window.innerWidth - availableWidth) / 2}px`;
     } else if (isMobile()) {
-        canvas.height = window.innerHeight - MOBILE_CONTROLS_HEIGHT; // Default height in portrait mode
+        canvas.height = window.innerHeight - MOBILE_CONTROLS_HEIGHT;
         canvas.width = window.innerWidth;
         canvas.style.position = 'static';
     } else {
-        canvas.height = window.innerHeight - 200; // 200 pixels for desktop HUD
+        canvas.height = window.innerHeight - 200;
         canvas.width = window.innerWidth;
         canvas.style.position = 'static';
     }
 
     console.log(`Canvas size: ${canvas.width} x ${canvas.height}`);
 
-    // Calculate background scale
     bgScale = canvas.height / bg.height;
-
-    // Calculate character scale based on the same logic as the background
     characterScale = INITIAL_SCALE * (canvas.height / bg.height);
 
-    // Adjust character X position to maintain center
     characterX = 50;
-
-    // Set character Y position based on the defined percentage
     characterY = canvas.height - (canvas.height * CHARACTER_BOTTOM_OFFSET_PERCENT);
 
-    // Scale speed and jumping based on character scale
     speed = BASE_SPEED * (characterScale / INITIAL_SCALE);
     jumpSpeed = BASE_JUMP_SPEED * (characterScale / INITIAL_SCALE);
     gravity = BASE_GRAVITY * (characterScale / INITIAL_SCALE);
@@ -295,6 +281,77 @@ function resizeCanvas() {
     updateControlLayout();
 }
 
+function extractPlatformsFromImage(image) {
+    const tempCanvas = document.createElement('canvas');
+    const tempCtx = tempCanvas.getContext('2d');
+    tempCanvas.width = image.width;
+    tempCanvas.height = image.height;
+    tempCtx.drawImage(image, 0, 0);
+    const imageData = tempCtx.getImageData(0, 0, image.width, image.height);
+    const data = imageData.data;
+
+    for (let y = 0; y < image.height; y++) {
+        for (let x = 0; x < image.width; x++) {
+            const index = (y * image.width + x) * 4;
+            const r = data[index];
+            const g = data[index + 1];
+            const b = data[index + 2];
+            const a = data[index + 3];
+
+            if (r === 255 && g === 255 && b === 255 && a === 255) {
+                platforms.push({ x: x, y: y, width: 1, height: 1 });
+            }
+        }
+    }
+
+    platforms = combinePlatforms(platforms);
+    console.log(`Extracted ${platforms.length} platforms`);
+}
+
+function combinePlatforms(platforms) {
+    const combinedPlatforms = [];
+    let currentPlatform = null;
+
+    platforms.forEach(platform => {
+        if (currentPlatform && currentPlatform.y === platform.y && currentPlatform.x + currentPlatform.width === platform.x) {
+            currentPlatform.width += platform.width;
+        } else {
+            if (currentPlatform) {
+                combinedPlatforms.push(currentPlatform);
+            }
+            currentPlatform = { ...platform };
+        }
+    });
+
+    if (currentPlatform) {
+        combinedPlatforms.push(currentPlatform);
+    }
+
+    console.log(`Combined into ${combinedPlatforms.length} platforms`);
+    return combinedPlatforms;
+}
+
+function checkPlatformCollision() {
+    platforms.forEach(platform => {
+        const scaledPlatform = {
+            x: platform.x * bgScale,
+            y: platform.y * bgScale,
+            width: platform.width * bgScale,
+            height: platform.height * bgScale
+        };
+
+        if (characterY + characterHeight * characterScale >= scaledPlatform.y && 
+            characterY <= scaledPlatform.y + scaledPlatform.height &&
+            characterX + characterWidth * characterScale >= scaledPlatform.x && 
+            characterX <= scaledPlatform.x + scaledPlatform.width) {
+            if (jumpSpeed > 0) {
+                jumping = false;
+                characterY = scaledPlatform.y - characterHeight * characterScale;
+                jumpSpeed = 0;
+            }
+        }
+    });
+}
 
 function update() {
     if (leftPressed) {
@@ -335,7 +392,8 @@ function update() {
         currentFrame = 0;
     }
 
-    // Ensure characterX doesn't move out of bounds of the background
+    checkPlatformCollision();
+
     if (bgX > 0) bgX = 0;
     if (bgX < -bg.width * bgScale + canvas.width) bgX = -bg.width * bgScale + canvas.width;
     if (characterX < 10) characterX = 10;
@@ -344,33 +402,27 @@ function update() {
 
 function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-    // Draw the scaled background
     ctx.drawImage(bg, bgX, 0, bg.width * bgScale, canvas.height);
 
-    ctx.save(); // Save the current state
-
-    // Calculate the character's position and size after scaling
+    ctx.save();
     let scaledWidth = characterWidth * characterScale;
     let scaledHeight = characterHeight * characterScale;
     let drawX = characterX;
     let drawY = characterY;
 
-    // Apply transformations
     if (direction === 'left') {
         ctx.translate(drawX + scaledWidth / 2, drawY + scaledHeight / 2);
-        ctx.scale(-1, 1); // Flip horizontally
+        ctx.scale(-1, 1);
         ctx.translate(-drawX - scaledWidth / 2, -drawY - scaledHeight / 2);
     }
 
-    // Draw the character sprite
     if (jumping) {
         ctx.drawImage(jumpSprite, drawX, drawY, scaledWidth, scaledHeight);
     } else {
         ctx.drawImage(walkSprites[currentFrame], drawX, drawY, scaledWidth, scaledHeight);
     }
 
-    ctx.restore(); // Restore the original state
+    ctx.restore();
 }
 
 function jump() {
@@ -385,70 +437,68 @@ function gameLoop() {
     draw();
     requestAnimationFrame(gameLoop);
 }
+
 function drawHUD() {
     const hudCanvas = document.createElement('canvas');
     hudCanvas.id = 'hudCanvas';
     if (isMobile() && isLandscape()) {
-        hudCanvas.height = window.innerHeight * 0.30; // 30% of the screen height in landscape mode
+        hudCanvas.height = window.innerHeight * 0.30;
     } else {
-        hudCanvas.height = 200; // Default height in desktop and portrait mode
+        hudCanvas.height = 200;
     }
     hudCanvas.width = window.innerWidth;
     hudCanvas.style.position = 'fixed';
     hudCanvas.style.bottom = '0';
     hudCanvas.style.left = '0';
-    hudCanvas.style.zIndex = '10'; // Ensure it's above the game canvas
+    hudCanvas.style.zIndex = '10';
     document.body.appendChild(hudCanvas);
 
     const hudCtx = hudCanvas.getContext('2d');
-    hudCtx.fillStyle = 'rgba(0, 0, 0, 0.5)'; // Semi-transparent black
+    hudCtx.fillStyle = 'rgba(0, 0, 0, 0.5)';
     hudCtx.fillRect(0, 0, hudCanvas.width, hudCanvas.height);
 
-    // Add some placeholder text
     hudCtx.fillStyle = 'white';
     hudCtx.font = '20px Arial';
     const text = 'HUD Placeholder';
     const textWidth = hudCtx.measureText(text).width;
     const xPosition = (hudCanvas.width - textWidth) / 2;
-    const yPosition = (hudCanvas.height / 2) + 10; // Adjust for vertical centering
+    const yPosition = (hudCanvas.height / 2) + 10;
 
     hudCtx.fillText(text, xPosition, yPosition);
 }
 
-
 let loadedImages = 0;
-const totalImages = walkSprites.length + 2; // +2 for bg and jumpSprite
+const totalImages = walkSprites.length + 3; // Include platformsImg
 
 function imageLoaded() {
     loadedImages++;
     if (loadedImages === totalImages) {
         initialWindowWidth = window.innerWidth;
         initialWindowHeight = window.innerHeight - (isMobile() && isLandscape() ? window.innerHeight * 0.30 : MOBILE_CONTROLS_HEIGHT);
-        
-        // Set canvas size before calculating scales
+
         canvas.width = initialWindowWidth;
         canvas.height = initialWindowHeight;
-        
-        // Calculate initial scales
+
         bgScale = canvas.height / bg.height;
         characterScale = INITIAL_SCALE * (canvas.height / bg.height);
-        
-        // Set initial character position
+
         characterX = (initialWindowWidth * CHARACTER_INITIAL_X_PERCENT) - ((characterWidth * characterScale) / 2);
         characterY = initialWindowHeight - (initialWindowHeight * CHARACTER_BOTTOM_OFFSET_PERCENT);
-        
-        // Calculate scaled speed and jumping
+
         speed = BASE_SPEED * (characterScale / INITIAL_SCALE);
         jumpSpeed = BASE_JUMP_SPEED * (characterScale / INITIAL_SCALE);
         gravity = BASE_GRAVITY * (characterScale / INITIAL_SCALE);
-        
+
         setupMobileControls(jump);
-        resizeCanvas(); // Call resizeCanvas to ensure everything is set correctly
+        resizeCanvas();
         drawHUD();
         gameLoop();
+
+        extractPlatformsFromImage(platformsImg);
     }
 }
 
 bg.onload = imageLoaded;
 jumpSprite.onload = imageLoaded;
 walkSprites.forEach(sprite => sprite.onload = imageLoaded);
+platformsImg.onload = imageLoaded;
