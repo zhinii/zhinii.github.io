@@ -336,6 +336,8 @@ function checkPlatformCollision() {
     let landedOnPlatform = false;
     currentPlatform = null;
 
+    const threshold = 0.1; // Threshold to account for minor inaccuracies
+
     for (let platform of platforms) {
         const scaledPlatform = {
             x: platform.x * bgScale,
@@ -344,10 +346,9 @@ function checkPlatformCollision() {
             height: platform.height * bgScale
         };
 
-
         // Check if character is above and close to platform
-        if (characterY + characterHeight * characterScale <= scaledPlatform.y &&
-            characterY + characterHeight * characterScale + jumpSpeed >= scaledPlatform.y &&
+        if (characterY + characterHeight * characterScale <= scaledPlatform.y + threshold &&
+            characterY + characterHeight * characterScale + jumpSpeed >= scaledPlatform.y - threshold &&
             characterX + characterWidth * characterScale > scaledPlatform.x && 
             characterX < scaledPlatform.x + scaledPlatform.width) {
             
@@ -357,7 +358,9 @@ function checkPlatformCollision() {
                 currentPlatform = scaledPlatform;
                 characterY = scaledPlatform.y - characterHeight * characterScale;
                 jumpSpeed = 0;
-                console.log("Landed on platform check 1");
+                if (!jumping) {
+                    console.log("Landed on platform check 1");
+                }
                 break;
             }
         }
@@ -368,17 +371,19 @@ function checkPlatformCollision() {
 
     // Directly manage the jumping state
     if (onPlatform) {
-        if (jumping !== wasJumping) console.log("Landed on platform check 2");
+        if (jumping !== wasJumping) {
+            console.log("Landed on platform check 2");
+        }
         jumping = false;
         wasJumping = false;
-    }
-
-    // If not on a platform and not on ground, keep falling
-    if (!onPlatform && !isOnGround()) {
-        jumping = true;
-        wasJumping = true;
+    } else {
+        if (!isOnGround()) {
+            jumping = true;
+            wasJumping = true;
+        }
     }
 }
+
 
 function update() {
    
