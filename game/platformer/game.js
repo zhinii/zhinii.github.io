@@ -371,6 +371,11 @@ function checkPlatformCollision() {
     // Update onPlatform status
     onPlatform = landedOnPlatform;
 
+// Directly manage the jumping state
+    if (onPlatform) {
+        jumping = false;
+    }
+    
     // If not on a platform and not on ground, keep falling
     if (!onPlatform && !isOnGround()) {
         jumping = true;
