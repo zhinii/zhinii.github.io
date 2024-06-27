@@ -24,7 +24,7 @@ platformsImg.src = 'pictures/platforms.png';
 let platforms = [];
 
 // Character variables
-let characterX, characterY, jumping = false, currentFrame = 0, frameCount = 0, direction = 'right', isWalking = false;
+let characterX, characterY, jumping = false, wasJumping = false, currentFrame = 0, frameCount = 0, direction = 'right', isWalking = false;
 let bgX = 0;
 
 // Character dimensions
@@ -299,7 +299,6 @@ function extractPlatformsFromImage(image) {
     }
 
     platforms = combinePlatforms(platforms);
-    console.log(`Extracted ${platforms.length} platforms`);
 }
 
 function combinePlatforms(platforms) {
@@ -321,7 +320,6 @@ function combinePlatforms(platforms) {
         combinedPlatforms.push(currentPlatform);
     }
 
-    console.log(`Combined into ${combinedPlatforms.length} platforms`);
     return combinedPlatforms;
 }
 
@@ -358,7 +356,9 @@ function checkPlatformCollision() {
                 currentPlatform = scaledPlatform;
                 characterY = scaledPlatform.y - characterHeight * characterScale;
                 jumpSpeed = 0;
-                console.log("Landed on platform check 1");
+                if (!jumping) {
+                    console.log("Landed on platform check 1");
+                }
                 break;
             }
         }
@@ -369,13 +369,16 @@ function checkPlatformCollision() {
 
     // Directly manage the jumping state
     if (onPlatform) {
-        console.log("Landed on platform check 2");
+        if (jumping !== wasJumping) {
+            console.log("Landed on platform check 2");
+        }
         jumping = false;
-    }
-
-    // If not on a platform and not on ground, keep falling
-    if (!onPlatform && !isOnGround()) {
-        jumping = true;
+        wasJumping = false;
+    } else {
+        if (!isOnGround()) {
+            jumping = true;
+            wasJumping = true;
+        }
     }
 }
 
@@ -415,6 +418,7 @@ function update() {
         onPlatform = false;
         currentPlatform = null;
         jumping = true;
+        wasJumping = true;
         jumpSpeed = 0;  // Start falling
     }
 
@@ -422,6 +426,7 @@ function update() {
     if (characterY > canvas.height - (canvas.height * CHARACTER_BOTTOM_OFFSET_PERCENT)) {
         characterY = canvas.height - (canvas.height * CHARACTER_BOTTOM_OFFSET_PERCENT);
         jumping = false;
+        wasJumping = false;
         jumpSpeed = 0;
     }
 
@@ -438,6 +443,11 @@ function update() {
     if (bgX < -bg.width * bgScale + canvas.width) bgX = -bg.width * bgScale + canvas.width;
     if (characterX < 10) characterX = 10;
     if (characterX > canvas.width - characterWidth * characterScale - 10) characterX = canvas.width - characterWidth * characterScale - 10;
+
+    // Debug logs
+    console.log(`Updating game state`);
+    console.log(`Character state before update: jumping=${jumping}, onPlatform=${onPlatform}, isWalking=${isWalking}, characterY=${characterY}`);
+    console.log(`Character state after update: jumping=${jumping}, onPlatform=${onPlatform}, isWalking=${isWalking}, characterY=${characterY}`);
 }
 
 function jump() {
