@@ -383,6 +383,7 @@ function checkPlatformCollision() {
 }
 
 function update() {
+    console.log("Updating game state");
     isWalking = false;  // Reset at the start of each frame
 
     if (leftPressed) {
@@ -484,6 +485,7 @@ function draw() {
 }
 
 function gameLoop() {
+    console.log("Running game loop");
     update();
     draw();
     requestAnimationFrame(gameLoop);
