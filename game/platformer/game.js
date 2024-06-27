@@ -24,7 +24,7 @@ platformsImg.src = 'pictures/platforms.png';
 let platforms = [];
 
 // Character variables
-let characterX, characterY, jumping = false, wasJumping = false, currentFrame = 0, frameCount = 0, direction = 'right', isWalking = false;
+let characterX, characterY, jumping = false, currentFrame = 0, frameCount = 0, direction = 'right', isWalking = false;
 let bgX = 0;
 
 // Character dimensions
@@ -262,6 +262,7 @@ function resizeCanvas() {
         canvas.style.position = 'static';
     }
 
+
     bgScale = canvas.height / bg.height;
     characterScale = INITIAL_SCALE * (canvas.height / bg.height);
 
@@ -271,6 +272,7 @@ function resizeCanvas() {
     speed = BASE_SPEED * (characterScale / INITIAL_SCALE);
     jumpSpeed = BASE_JUMP_SPEED * (characterScale / INITIAL_SCALE);
     gravity = BASE_GRAVITY * (characterScale / INITIAL_SCALE);
+
 
     updateControlLayout();
 }
@@ -445,9 +447,6 @@ function update() {
     if (characterX > canvas.width - characterWidth * characterScale - 10) characterX = canvas.width - characterWidth * characterScale - 10;
 
     // Debug logs
-    console.log(`Updating game state`);
-    console.log(`Character state before update: jumping=${jumping}, onPlatform=${onPlatform}, isWalking=${isWalking}, characterY=${characterY}`);
-    console.log(`Character state after update: jumping=${jumping}, onPlatform=${onPlatform}, isWalking=${isWalking}, characterY=${characterY}`);
 }
 
 function jump() {
