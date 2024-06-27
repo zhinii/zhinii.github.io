@@ -290,8 +290,7 @@ function extractPlatformsFromImage(image) {
     const imageData = tempCtx.getImageData(0, 0, image.width, image.height);
     const data = imageData.data;
 
-    platforms = [];
-    let currentPlatform = null;
+    let rawPlatforms = [];
 
     for (let y = 0; y < image.height; y++) {
         for (let x = 0; x < image.width; x++) {
@@ -302,53 +301,42 @@ function extractPlatformsFromImage(image) {
             const a = data[index + 3];
 
             if (r === 255 && g === 255 && b === 255 && a === 255) {
-                // Found a white pixel
-                if (currentPlatform && currentPlatform.y === y && currentPlatform.x + currentPlatform.width === x) {
-                    // Extend the current platform
-                    currentPlatform.width += 1;
-                } else {
-                    // Start a new platform
-                    if (currentPlatform) {
-                        platforms.push(currentPlatform);
-                    }
-                    currentPlatform = { x: x, y: y, width: 1, height: 1 };
-                }
-            } else {
-                // End the current platform if we're on a different color pixel
-                if (currentPlatform) {
-                    platforms.push(currentPlatform);
-                    currentPlatform = null;
-                }
+                rawPlatforms.push({ x, y, width: 1, height: 1 });
             }
-        }
-
-        // If there was a platform being built at the end of the row, push it
-        if (currentPlatform) {
-            platforms.push(currentPlatform);
-            currentPlatform = null;
         }
     }
 
+    platforms = combinePlatforms(rawPlatforms);
     console.log(`Extracted ${platforms.length} platforms`);
 }
 
-function combinePlatforms(platforms) {
+function combinePlatforms(rawPlatforms) {
     const combinedPlatforms = [];
     let currentPlatform = null;
 
-    platforms.forEach(platform => {
+    rawPlatforms.forEach(platform => {
         if (currentPlatform && currentPlatform.y === platform.y && currentPlatform.x + currentPlatform.width === platform.x) {
             currentPlatform.width += platform.width;
         } else {
             if (currentPlatform) {
-                combinedPlatforms.push(currentPlatform);
+                combinedPlatforms.push({
+                    x: currentPlatform.x * bgScale,
+                    y: currentPlatform.y * bgScale,
+                    width: currentPlatform.width * bgScale,
+                    height: currentPlatform.height * bgScale
+                });
             }
             currentPlatform = { ...platform };
         }
     });
 
     if (currentPlatform) {
-        combinedPlatforms.push(currentPlatform);
+        combinedPlatforms.push({
+            x: currentPlatform.x * bgScale,
+            y: currentPlatform.y * bgScale,
+            width: currentPlatform.width * bgScale,
+            height: currentPlatform.height * bgScale
+        });
     }
 
     console.log(`Combined into ${combinedPlatforms.length} platforms`);
@@ -366,22 +354,19 @@ function checkPlatformCollision() {
             height: platform.height * bgScale
         };
 
-        // Character's center position
-        const characterCenterX = characterX + (characterWidth * characterScale) / 2;
+        const characterBottom = characterY + characterHeight * characterScale;
+        const characterRight = characterX + characterWidth * characterScale;
 
-        if (
-            characterY + characterHeight * characterScale >= scaledPlatform.y &&
-            characterY + characterHeight * characterScale <= scaledPlatform.y + scaledPlatform.height &&
-            characterCenterX > scaledPlatform.x &&
-            characterCenterX < scaledPlatform.x + scaledPlatform.width
-        ) {
-            // If falling, stop at the platform
-            if (jumpSpeed > 0) {
-                jumping = false;
-                characterY = scaledPlatform.y - characterHeight * characterScale;
-                jumpSpeed = 0;
-                onPlatform = true;
-            }
+        // Check if character is above and close to the platform
+        if (characterBottom <= scaledPlatform.y && 
+            characterBottom + jumpSpeed > scaledPlatform.y &&
+            characterRight > scaledPlatform.x &&
+            characterX < scaledPlatform.x + scaledPlatform.width) {
+            
+            jumping = false;
+            characterY = scaledPlatform.y - characterHeight * characterScale;
+            jumpSpeed = 0;
+            onPlatform = true;
         }
     });
 
@@ -391,6 +376,74 @@ function checkPlatformCollision() {
         jumpSpeed = 0; // Start falling
     }
 }
+function update() {
+    if (leftPressed) {
+        isWalking = true;
+        direction = 'left';
+        if (characterX > canvas.width / 2 || bgX >= 0) {
+            characterX -= speed;
+        } else {
+            bgX += speed;
+        }
+    } else if (rightPressed) {
+        isWalking = true;
+        direction = 'right';
+        if (characterX < canvas.width / 2 || bgX <= -bg.width * bgScale + canvas.width + 10) {
+            characterX += speed;
+        } else {
+            bgX -= speed;
+        }
+    } else {
+        isWalking = false;
+    }
+
+    if (jumping) {
+        characterY += jumpSpeed;
+        jumpSpeed += gravity;
+        if (characterY > canvas.height - (canvas.height * CHARACTER_BOTTOM_OFFSET_PERCENT)) {
+            characterY = canvas.height - (canvas.height * CHARACTER_BOTTOM_OFFSET_PERCENT);
+            jumping = false;
+        }
+    }
+
+    if (isWalking && !jumping) {
+        frameCount++;
+        if (frameCount % 5 === 0) {
+            currentFrame = (currentFrame + 1) % walkSprites.length;
+        }
+    } else if (!isWalking) {
+        currentFrame = 0;
+    }
+
+    checkPlatformCollision();
+
+    // Check if character is still on the platform
+    let onPlatform = false;
+    platforms.forEach(platform => {
+        if (characterY + characterHeight * characterScale === platform.y &&
+            characterX + characterWidth * characterScale > platform.x &&
+            characterX < platform.x + platform.width) {
+            onPlatform = true;
+        }
+    });
+
+    if (!onPlatform && !jumping) {
+        jumping = true;
+        jumpSpeed = 0; // Start falling
+    }
+
+    if (bgX > 0) bgX = 0;
+    if (bgX < -bg.width * bgScale + canvas.width) bgX = -bg.width * bgScale + canvas.width;
+    if (characterX < 10) characterX = 10;
+    if (characterX > canvas.width - characterWidth * characterScale - 10) characterX = canvas.width - characterWidth * characterScale - 10;
+}
+
+function gameLoop() {
+    update();
+    draw();
+    requestAnimationFrame(gameLoop);
+}
+
 
 function update() {
     if (leftPressed) {
