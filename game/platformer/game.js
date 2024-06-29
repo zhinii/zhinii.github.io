@@ -15,7 +15,7 @@ const platformsImg = createImage('pictures/platforms.png');
 // Global Constants
 const INITIAL_SCALE = 4;
 const BASE_SPEED = 5;
-const BASE_JUMP_SPEED = -5;
+const BASE_JUMP_SPEED = -5.5;
 const BASE_GRAVITY = 0.8;
 const CHARACTER_BOTTOM_OFFSET_PERCENT = 0.2;
 const CHARACTER_INITIAL_X_PERCENT = 0.2; // Start at the center
