@@ -354,6 +354,10 @@ function checkPlatformCollision() {
     const characterBottom = characterY + characterHeight * characterScale;
     const characterRight = characterX + characterWidth * characterScale;
 
+    // Add tolerances (adjust these values as needed)
+    const landingTolerance = 1; 
+    const edgeTolerance = 20; // X-axis tolerance for platform edges
+
     for (let platform of platforms) {
         const scaledPlatform = {
             x: platform.x * bgScale + bgX,
@@ -363,16 +367,19 @@ function checkPlatformCollision() {
         };
 
         // Check if character is within the horizontal bounds of the platform
-        if (characterX < scaledPlatform.x + scaledPlatform.width &&
-            characterRight > scaledPlatform.x) {
+        if (characterX + edgeTolerance < scaledPlatform.x + scaledPlatform.width &&
+            characterRight - edgeTolerance > scaledPlatform.x) {
             
             // Check if character is landing on the platform
-            if (characterBottom >= scaledPlatform.y && 
-                characterBottom <= scaledPlatform.y + scaledPlatform.height &&
+            if (characterBottom >= scaledPlatform.y - landingTolerance && 
+                characterBottom <= scaledPlatform.y + landingTolerance &&
                 characterY + characterHeight * characterScale - jumpSpeed <= scaledPlatform.y) {
                 
                 landedOnPlatform = true;
-                newPlatform = scaledPlatform;
+                newPlatform = {
+                    ...scaledPlatform,
+                    originalX: platform.x * bgScale // Store the original X position
+                };
                 characterY = scaledPlatform.y - characterHeight * characterScale;
                 jumpSpeed = 0;
                 jumping = false;
@@ -387,9 +394,10 @@ function checkPlatformCollision() {
         currentPlatform = newPlatform;
     } else if (currentPlatform) {
         // Check if still on current platform
-        if (characterX + characterWidth * characterScale <= currentPlatform.x || 
-            characterX >= currentPlatform.x + currentPlatform.width ||
-            characterBottom < currentPlatform.y) {
+        const currentPlatformEdge = currentPlatform.originalX + currentPlatform.width + bgX;
+        if (characterX + characterWidth * characterScale - edgeTolerance <= currentPlatform.x || 
+            characterX + edgeTolerance >= currentPlatformEdge ||
+            characterBottom < currentPlatform.y - landingTolerance) {
             onPlatform = false;
             currentPlatform = null;
             jumping = true;
