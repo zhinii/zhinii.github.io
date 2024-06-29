@@ -462,7 +462,6 @@ function update() {
 
     // Debug logs
 
-
 function jump() {
     if (!jumping && (onPlatform || isOnGround())) {
         console.log("Jump initiated");
