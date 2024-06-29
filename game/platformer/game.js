@@ -15,12 +15,15 @@ const platformsImg = createImage('pictures/platforms.png');
 // Global Constants
 const INITIAL_SCALE = 4;
 const BASE_SPEED = 5;
-const BASE_JUMP_SPEED = -5.5;
-const BASE_GRAVITY = 0.8;
+const BASE_JUMP_SPEED = -15;
+const BASE_GRAVITY = 0.7;
+const DOUBLE_JUMP_MULTIPLIER = 1; // adjust for second jump height
 const CHARACTER_BOTTOM_OFFSET_PERCENT = 0.2;
 const CHARACTER_INITIAL_X_PERCENT = 0.2; // Start at the center
 const MOBILE_CONTROLS_HEIGHT = 200;
 const LANDSCAPE_GAME_WIDTH_PERCENT = 0.60;
+const RIGHT_CAMERA_FOLLOW_THRESHOLD = 0.25; // 60% of screen width when moving right
+const LEFT_CAMERA_FOLLOW_THRESHOLD = 0.75;  // 40% of screen width when moving left
 
 // Global Variables
 let lastTime = 0;
@@ -38,11 +41,11 @@ let leftPressed = false;
 let rightPressed = false;
 let onPlatform = false;
 let currentPlatform = null;
+let jumpCount = 0; // Track the number of jumps
 
 // Character dimensions
 const characterWidth = 50;
 const characterHeight = 50;
-
 
 // Event Listeners
 document.addEventListener('keydown', keyDownHandler);
@@ -355,9 +358,8 @@ function checkPlatformCollision() {
     const characterBottom = characterY + characterHeight * characterScale;
     const characterRight = characterX + characterWidth * characterScale;
 
-    // Add tolerances (adjust these values as needed)
-    const landingTolerance = 1; 
-    const edgeTolerance = 20; // X-axis tolerance for platform edges
+    const landingTolerance = 5; 
+    const edgeTolerance = 25;
 
     for (let platform of platforms) {
         const scaledPlatform = {
@@ -367,14 +369,13 @@ function checkPlatformCollision() {
             height: platform.height * bgScale
         };
 
-        // Check if character is within the horizontal bounds of the platform
         if (characterX + edgeTolerance < scaledPlatform.x + scaledPlatform.width &&
             characterRight - edgeTolerance > scaledPlatform.x) {
             
-            // Check if character is landing on the platform
-            if (characterBottom >= scaledPlatform.y - landingTolerance && 
+            // Check if character is landing on the platform (moving downwards)
+            if (jumpSpeed >= 0 && 
                 characterBottom <= scaledPlatform.y + landingTolerance &&
-                characterY + characterHeight * characterScale - jumpSpeed <= scaledPlatform.y) {
+                characterBottom + jumpSpeed >= scaledPlatform.y - landingTolerance) {
                 
                 landedOnPlatform = true;
                 newPlatform = {
@@ -385,6 +386,7 @@ function checkPlatformCollision() {
                 characterY = scaledPlatform.y - characterHeight * characterScale;
                 jumpSpeed = 0;
                 jumping = false;
+                jumpCount = 0;
                 console.log("Landed on platform", {characterY, platformY: scaledPlatform.y});
                 break;
             }
@@ -431,13 +433,13 @@ function update(dt) {
         const minBgX = -bg.width * bgScale + canvas.width;
 
         if (moveX > 0) {  // Moving right
-            if (characterX < canvas.width / 2 || bgX <= minBgX) {
+            if (characterX < canvas.width * RIGHT_CAMERA_FOLLOW_THRESHOLD || bgX <= minBgX) {
                 characterX += moveX;
             } else {
                 bgX -= moveX;
             }
         } else {  // Moving left
-            if (characterX > canvas.width / 2 || bgX >= maxBgX) {
+            if (characterX > canvas.width * LEFT_CAMERA_FOLLOW_THRESHOLD || bgX >= maxBgX) {
                 characterX += moveX;
             } else {
                 bgX -= moveX;
@@ -447,6 +449,7 @@ function update(dt) {
         // Ensure bgX stays within bounds
         bgX = Math.max(minBgX, Math.min(maxBgX, bgX));
     }
+
 
     // Apply gravity and jumping
     if (jumping || (!onPlatform && characterY < canvas.height)) {
@@ -486,8 +489,14 @@ function jump() {
         jumping = true;
         onPlatform = false;
         currentPlatform = null;
-        jumpSpeed = BASE_JUMP_SPEED * 1.5; // Increased jump speed
-        characterY += jumpSpeed; // Immediately move the character up a bit
+        jumpSpeed = Math.min(jumpSpeed, BASE_JUMP_SPEED * (characterScale / INITIAL_SCALE));
+        characterY += jumpSpeed;
+        jumpCount = 1;
+    } else if (jumping && jumpCount === 1) {
+        console.log("Double jump initiated");
+        jumpSpeed = Math.min(jumpSpeed, BASE_JUMP_SPEED * DOUBLE_JUMP_MULTIPLIER * (characterScale / INITIAL_SCALE));
+        characterY += jumpSpeed;
+        jumpCount = 2;
     }
 }
 
