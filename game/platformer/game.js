@@ -336,7 +336,7 @@ function checkPlatformCollision() {
     let landedOnPlatform = false;
     currentPlatform = null;
 
-    const threshold = 0.1; // Threshold to account for minor inaccuracies
+    const threshold = 0.1;
 
     for (let platform of platforms) {
         const scaledPlatform = {
@@ -346,32 +346,38 @@ function checkPlatformCollision() {
             height: platform.height * bgScale
         };
 
-        // Check if character is above and close to platform
         if (characterY + characterHeight * characterScale <= scaledPlatform.y + threshold &&
             characterY + characterHeight * characterScale + jumpSpeed >= scaledPlatform.y - threshold &&
             characterX + characterWidth * characterScale > scaledPlatform.x && 
             characterX < scaledPlatform.x + scaledPlatform.width) {
             
-            // Only land if moving downwards
-           if (jumpSpeed > 0) {
-        landedOnPlatform = true;
-        currentPlatform = scaledPlatform;
-        characterY = scaledPlatform.y - characterHeight * characterScale;
-        jumpSpeed = 0;
-        jumping = false;  // Set jumping to false immediately
-        console.log("Landed on platform");
-        break;
-    }
+            if (jumpSpeed > 0) {
+                landedOnPlatform = true;
+                currentPlatform = scaledPlatform;
+                characterY = scaledPlatform.y - characterHeight * characterScale;
+                jumpSpeed = 0;
+                jumping = false;
+                console.log("Landed on platform", {characterY, platformY: scaledPlatform.y});
+                break;
+            }
         }
     }
 
-    // Update onPlatform status
     onPlatform = landedOnPlatform;
 
-    // Directly manage the jumping state
-    if (!onPlatform && !isOnGround()) {
-        jumping = true;
+    if (onPlatform) {
+        if (jumping) {
+            console.log("Resetting jump state on platform");
+            jumping = false;
+        }
+    } else if (!isOnGround()) {
+        if (!jumping) {
+            console.log("Setting jumping to true mid-air");
+            jumping = true;
+        }
     }
+
+    console.log("Platform check complete", {onPlatform, jumping, characterY});
 }
 
 function update() {
@@ -399,9 +405,24 @@ function update() {
     if (jumping) {
         characterY += jumpSpeed;
         jumpSpeed += gravity;
+                console.log("Applying jump physics", {characterY, jumpSpeed});
+
     }
 
     checkPlatformCollision();
+
+     if (isOnGround()) {
+        if (jumping) {
+            console.log("Landing on ground");
+            jumping = false;
+            jumpSpeed = 0;
+        }
+        characterY = canvas.height - (canvas.height * CHARACTER_BOTTOM_OFFSET_PERCENT);
+    }
+
+    console.log("Update complete", {jumping, onPlatform, characterY});
+}
+
     const tolerance = 2; // Adjust this value as needed
 
     // Check if character has walked off the current platform
@@ -470,11 +491,17 @@ function draw() {
 
     if (jumping) {
         ctx.drawImage(jumpSprite, drawX, drawY, scaledWidth, scaledHeight);
+        console.log("Drawing jump sprite");
     } else if (isWalking) {
         ctx.drawImage(walkSprites[currentFrame], drawX, drawY, scaledWidth, scaledHeight);
+        console.log("Drawing walk sprite");
     } else {
-        ctx.drawImage(walkSprites[0], drawX, drawY, scaledWidth, scaledHeight);  // Use first frame as idle pose
+        ctx.drawImage(walkSprites[0], drawX, drawY, scaledWidth, scaledHeight);
+        console.log("Drawing idle sprite");
     }
+
+    console.log("Draw complete", {jumping, onPlatform, characterY});
+}
 
     ctx.restore();
 }
