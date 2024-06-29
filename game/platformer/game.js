@@ -353,16 +353,15 @@ function checkPlatformCollision() {
             characterX < scaledPlatform.x + scaledPlatform.width) {
             
             // Only land if moving downwards
-            if (jumpSpeed > 0) {
-                landedOnPlatform = true;
-                currentPlatform = scaledPlatform;
-                characterY = scaledPlatform.y - characterHeight * characterScale;
-                jumpSpeed = 0;
-                if (!jumping) {
-                    console.log("Landed on platform check 1");
-                }
-                break;
-            }
+           if (jumpSpeed > 0) {
+        landedOnPlatform = true;
+        currentPlatform = scaledPlatform;
+        characterY = scaledPlatform.y - characterHeight * characterScale;
+        jumpSpeed = 0;
+        jumping = false;  // Set jumping to false immediately
+        console.log("Landed on platform");
+        break;
+    }
         }
     }
 
@@ -370,17 +369,8 @@ function checkPlatformCollision() {
     onPlatform = landedOnPlatform;
 
     // Directly manage the jumping state
-    if (onPlatform) {
-        if (jumping !== wasJumping) {
-            console.log("Landed on platform check 2");
-        }
-        jumping = false;
-        wasJumping = false;
-    } else {
-        if (!isOnGround()) {
-            jumping = true;
-            wasJumping = true;
-        }
+    if (!onPlatform && !isOnGround()) {
+        jumping = true;
     }
 }
 
@@ -412,15 +402,18 @@ function update() {
     }
 
     checkPlatformCollision();
+    const tolerance = 2; // Adjust this value as needed
 
     // Check if character has walked off the current platform
-    if (currentPlatform && (characterX + characterWidth * characterScale <= currentPlatform.x || 
-        characterX >= currentPlatform.x + currentPlatform.width)) {
+   if (currentPlatform && (
+        characterX + characterWidth * characterScale <= currentPlatform.x - tolerance || 
+        characterX >= currentPlatform.x + currentPlatform.width + tolerance ||
+        characterY + characterHeight * characterScale > currentPlatform.y + tolerance
+    )) {
         console.log("Walked off platform");
         onPlatform = false;
         currentPlatform = null;
         jumping = true;
-        wasJumping = true;
         jumpSpeed = 0;  // Start falling
     }
 
