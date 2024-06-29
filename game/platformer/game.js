@@ -504,7 +504,7 @@ function draw() {
 }
 
     ctx.restore();
-}
+
 
 function gameLoop() {
     update();
