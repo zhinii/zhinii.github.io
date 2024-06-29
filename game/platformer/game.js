@@ -1,25 +1,26 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-const bg = new Image();
-bg.src = 'pictures/bg.jpg';
+function createImage(src) {
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.src = src;
+    return img;
+}
+
+const bg = createImage('pictures/bg.jpg');
 
 const walkSprites = [
-    new Image(),
-    new Image(),
-    new Image(),
-    new Image()
+    createImage('pictures/walk1.png'),
+    createImage('pictures/walk2.png'),
+    createImage('pictures/walk3.png'),
+    createImage('pictures/walk4.png')
 ];
-walkSprites[0].src = 'pictures/walk1.png';
-walkSprites[1].src = 'pictures/walk2.png';
-walkSprites[2].src = 'pictures/walk3.png';
-walkSprites[3].src = 'pictures/walk4.png';
 
-const jumpSprite = new Image();
-jumpSprite.src = 'pictures/jump.png';
+const jumpSprite = createImage('pictures/jump.png');
 
-const platformsImg = new Image();
-platformsImg.src = 'pictures/platforms.png';
+const platformsImg = createImage('pictures/platforms.png');
+
 
 let platforms = [];
 
@@ -262,7 +263,6 @@ function resizeCanvas() {
         canvas.style.position = 'static';
     }
 
-
     bgScale = canvas.height / bg.height;
     characterScale = INITIAL_SCALE * (canvas.height / bg.height);
 
@@ -273,7 +273,6 @@ function resizeCanvas() {
     jumpSpeed = BASE_JUMP_SPEED * (characterScale / INITIAL_SCALE);
     gravity = BASE_GRAVITY * (characterScale / INITIAL_SCALE);
 
-
     updateControlLayout();
 }
 
@@ -282,25 +281,40 @@ function extractPlatformsFromImage(image) {
     const tempCtx = tempCanvas.getContext('2d');
     tempCanvas.width = image.width;
     tempCanvas.height = image.height;
-    tempCtx.drawImage(image, 0, 0);
-    const imageData = tempCtx.getImageData(0, 0, image.width, image.height);
-    const data = imageData.data;
+    
+    try {
+        tempCtx.drawImage(image, 0, 0);
+        const imageData = tempCtx.getImageData(0, 0, image.width, image.height);
+        const data = imageData.data;
 
-    for (let y = 0; y < image.height; y++) {
-        for (let x = 0; x < image.width; x++) {
-            const index = (y * image.width + x) * 4;
-            const r = data[index];
-            const g = data[index + 1];
-            const b = data[index + 2];
-            const a = data[index + 3];
+        for (let y = 0; y < image.height; y++) {
+            for (let x = 0; x < image.width; x++) {
+                const index = (y * image.width + x) * 4;
+                const r = data[index];
+                const g = data[index + 1];
+                const b = data[index + 2];
+                const a = data[index + 3];
 
-            if (r === 255 && g === 255 && b === 255 && a === 255) {
-                platforms.push({ x: x, y: y, width: 1, height: 1 });
+                if (r === 255 && g === 255 && b === 255 && a === 255) {
+                    platforms.push({ x: x, y: y, width: 1, height: 1 });
+                }
             }
         }
-    }
 
-    platforms = combinePlatforms(platforms);
+        platforms = combinePlatforms(platforms);
+        console.log("Platforms extracted:", platforms.map(p => ({
+            x: p.x,
+            y: p.y,
+            width: p.width,
+            height: p.height,
+            scaledX: p.x * bgScale,
+            scaledY: p.y * bgScale,
+            scaledWidth: p.width * bgScale,
+            scaledHeight: p.height * bgScale
+        })));
+    } catch (error) {
+        console.error("Error extracting platforms:", error);
+    }
 }
 
 function combinePlatforms(platforms) {
@@ -329,31 +343,36 @@ let onPlatform = false;
 let currentPlatform = null;
 
 function isOnGround() {
-    return characterY >= canvas.height - (canvas.height * CHARACTER_BOTTOM_OFFSET_PERCENT);
+    const groundBuffer = 2; // Add a small buffer
+    return characterY + characterHeight * characterScale >= canvas.height - (canvas.height * CHARACTER_BOTTOM_OFFSET_PERCENT) - groundBuffer;
 }
 
 function checkPlatformCollision() {
     let landedOnPlatform = false;
-    currentPlatform = null;
+    let newPlatform = null;
 
-    const threshold = 0.1;
+    const characterBottom = characterY + characterHeight * characterScale;
+    const characterRight = characterX + characterWidth * characterScale;
 
     for (let platform of platforms) {
         const scaledPlatform = {
-            x: platform.x * bgScale,
+            x: platform.x * bgScale + bgX,
             y: platform.y * bgScale,
             width: platform.width * bgScale,
             height: platform.height * bgScale
         };
 
-        if (characterY + characterHeight * characterScale <= scaledPlatform.y + threshold &&
-            characterY + characterHeight * characterScale + jumpSpeed >= scaledPlatform.y - threshold &&
-            characterX + characterWidth * characterScale > scaledPlatform.x && 
-            characterX < scaledPlatform.x + scaledPlatform.width) {
+        // Check if character is within the horizontal bounds of the platform
+        if (characterX < scaledPlatform.x + scaledPlatform.width &&
+            characterRight > scaledPlatform.x) {
             
-            if (jumpSpeed > 0) {
+            // Check if character is landing on the platform
+            if (characterBottom >= scaledPlatform.y && 
+                characterBottom <= scaledPlatform.y + scaledPlatform.height &&
+                characterY + characterHeight * characterScale - jumpSpeed <= scaledPlatform.y) {
+                
                 landedOnPlatform = true;
-                currentPlatform = scaledPlatform;
+                newPlatform = scaledPlatform;
                 characterY = scaledPlatform.y - characterHeight * characterScale;
                 jumpSpeed = 0;
                 jumping = false;
@@ -363,86 +382,78 @@ function checkPlatformCollision() {
         }
     }
 
-    onPlatform = landedOnPlatform;
-
-    if (onPlatform) {
-        if (jumping) {
-            console.log("Resetting jump state on platform");
-            jumping = false;
-        }
-    } else if (!isOnGround()) {
-        if (!jumping) {
-            console.log("Setting jumping to true mid-air");
+    if (landedOnPlatform) {
+        onPlatform = true;
+        currentPlatform = newPlatform;
+    } else if (currentPlatform) {
+        // Check if still on current platform
+        if (characterX + characterWidth * characterScale <= currentPlatform.x || 
+            characterX >= currentPlatform.x + currentPlatform.width ||
+            characterBottom < currentPlatform.y) {
+            onPlatform = false;
+            currentPlatform = null;
             jumping = true;
+            console.log("Left platform");
         }
     }
 
-    console.log("Platform check complete", {onPlatform, jumping, characterY});
+    console.log("Platform check complete", {onPlatform, jumping, characterY, jumpSpeed});
 }
 
 function update() {
     isWalking = false;  // Reset at the start of each frame
 
+    let moveX = 0;
     if (leftPressed) {
         isWalking = true;
         direction = 'left';
-        if (characterX > canvas.width / 2 || bgX >= 0) {
-            characterX -= speed;
-        } else {
-            bgX += speed;
-        }
+        moveX = -speed;
     } else if (rightPressed) {
         isWalking = true;
         direction = 'right';
-        if (characterX < canvas.width / 2 || bgX <= -bg.width * bgScale + canvas.width + 10) {
-            characterX += speed;
-        } else {
-            bgX -= speed;
-        }
+        moveX = speed;
     }
 
-    // Apply gravity if the character is jumping
-    if (jumping) {
-        characterY += jumpSpeed;
-        jumpSpeed += gravity;
-                console.log("Applying jump physics", {characterY, jumpSpeed});
+    // Apply movement
+    if (moveX !== 0) {
+        const maxBgX = 0;
+        const minBgX = -bg.width * bgScale + canvas.width;
 
+        if (moveX > 0) {  // Moving right
+            if (characterX < canvas.width / 2 || bgX <= minBgX) {
+                characterX += moveX;
+            } else {
+                bgX -= moveX;
+            }
+        } else {  // Moving left
+            if (characterX > canvas.width / 2 || bgX >= maxBgX) {
+                characterX += moveX;
+            } else {
+                bgX -= moveX;
+            }
+        }
+
+        // Ensure bgX stays within bounds
+        bgX = Math.max(minBgX, Math.min(maxBgX, bgX));
+
+        console.log("Movement:", {moveX, characterX, bgX});
+    }
+
+    // Apply gravity and jumping
+    if (jumping || (!onPlatform && !isOnGround())) {
+        jumpSpeed += gravity;
+        characterY += jumpSpeed;
     }
 
     checkPlatformCollision();
 
-     if (isOnGround()) {
-        if (jumping) {
-            console.log("Landing on ground");
-            jumping = false;
-            jumpSpeed = 0;
-        }
-        characterY = canvas.height - (canvas.height * CHARACTER_BOTTOM_OFFSET_PERCENT);
-    }
-
-    console.log("Update complete", {jumping, onPlatform, characterY});
-}
-
-    const tolerance = 2; // Adjust this value as needed
-
-    // Check if character has walked off the current platform
-   if (currentPlatform && (
-        characterX + characterWidth * characterScale <= currentPlatform.x - tolerance || 
-        characterX >= currentPlatform.x + currentPlatform.width + tolerance ||
-        characterY + characterHeight * characterScale > currentPlatform.y + tolerance
-    )) {
-        console.log("Walked off platform");
+    // Prevent character from going through the ground
+    const groundY = canvas.height - (canvas.height * CHARACTER_BOTTOM_OFFSET_PERCENT);
+    if (characterY > groundY) {
+        characterY = groundY;
+        jumping = false;
         onPlatform = false;
         currentPlatform = null;
-        jumping = true;
-        jumpSpeed = 0;  // Start falling
-    }
-
-    // Prevent character from going through the ground
-    if (characterY > canvas.height - (canvas.height * CHARACTER_BOTTOM_OFFSET_PERCENT)) {
-        characterY = canvas.height - (canvas.height * CHARACTER_BOTTOM_OFFSET_PERCENT);
-        jumping = false;
-        wasJumping = false;
         jumpSpeed = 0;
     }
 
@@ -455,12 +466,11 @@ function update() {
         currentFrame = 0;
     }
 
-    if (bgX > 0) bgX = 0;
-    if (bgX < -bg.width * bgScale + canvas.width) bgX = -bg.width * bgScale + canvas.width;
-    if (characterX < 10) characterX = 10;
-    if (characterX > canvas.width - characterWidth * characterScale - 10) characterX = canvas.width - characterWidth * characterScale - 10;
+    // Ensure character stays within the canvas
+    characterX = Math.max(0, Math.min(canvas.width - characterWidth * characterScale, characterX));
 
-    // Debug logs
+    console.log("Update complete", {jumping, onPlatform, characterY, jumpSpeed, characterX, bgX});
+}
 
 function jump() {
     if (!jumping && (onPlatform || isOnGround())) {
@@ -469,6 +479,7 @@ function jump() {
         onPlatform = false;
         currentPlatform = null;
         jumpSpeed = BASE_JUMP_SPEED * (characterScale / INITIAL_SCALE);
+        characterY += jumpSpeed; // Immediately move the character up a bit
     }
 }
 
@@ -476,6 +487,18 @@ function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(bg, bgX, 0, bg.width * bgScale, canvas.height);
 
+    // Draw platforms
+    ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
+    for (let platform of platforms) {
+        ctx.fillRect(
+            platform.x * bgScale + bgX,  // Add bgX here, don't subtract
+            platform.y * bgScale,
+            platform.width * bgScale,
+            platform.height * bgScale
+        );
+    }
+
+    // Draw character
     ctx.save();
     let scaledWidth = characterWidth * characterScale;
     let scaledHeight = characterHeight * characterScale;
@@ -490,20 +513,14 @@ function draw() {
 
     if (jumping) {
         ctx.drawImage(jumpSprite, drawX, drawY, scaledWidth, scaledHeight);
-        console.log("Drawing jump sprite");
     } else if (isWalking) {
         ctx.drawImage(walkSprites[currentFrame], drawX, drawY, scaledWidth, scaledHeight);
-        console.log("Drawing walk sprite");
     } else {
-        ctx.drawImage(walkSprites[0], drawX, drawY, scaledWidth, scaledHeight);
-        console.log("Drawing idle sprite");
+        ctx.drawImage(walkSprites[0], drawX, drawY, scaledWidth, scaledHeight);  // Use first frame as idle pose
     }
 
-    console.log("Draw complete", {jumping, onPlatform, characterY});
-}
-
     ctx.restore();
-
+}
 
 function gameLoop() {
     update();
@@ -541,37 +558,58 @@ function drawHUD() {
 }
 
 let loadedImages = 0;
-const totalImages = walkSprites.length + 3; // Include platformsImg
+const totalImages = walkSprites.length + 3; // Include bg, jumpSprite, and platformsImg
 
-function imageLoaded() {
+function imageLoaded(e) {
     loadedImages++;
+    console.log(`Image loaded: ${e.target.src}`);
     if (loadedImages === totalImages) {
-        initialWindowWidth = window.innerWidth;
-        initialWindowHeight = window.innerHeight - (isMobile() && isLandscape() ? window.innerHeight * 0.30 : MOBILE_CONTROLS_HEIGHT);
-
-        canvas.width = initialWindowWidth;
-        canvas.height = initialWindowHeight;
-
-        bgScale = canvas.height / bg.height;
-        characterScale = INITIAL_SCALE * (canvas.height / bg.height);
-
-        characterX = (initialWindowWidth * CHARACTER_INITIAL_X_PERCENT) - ((characterWidth * characterScale) / 2);
-        characterY = initialWindowHeight - (initialWindowHeight * CHARACTER_BOTTOM_OFFSET_PERCENT);
-
-        speed = BASE_SPEED * (characterScale / INITIAL_SCALE);
-        jumpSpeed = BASE_JUMP_SPEED * (characterScale / INITIAL_SCALE);
-        gravity = BASE_GRAVITY * (characterScale / INITIAL_SCALE);
-
-        setupMobileControls(jump);
-        resizeCanvas();
-        drawHUD();
-        gameLoop();
-
-        extractPlatformsFromImage(platformsImg);
+        initializeGame();
     }
 }
 
+function imageError(e) {
+    console.error(`Error loading image: ${e.target.src}`);
+}
+
 bg.onload = imageLoaded;
+bg.onerror = imageError;
+
 jumpSprite.onload = imageLoaded;
-walkSprites.forEach(sprite => sprite.onload = imageLoaded);
+jumpSprite.onerror = imageError;
+
+walkSprites.forEach(sprite => {
+    sprite.onload = imageLoaded;
+    sprite.onerror = imageError;
+});
+
 platformsImg.onload = imageLoaded;
+platformsImg.onerror = imageError;
+
+function initializeGame() {
+    initialWindowWidth = window.innerWidth;
+    initialWindowHeight = window.innerHeight - (isMobile() && isLandscape() ? window.innerHeight * 0.30 : MOBILE_CONTROLS_HEIGHT);
+
+    canvas.width = initialWindowWidth;
+    canvas.height = initialWindowHeight;
+
+    bgScale = canvas.height / bg.height;
+    characterScale = INITIAL_SCALE * (canvas.height / bg.height);
+
+    characterX = (initialWindowWidth * CHARACTER_INITIAL_X_PERCENT) - ((characterWidth * characterScale) / 2);
+    characterY = initialWindowHeight - (initialWindowHeight * CHARACTER_BOTTOM_OFFSET_PERCENT);
+
+    speed = BASE_SPEED * (characterScale / INITIAL_SCALE);
+    jumpSpeed = BASE_JUMP_SPEED * (characterScale / INITIAL_SCALE);
+    gravity = BASE_GRAVITY * (characterScale / INITIAL_SCALE);
+
+    setupMobileControls(jump);
+    resizeCanvas();
+    drawHUD();
+
+    extractPlatformsFromImage(platformsImg);
+    console.log("Platforms extracted:", platforms);
+
+    gameLoop();
+}
+
