@@ -461,7 +461,7 @@ function update() {
     if (characterX > canvas.width - characterWidth * characterScale - 10) characterX = canvas.width - characterWidth * characterScale - 10;
 
     // Debug logs
-}
+
 
 function jump() {
     if (!jumping && (onPlatform || isOnGround())) {
