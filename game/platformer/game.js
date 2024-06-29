@@ -378,7 +378,8 @@ function checkPlatformCollision() {
                 landedOnPlatform = true;
                 newPlatform = {
                     ...scaledPlatform,
-                    originalX: platform.x * bgScale // Store the original X position
+                    originalLeft: platform.x * bgScale,
+                    originalRight: (platform.x + platform.width) * bgScale
                 };
                 characterY = scaledPlatform.y - characterHeight * characterScale;
                 jumpSpeed = 0;
@@ -394,9 +395,10 @@ function checkPlatformCollision() {
         currentPlatform = newPlatform;
     } else if (currentPlatform) {
         // Check if still on current platform
-        const currentPlatformEdge = currentPlatform.originalX + currentPlatform.width + bgX;
-        if (characterX + characterWidth * characterScale - edgeTolerance <= currentPlatform.x || 
-            characterX + edgeTolerance >= currentPlatformEdge ||
+        const currentPlatformLeftEdge = currentPlatform.originalLeft + bgX;
+        const currentPlatformRightEdge = currentPlatform.originalRight + bgX;
+        if (characterX + characterWidth * characterScale - edgeTolerance <= currentPlatformLeftEdge || 
+            characterX + edgeTolerance >= currentPlatformRightEdge ||
             characterBottom < currentPlatform.y - landingTolerance) {
             onPlatform = false;
             currentPlatform = null;
@@ -479,6 +481,7 @@ function update() {
 
     console.log("Update complete", {jumping, onPlatform, characterY, jumpSpeed, characterX, bgX});
 }
+
 
 function jump() {
     if (!jumping && (onPlatform || isOnGround())) {
