@@ -1,70 +1,60 @@
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
-function createImage(src) {
-    const img = new Image();
-    img.crossOrigin = "anonymous";
-    img.src = src;
-    return img;
-}
-
+// Images
 const bg = createImage('pictures/bg.jpg');
-
 const walkSprites = [
     createImage('pictures/walk1.png'),
     createImage('pictures/walk2.png'),
     createImage('pictures/walk3.png'),
     createImage('pictures/walk4.png')
 ];
-
 const jumpSprite = createImage('pictures/jump.png');
-
 const platformsImg = createImage('pictures/platforms.png');
 
+// Global Constants
+const INITIAL_SCALE = 4;
+const BASE_SPEED = 5;
+const BASE_JUMP_SPEED = -5;
+const BASE_GRAVITY = 0.8;
+const CHARACTER_BOTTOM_OFFSET_PERCENT = 0.2;
+const CHARACTER_INITIAL_X_PERCENT = 0.2; // Start at the center
+const MOBILE_CONTROLS_HEIGHT = 200;
+const LANDSCAPE_GAME_WIDTH_PERCENT = 0.60;
 
+// Global Variables
+let lastTime = 0;
 let platforms = [];
-
-// Character variables
-let characterX, characterY, jumping = false, currentFrame = 0, frameCount = 0, direction = 'right', isWalking = false;
+let characterX, characterY, jumping = true, currentFrame = 0, frameCount = 0, direction = 'right', isWalking = false;
 let bgX = 0;
+let characterScale = INITIAL_SCALE;
+let bgScale = 1;
+let speed = BASE_SPEED * (characterScale / INITIAL_SCALE);
+let jumpSpeed = BASE_JUMP_SPEED * (characterScale / INITIAL_SCALE);
+let gravity = BASE_GRAVITY * (characterScale / INITIAL_SCALE);
+let initialWindowWidth = window.innerWidth;
+let initialWindowHeight = window.innerHeight;
+let leftPressed = false;
+let rightPressed = false;
+let onPlatform = false;
+let currentPlatform = null;
 
 // Character dimensions
 const characterWidth = 50;
 const characterHeight = 50;
 
-// Scaling factors
-const INITIAL_SCALE = 5;
-let characterScale = INITIAL_SCALE;
-let bgScale = 1;
 
-// Base values for speed and jumping
-const BASE_SPEED = 8;
-const BASE_JUMP_SPEED = -14;
-const BASE_GRAVITY = 0.5;
-
-// Scaled values
-let speed = BASE_SPEED;
-let jumpSpeed = BASE_JUMP_SPEED;
-let gravity = BASE_GRAVITY;
-
-// Character position relative to bottom
-const CHARACTER_BOTTOM_OFFSET_PERCENT = 0.28;
-const CHARACTER_INITIAL_X_PERCENT = 0.51;
-
-// Store the initial window dimensions
-let initialWindowWidth = window.innerWidth;
-let initialWindowHeight = window.innerHeight;
-
-// Mobile controls height
-const MOBILE_CONTROLS_HEIGHT = 200;
-
+// Event Listeners
 document.addEventListener('keydown', keyDownHandler);
 document.addEventListener('keyup', keyUpHandler);
 window.addEventListener('resize', resizeCanvas, false);
 
-// Mobile controls
-let leftPressed = false;
-let rightPressed = false;
+function createImage(src) {
+    const img = new Image();
+    img.crossOrigin = "anonymous";
+    img.src = src;
+    return img;
+}
 
 function isMobile() {
     return /Mobi|Android/i.test(navigator.userAgent);
@@ -169,6 +159,27 @@ function setupMobileControls(jumpCallback) {
             background-color: rgba(0, 255, 0, 0.5) !important;
         }
     `;
+
+    canvas.addEventListener('touchmove', function(e) {
+        e.preventDefault();
+        const touch = e.touches[0];
+        const rect = canvas.getBoundingClientRect();
+        const x = touch.clientX - rect.left;
+        
+        if (x < canvas.width / 2) {
+            leftPressed = true;
+            rightPressed = false;
+        } else {
+            leftPressed = false;
+            rightPressed = true;
+        }
+    }, false);
+
+    canvas.addEventListener('touchend', function(e) {
+        leftPressed = false;
+        rightPressed = false;
+    }, false);
+
     document.head.appendChild(style);
 
     updateControlLayout();
@@ -243,8 +254,6 @@ function keyUpHandler(e) {
     }
 }
 
-const LANDSCAPE_GAME_WIDTH_PERCENT = 0.60;
-
 function resizeCanvas() {
     if (isMobile() && isLandscape()) {
         const controlWidth = 100;
@@ -266,8 +275,8 @@ function resizeCanvas() {
     bgScale = canvas.height / bg.height;
     characterScale = INITIAL_SCALE * (canvas.height / bg.height);
 
-    characterX = 50;
-    characterY = canvas.height - (canvas.height * CHARACTER_BOTTOM_OFFSET_PERCENT);
+    characterX = (canvas.width * CHARACTER_INITIAL_X_PERCENT) - ((characterWidth * characterScale) / 2);
+    characterY = 0; // Start high above the canvas
 
     speed = BASE_SPEED * (characterScale / INITIAL_SCALE);
     jumpSpeed = BASE_JUMP_SPEED * (characterScale / INITIAL_SCALE);
@@ -339,14 +348,6 @@ function combinePlatforms(platforms) {
     return combinedPlatforms;
 }
 
-let onPlatform = false;
-let currentPlatform = null;
-
-function isOnGround() {
-    const groundBuffer = 2; // Add a small buffer
-    return characterY + characterHeight * characterScale >= canvas.height - (canvas.height * CHARACTER_BOTTOM_OFFSET_PERCENT) - groundBuffer;
-}
-
 function checkPlatformCollision() {
     let landedOnPlatform = false;
     let newPlatform = null;
@@ -410,7 +411,7 @@ function checkPlatformCollision() {
     console.log("Platform check complete", {onPlatform, jumping, characterY, jumpSpeed});
 }
 
-function update() {
+function update(dt) {
     isWalking = false;  // Reset at the start of each frame
 
     let moveX = 0;
@@ -445,22 +446,19 @@ function update() {
 
         // Ensure bgX stays within bounds
         bgX = Math.max(minBgX, Math.min(maxBgX, bgX));
-
-        console.log("Movement:", {moveX, characterX, bgX});
     }
 
     // Apply gravity and jumping
-    if (jumping || (!onPlatform && !isOnGround())) {
+    if (jumping || (!onPlatform && characterY < canvas.height)) {
         jumpSpeed += gravity;
         characterY += jumpSpeed;
     }
 
     checkPlatformCollision();
 
-    // Prevent character from going through the ground
-    const groundY = canvas.height - (canvas.height * CHARACTER_BOTTOM_OFFSET_PERCENT);
-    if (characterY > groundY) {
-        characterY = groundY;
+    // Prevent character from going through the bottom of the canvas
+    if (characterY > canvas.height) {
+        characterY = canvas.height;
         jumping = false;
         onPlatform = false;
         currentPlatform = null;
@@ -482,14 +480,13 @@ function update() {
     console.log("Update complete", {jumping, onPlatform, characterY, jumpSpeed, characterX, bgX});
 }
 
-
 function jump() {
-    if (!jumping && (onPlatform || isOnGround())) {
+    if (!jumping && onPlatform) {
         console.log("Jump initiated");
         jumping = true;
         onPlatform = false;
         currentPlatform = null;
-        jumpSpeed = BASE_JUMP_SPEED * (characterScale / INITIAL_SCALE);
+        jumpSpeed = BASE_JUMP_SPEED * 1.5; // Increased jump speed
         characterY += jumpSpeed; // Immediately move the character up a bit
     }
 }
@@ -533,9 +530,15 @@ function draw() {
     ctx.restore();
 }
 
-function gameLoop() {
-    update();
+function gameLoop(currentTime) {
+    if (!lastTime) lastTime = currentTime;
+    let deltaTime = currentTime - lastTime;
+
+    update(deltaTime / 1000); // Convert to seconds, but not used in update function currently
+
     draw();
+    lastTime = currentTime;
+
     requestAnimationFrame(gameLoop);
 }
 
@@ -555,7 +558,7 @@ function drawHUD() {
     document.body.appendChild(hudCanvas);
 
     const hudCtx = hudCanvas.getContext('2d');
-    hudCtx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+    hudCtx.fillStyle = 'rgba(0, 0, 0, 0)';
     hudCtx.fillRect(0, 0, hudCanvas.width, hudCanvas.height);
 
     hudCtx.fillStyle = 'white';
@@ -608,7 +611,7 @@ function initializeGame() {
     characterScale = INITIAL_SCALE * (canvas.height / bg.height);
 
     characterX = (initialWindowWidth * CHARACTER_INITIAL_X_PERCENT) - ((characterWidth * characterScale) / 2);
-    characterY = initialWindowHeight - (initialWindowHeight * CHARACTER_BOTTOM_OFFSET_PERCENT);
+    characterY = 0; // Start high above the canvas
 
     speed = BASE_SPEED * (characterScale / INITIAL_SCALE);
     jumpSpeed = BASE_JUMP_SPEED * (characterScale / INITIAL_SCALE);
@@ -623,4 +626,3 @@ function initializeGame() {
 
     gameLoop();
 }
-
