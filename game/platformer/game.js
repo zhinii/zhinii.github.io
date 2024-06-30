@@ -1,3 +1,16 @@
+document.addEventListener('DOMContentLoaded', () => {
+    const startScreen = document.getElementById('startScreen');
+    const startButton = document.getElementById('startButton');
+
+    startButton.addEventListener('click', () => {
+        startScreen.style.display = 'none';
+        initializeGame();
+    });
+
+;
+});
+
+
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
@@ -11,13 +24,18 @@ const walkSprites = [
 ];
 const jumpSprite = createImage('pictures/jump.png');
 const platformsImg = createImage('pictures/platforms.png');
+const SHEEP_WIDTH = 50;
+const SHEEP_HEIGHT = 50;
+const SHEEP_WALK_DISTANCE = 10;
+const SHEEP_WALK_SPEED = 1;
+const SHEEP_FALL_SPEED = 3;
 
 // Global Constants
 const INITIAL_SCALE = 4;
 const BASE_SPEED = 5;
 const BASE_JUMP_SPEED = -15;
 const BASE_GRAVITY = 0.7;
-const DOUBLE_JUMP_MULTIPLIER = 1; // adjust for second jump height
+const DOUBLE_JUMP_MULTIPLIER = 1.5; // adjust for second jump height
 const CHARACTER_BOTTOM_OFFSET_PERCENT = 0.2;
 const CHARACTER_INITIAL_X_PERCENT = 0.2; // Start at the center
 const MOBILE_CONTROLS_HEIGHT = 200;
@@ -44,10 +62,311 @@ let rightPressed = false;
 let onPlatform = false;
 let currentPlatform = null;
 let jumpCount = 0; // Track the number of jumps
+let sheepCollected = 0;
+let gameLoopId;
+let gameOver = false;
+
 
 // Character dimensions
 const characterWidth = 50;
 const characterHeight = 50;
+
+const style = document.createElement('style');
+style.textContent += `
+    #victoryScreen, #gameOverScreen {
+        position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    }
+    .victory-content, .game-over-content {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+    }
+    #restartButton {
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-size: 18px;
+        cursor: pointer;
+    }
+`;
+document.head.appendChild(style);
+
+class Coyote {
+    constructor(worldX) {
+        this.worldX = worldX;
+        this.x = worldX;
+        this.y = -50; // Start above the screen
+        this.width = 50;
+        this.height = 50;
+        this.falling = true;
+        this.walkingRight = Math.random() < 0.5;
+        this.startX = worldX;
+        this.sprite1 = createImage('pictures/coyote1.png');
+        this.sprite2 = createImage('pictures/coyote2.png');
+        this.currentSprite = this.sprite1;
+        this.animationCounter = 0;
+    }
+
+    update() {
+        if (this.falling) {
+            this.y += SHEEP_FALL_SPEED;
+            this.checkLanding();
+        } else {
+            this.walk();
+        }
+        this.animate();
+        this.x = this.worldX + bgX;
+    }
+
+    checkLanding() {
+        for (let platform of platforms) {
+            if (this.y + this.height >= platform.y * bgScale &&
+                this.y + this.height <= platform.y * bgScale + platform.height * bgScale &&
+                this.worldX >= platform.x * bgScale &&
+                this.worldX + this.width <= (platform.x + platform.width) * bgScale) {
+                this.y = platform.y * bgScale - this.height;
+                this.falling = false;
+                this.startX = this.worldX;
+                this.endX = Math.min(this.startX + 100, (platform.x + platform.width) * bgScale - this.width);
+                break;
+            }
+        }
+    }
+
+    walk() {
+        if (this.walkingRight) {
+            this.worldX += SHEEP_WALK_SPEED;
+            if (this.worldX >= this.endX) {
+                this.walkingRight = false;
+            }
+        } else {
+            this.worldX -= SHEEP_WALK_SPEED;
+            if (this.worldX <= this.startX) {
+                this.walkingRight = true;
+            }
+        }
+    }
+
+    animate() {
+        this.animationCounter++;
+        if (this.animationCounter >= 10) {
+            this.currentSprite = (this.currentSprite === this.sprite1) ? this.sprite2 : this.sprite1;
+            this.animationCounter = 0;
+        }
+    }
+
+    draw(ctx) {
+        ctx.save();
+        if (!this.walkingRight) {
+            ctx.scale(-1, 1);
+            ctx.drawImage(this.currentSprite, -this.x - this.width, this.y, this.width, this.height);
+        } else {
+            ctx.drawImage(this.currentSprite, this.x, this.y, this.width, this.height);
+        }
+        ctx.restore();
+    }
+}
+
+class Tumbleweed {
+    constructor(worldX) {
+        this.worldX = worldX;
+        this.x = worldX;
+        this.y = -50; // Start above the screen
+        this.width = 40;
+        this.height = 40;
+        this.falling = true;
+        this.movingRight = Math.random() < 0.5;
+        this.startX = worldX;
+        this.sprites = [
+            createImage('pictures/weed1.png'),
+            createImage('pictures/weed2.png'),
+            createImage('pictures/weed3.png'),
+            createImage('pictures/weed4.png')
+        ];
+        this.currentSpriteIndex = 0;
+        this.animationCounter = 0;
+    }
+
+    update() {
+        if (this.falling) {
+            this.y += SHEEP_FALL_SPEED;
+            this.checkLanding();
+        } else {
+            this.move();
+        }
+        this.animate();
+        this.x = this.worldX + bgX;
+    }
+
+    checkLanding() {
+        for (let platform of platforms) {
+            if (this.y + this.height >= platform.y * bgScale &&
+                this.y + this.height <= platform.y * bgScale + platform.height * bgScale &&
+                this.worldX >= platform.x * bgScale &&
+                this.worldX + this.width <= (platform.x + platform.width) * bgScale) {
+                this.y = platform.y * bgScale - this.height;
+                this.falling = false;
+                this.startX = this.worldX;
+                this.endX = Math.min(this.startX + 100, (platform.x + platform.width) * bgScale - this.width);
+                break;
+            }
+        }
+    }
+
+    move() {
+        if (this.movingRight) {
+            this.worldX += SHEEP_WALK_SPEED * 1.5;
+            if (this.worldX >= this.endX) {
+                this.movingRight = false;
+            }
+        } else {
+            this.worldX -= SHEEP_WALK_SPEED * 1.5;
+            if (this.worldX <= this.startX) {
+                this.movingRight = true;
+            }
+        }
+    }
+
+    animate() {
+        this.animationCounter++;
+        if (this.animationCounter >= 5) {
+            this.currentSpriteIndex = (this.currentSpriteIndex + 1) % this.sprites.length;
+            this.animationCounter = 0;
+        }
+    }
+
+    draw(ctx) {
+        ctx.drawImage(this.sprites[this.currentSpriteIndex], this.x, this.y, this.width, this.height);
+    }
+}
+
+class Sheep {
+    constructor(worldX) {
+        this.worldX = worldX; // This is the sheep's position in the world
+        this.x = worldX; // This will be the sheep's position relative to the camera
+        this.y = -SHEEP_HEIGHT;
+        this.width = SHEEP_WIDTH;
+        this.height = SHEEP_HEIGHT;
+        this.falling = true;
+        this.walkingRight = Math.random() < 0.5;
+        this.startX = worldX;
+        this.sprite1 = createImage('pictures/sheep1.png');
+        this.sprite2 = createImage('pictures/sheep2.png');
+        this.currentSprite = this.sprite1;
+        this.animationCounter = 0;
+    }
+
+    update() {
+        if (this.falling) {
+            this.y += SHEEP_FALL_SPEED;
+            this.checkLanding();
+        } else {
+            this.walk();
+        }
+        this.animate();
+        // Update the x position relative to the camera
+        this.x = this.worldX + bgX;
+    }
+
+    checkLanding() {
+        for (let platform of platforms) {
+            if (this.y + this.height >= platform.y * bgScale &&
+                this.y + this.height <= platform.y * bgScale + platform.height * bgScale &&
+                this.worldX >= platform.x * bgScale &&
+                this.worldX + this.width <= (platform.x + platform.width) * bgScale) {
+                this.y = platform.y * bgScale - this.height;
+                this.falling = false;
+                this.startX = this.worldX;
+                break;
+            }
+        }
+    }
+
+    walk() {
+        if (this.walkingRight) {
+            this.worldX += SHEEP_WALK_SPEED;
+            if (this.worldX >= this.startX + SHEEP_WALK_DISTANCE) {
+                this.walkingRight = false;
+            }
+        } else {
+            this.worldX -= SHEEP_WALK_SPEED;
+            if (this.worldX <= this.startX - SHEEP_WALK_DISTANCE) {
+                this.walkingRight = true;
+            }
+        }
+    }
+
+    animate() {
+        this.animationCounter++;
+        if (this.animationCounter >= 10) {
+            this.currentSprite = (this.currentSprite === this.sprite1) ? this.sprite2 : this.sprite1;
+            this.animationCounter = 0;
+        }
+    }
+
+    draw(ctx) {
+        ctx.save();
+        if (!this.walkingRight) {
+            ctx.scale(-1, 1);
+            ctx.drawImage(this.currentSprite, -this.x - this.width, this.y, this.width, this.height);
+        } else {
+            ctx.drawImage(this.currentSprite, this.x, this.y, this.width, this.height);
+        }
+        ctx.restore();
+    }
+}
+
+let sheep = [];
+let coyotes = [];
+let tumbleweeds = [];
+
+function initializeObstacles() {
+    const MIN_DISTANCE = 150;
+    const attempts = 100;
+
+    function placeObstacle(ObstacleClass, array) {
+        for (let i = 0; i < 2; i++) {
+            let placed = false;
+            let newObstacle;
+
+            for (let attempt = 0; attempt < attempts; attempt++) {
+                let x = Math.random() * (bg.width * bgScale - 50);
+                newObstacle = new ObstacleClass(x);
+
+                if (isObstaclePositionValid(newObstacle, MIN_DISTANCE)) {
+                    array.push(newObstacle);
+                    placed = true;
+                    break;
+                }
+            }
+
+            if (!placed) {
+            }
+        }
+    }
+
+    placeObstacle(Coyote, coyotes);
+    placeObstacle(Tumbleweed, tumbleweeds);
+}
+
+function isObstaclePositionValid(newObstacle, minDistance) {
+    for (let existingObstacle of [...sheep, ...coyotes, ...tumbleweeds]) {
+        let distance = Math.abs(newObstacle.worldX - existingObstacle.worldX);
+        if (distance < minDistance) {
+            return false;
+        }
+    }
+    return true;
+}
 
 // Event Listeners
 document.addEventListener('keydown', keyDownHandler);
@@ -253,8 +572,7 @@ function keyUpHandler(e) {
 }
 
 function resizeCanvas() {
-
-const canvas = document.getElementById('gameCanvas');
+    const canvas = document.getElementById('gameCanvas');
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
 
@@ -264,7 +582,7 @@ const canvas = document.getElementById('gameCanvas');
     // Set canvas width to window width minus 10 pixels
     canvas.width = windowWidth - 10;
 
-   if (isMobile() && isLandscape()) {
+    if (isMobile() && isLandscape()) {
         const totalControlWidth = (MOBILE_CONTROL_WIDTH + MOBILE_LANDSCAPE_OFFSET) * 2;
         const availableWidth = windowWidth - totalControlWidth;
         
@@ -330,16 +648,7 @@ function extractPlatformsFromImage(image) {
         }
 
         platforms = combinePlatforms(platforms);
-        console.log("Platforms extracted:", platforms.map(p => ({
-            x: p.x,
-            y: p.y,
-            width: p.width,
-            height: p.height,
-            scaledX: p.x * bgScale,
-            scaledY: p.y * bgScale,
-            scaledWidth: p.width * bgScale,
-            scaledHeight: p.height * bgScale
-        })));
+     
     } catch (error) {
         console.error("Error extracting platforms:", error);
     }
@@ -374,6 +683,23 @@ function checkPlatformCollision() {
     const characterBottom = characterY + characterHeight * characterScale;
     const characterRight = characterX + characterWidth * characterScale;
 
+    sheep = sheep.filter(s => {
+        if (!s.falling &&
+            characterX < s.x + s.width &&
+            characterRight > s.x &&
+            characterY < s.y + s.height &&
+            characterBottom > s.y) {
+            // Collision detected
+            sheepCollected++;
+            // Check for victory
+            if (sheepCollected >= 10) {
+                showVictoryScreen();
+            }
+            return false;
+        }
+        return true;
+    });
+
     const landingTolerance = 5; 
     const edgeTolerance = 25;
 
@@ -403,7 +729,6 @@ function checkPlatformCollision() {
                 jumpSpeed = 0;
                 jumping = false;
                 jumpCount = 0;
-                console.log("Landed on platform", {characterY, platformY: scaledPlatform.y});
                 break;
             }
         }
@@ -422,16 +747,37 @@ function checkPlatformCollision() {
             onPlatform = false;
             currentPlatform = null;
             jumping = true;
-            console.log("Left platform");
         }
     }
 
-    console.log("Platform check complete", {onPlatform, jumping, characterY, jumpSpeed});
+}
+
+function checkObstacleCollision() {
+    const characterBottom = characterY + characterHeight * characterScale;
+    const characterRight = characterX + characterWidth * characterScale;
+
+    for (let obstacle of [...coyotes, ...tumbleweeds]) {
+        if (characterX < obstacle.x + obstacle.width &&
+            characterRight > obstacle.x &&
+            characterY < obstacle.y + obstacle.height &&
+            characterBottom > obstacle.y) {
+            // Collision detected
+            console.log("Collision with obstacle!");
+            showGameOverScreen();
+            return true; // Collision occurred
+        }
+    }
+    return false; // No collision
 }
 
 function update(dt) {
     isWalking = false;  // Reset at the start of each frame
+    if (gameOver) return; // Stop updating if the game is over
 
+    if (checkObstacleCollision()) {
+        gameOver = true; // Set gameOver flag to true on collision
+        return;
+    }
     let moveX = 0;
     if (leftPressed) {
         isWalking = true;
@@ -466,7 +812,6 @@ function update(dt) {
         bgX = Math.max(minBgX, Math.min(maxBgX, bgX));
     }
 
-
     // Apply gravity and jumping
     if (jumping || (!onPlatform && characterY < canvas.height)) {
         jumpSpeed += gravity;
@@ -474,6 +819,10 @@ function update(dt) {
     }
 
     checkPlatformCollision();
+
+    sheep.forEach(s => s.update());
+    coyotes.forEach(c => c.update());
+    tumbleweeds.forEach(t => t.update());
 
     // Prevent character from going through the bottom of the canvas
     if (characterY > canvas.height) {
@@ -496,12 +845,10 @@ function update(dt) {
     // Ensure character stays within the canvas
     characterX = Math.max(0, Math.min(canvas.width - characterWidth * characterScale, characterX));
 
-    console.log("Update complete", {jumping, onPlatform, characterY, jumpSpeed, characterX, bgX});
 }
 
 function jump() {
     if (!jumping && onPlatform) {
-        console.log("Jump initiated");
         jumping = true;
         onPlatform = false;
         currentPlatform = null;
@@ -509,7 +856,6 @@ function jump() {
         characterY += jumpSpeed;
         jumpCount = 1;
     } else if (jumping && jumpCount === 1) {
-        console.log("Double jump initiated");
         jumpSpeed = Math.min(jumpSpeed, BASE_JUMP_SPEED * DOUBLE_JUMP_MULTIPLIER * (characterScale / INITIAL_SCALE));
         characterY += jumpSpeed;
         jumpCount = 2;
@@ -517,8 +863,11 @@ function jump() {
 }
 
 function draw() {
+        console.log("Drawing frame");
+
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(bg, bgX, 0, bg.width * bgScale, canvas.height);
+    drawSheepCounter();
 
     // Draw platforms
     ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
@@ -530,6 +879,10 @@ function draw() {
             platform.height * bgScale
         );
     }
+
+    sheep.forEach(s => s.draw(ctx));
+    coyotes.forEach(c => c.draw(ctx));
+    tumbleweeds.forEach(t => t.draw(ctx));
 
     // Draw character
     ctx.save();
@@ -564,31 +917,73 @@ function gameLoop(currentTime) {
     draw();
     lastTime = currentTime;
 
-    requestAnimationFrame(gameLoop);
+    gameLoopId = requestAnimationFrame(gameLoop);
+}
+
+function initializeSheep() {
+    const MIN_DISTANCE = 75;
+    const attempts = 100; // Maximum attempts to place a sheep
+
+    for (let i = 0; i < 10; i++) {
+        let placed = false;
+        let newSheep;
+
+        for (let attempt = 0; attempt < attempts; attempt++) {
+            let x = Math.random() * (bg.width * bgScale - SHEEP_WIDTH);
+            newSheep = new Sheep(x);
+
+            if (isSheepPositionValid(newSheep, MIN_DISTANCE)) {
+                sheep.push(newSheep);
+                placed = true;
+                break;
+            }
+        }
+
+        if (!placed) {
+            console.log(`Couldn't place sheep ${i + 1} after ${attempts} attempts`);
+        }
+    }
+}
+
+function isSheepPositionValid(newSheep, minDistance) {
+    for (let existingSheep of sheep) {
+        let distance = Math.abs(newSheep.worldX - existingSheep.worldX);
+        if (distance < minDistance) {
+            return false;
+        }
+    }
+    return true;
 }
 
 function drawHUD() {
     const hudCanvas = document.createElement('canvas');
     hudCanvas.id = 'hudCanvas';
-     if (isMobile() && isLandscape()) {
+    if (isMobile() && isLandscape()) {
         hudCanvas.height = window.innerHeight;
         hudCanvas.width = window.innerWidth - (MOBILE_CONTROL_WIDTH + MOBILE_LANDSCAPE_OFFSET) * 2;
         hudCanvas.style.position = 'fixed';
         hudCanvas.style.top = '0';
         hudCanvas.style.left = `${MOBILE_CONTROL_WIDTH + MOBILE_LANDSCAPE_OFFSET}px`;
-    }  else {
+    } else {
         hudCanvas.height = 200;
+        hudCanvas.width = window.innerWidth;
+        hudCanvas.style.position = 'fixed';
+        hudCanvas.style.bottom = '0';
+        hudCanvas.style.left = '0';
     }
-    hudCanvas.width = window.innerWidth;
-    hudCanvas.style.position = 'fixed';
-    hudCanvas.style.bottom = '0';
-    hudCanvas.style.left = '0';
     hudCanvas.style.zIndex = '10';
     document.body.appendChild(hudCanvas);
 
     const hudCtx = hudCanvas.getContext('2d');
     hudCtx.fillStyle = 'rgba(0, 0, 0, 0)';
     hudCtx.fillRect(0, 0, hudCanvas.width, hudCanvas.height);
+}
+
+function drawSheepCounter() {
+    ctx.font = '24px Arial';
+    ctx.fillStyle = 'white';
+    ctx.textAlign = 'right';
+    ctx.fillText(`Sheep: ${sheepCollected}/10`, canvas.width - 10, 30);
 }
 
 let loadedImages = 0;
@@ -598,7 +993,7 @@ function imageLoaded(e) {
     loadedImages++;
     console.log(`Image loaded: ${e.target.src}`);
     if (loadedImages === totalImages) {
-        initializeGame();
+      
     }
 }
 
@@ -620,6 +1015,100 @@ walkSprites.forEach(sprite => {
 platformsImg.onload = imageLoaded;
 platformsImg.onerror = imageError;
 
+function showVictoryScreen() {
+    console.log("Showing victory screen");
+
+    const victoryScreen = document.createElement('div');
+    victoryScreen.id = 'victoryScreen';
+    victoryScreen.innerHTML = `
+        <div class="victory-content">
+            <h1>You caught all of grandma's sheep!</h1>
+            <button id="restartButton">Play Again</button>
+        </div>
+    `;
+    document.body.appendChild(victoryScreen);
+
+    const restartButton = document.getElementById('restartButton');
+    restartButton.addEventListener('click', restartGame);
+
+    // Stop the game loop
+    if (gameLoopId) {
+        cancelAnimationFrame(gameLoopId);
+        gameLoopId = null;
+    }
+}
+
+function showGameOverScreen() {
+    console.log("Showing game over screen");
+
+    const gameOverScreen = document.createElement('div');
+    gameOverScreen.id = 'gameOverScreen';
+    gameOverScreen.innerHTML = `
+        <div class="game-over-content" style="background-color: white;">
+            <h1>Game Over</h1>
+            <p>You hit an obstacle!</p>
+            <button id="restartButton">Play Again</button>
+        </div>
+    `;
+    document.body.appendChild(gameOverScreen);
+
+    const restartButton = document.getElementById('restartButton');
+    restartButton.addEventListener('click', restartGame);
+
+    // Stop the game loop
+    if (gameLoopId) {
+        cancelAnimationFrame(gameLoopId);
+        gameLoopId = null;
+    }
+    gameOver = true; // Set gameOver flag to true
+}
+
+
+function restartGame() {
+    // Remove victory screen or game over screen
+    const victoryScreen = document.getElementById('victoryScreen');
+    const gameOverScreen = document.getElementById('gameOverScreen');
+    if (victoryScreen) {
+        victoryScreen.remove();
+    }
+    if (gameOverScreen) {
+        gameOverScreen.remove();
+    }
+
+    // Reset game state
+    sheepCollected = 0;
+    sheep = [];
+    coyotes = [];
+    tumbleweeds = [];
+    
+    // Reset character position
+    characterX = (canvas.width * CHARACTER_INITIAL_X_PERCENT) - ((characterWidth * characterScale) / 2);
+    characterY = 0;
+    jumping = true;
+    onPlatform = false;
+    currentPlatform = null;
+    jumpSpeed = 0;
+    
+    // Reset background position
+    bgX = 0;
+
+    // Reinitialize game elements
+    initializeSheep();
+    initializeObstacles();
+
+    // Reset time variables
+    lastTime = 0;
+
+      // Reset gameOver flag
+    gameOver = false;
+
+    // Restart game loop
+    if (gameLoopId) {
+        cancelAnimationFrame(gameLoopId);
+    }
+    gameLoopId = null; // Ensure gameLoopId is null before restarting
+    gameLoopId = requestAnimationFrame(gameLoop);
+}
 function initializeGame() {
     initialWindowWidth = window.innerWidth;
     initialWindowHeight = window.innerHeight - (isMobile() && isLandscape() ? window.innerHeight * 0.30 : MOBILE_CONTROLS_HEIGHT);
@@ -642,7 +1131,12 @@ function initializeGame() {
     drawHUD();
 
     extractPlatformsFromImage(platformsImg);
-    console.log("Platforms extracted:", platforms);
 
-    gameLoop();
+    initializeSheep();
+    initializeObstacles();
+
+    if (gameLoopId) {
+        cancelAnimationFrame(gameLoopId);
+    }
+    gameLoopId = requestAnimationFrame(gameLoop);
 }
