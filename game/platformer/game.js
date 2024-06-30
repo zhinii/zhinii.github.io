@@ -1,3 +1,17 @@
+// Prevent default behavior for touch events
+document.addEventListener('touchstart', function(event) {
+    event.preventDefault();
+}, { passive: false });
+
+document.addEventListener('touchmove', function(event) {
+    event.preventDefault();
+}, { passive: false });
+
+document.addEventListener('touchend', function(event) {
+    event.preventDefault();
+}, { passive: false });
+
+
 document.addEventListener('DOMContentLoaded', () => {
     const startScreen = document.getElementById('startScreen');
     const startButton = document.getElementById('startButton');
