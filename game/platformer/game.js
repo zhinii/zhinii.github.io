@@ -35,7 +35,7 @@ const INITIAL_SCALE = 4;
 const BASE_SPEED = 5;
 const BASE_JUMP_SPEED = -15;
 const BASE_GRAVITY = 0.7;
-const DOUBLE_JUMP_MULTIPLIER = 1.5; // adjust for second jump height
+const DOUBLE_JUMP_MULTIPLIER = .8; // adjust for second jump height
 const CHARACTER_BOTTOM_OFFSET_PERCENT = 0.2;
 const CHARACTER_INITIAL_X_PERCENT = 0.2; // Start at the center
 const MOBILE_CONTROLS_HEIGHT = 200;
@@ -65,6 +65,9 @@ let jumpCount = 0; // Track the number of jumps
 let sheepCollected = 0;
 let gameLoopId;
 let gameOver = false;
+let gracePeriod = 3000; // 3 seconds in milliseconds
+let gameStartTime;
+let isInvulnerable = false;
 
 
 // Character dimensions
@@ -753,6 +756,8 @@ function checkPlatformCollision() {
 }
 
 function checkObstacleCollision() {
+        if (isInvulnerable) return false;
+
     const characterBottom = characterY + characterHeight * characterScale;
     const characterRight = characterX + characterWidth * characterScale;
 
@@ -771,6 +776,20 @@ function checkObstacleCollision() {
 }
 
 function update(dt) {
+
+     if (gameOver) return;
+
+    // Check if grace period has ended
+    if (isInvulnerable && Date.now() - gameStartTime > gracePeriod) {
+        isInvulnerable = false;
+    }
+
+    // Only check for collisions if not invulnerable
+    if (!isInvulnerable && checkObstacleCollision()) {
+        gameOver = true;
+        return;
+    }
+
     isWalking = false;  // Reset at the start of each frame
     if (gameOver) return; // Stop updating if the game is over
 
@@ -870,7 +889,7 @@ function draw() {
     drawSheepCounter();
 
     // Draw platforms
-    ctx.fillStyle = 'rgba(255, 0, 0, 0.5)';
+    ctx.fillStyle = 'rgba(255, 0, 0, 0)';
     for (let platform of platforms) {
         ctx.fillRect(
             platform.x * bgScale + bgX,  // Add bgX here, don't subtract
@@ -905,7 +924,26 @@ function draw() {
         ctx.drawImage(walkSprites[0], drawX, drawY, scaledWidth, scaledHeight);  // Use first frame as idle pose
     }
 
+
+    // Draw invulnerability indicator
+    if (isInvulnerable) {
+        ctx.save();
+        const remainingTime = Math.ceil((gracePeriod - (Date.now() - gameStartTime)) / 1000);
+        // Draw semi-transparent white background
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';  // White with 70% opacity
+        ctx.fillRect(canvas.width / 2 - 200, canvas.height / 2 - 60, 400, 120);  // Adjust size as needed
+
+        ctx.font = '30px Arial';
+        ctx.fillStyle = 'black';
+        ctx.textAlign = 'center';
+ctx.textBaseline = 'middle';
+ctx.fillText(`Get ready to catch sheep!`, canvas.width / 2, canvas.height / 2 - 30);
+    ctx.fillText(`Starting in: ${remainingTime}`, canvas.width / 2, canvas.height / 2 + 30);
     ctx.restore();
+}
+ctx.restore();
+
+
 }
 
 function gameLoop(currentTime) {
@@ -1134,6 +1172,9 @@ function initializeGame() {
 
     initializeSheep();
     initializeObstacles();
+
+  gameStartTime = Date.now();
+    isInvulnerable = true;
 
     if (gameLoopId) {
         cancelAnimationFrame(gameLoopId);
