@@ -6,10 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
         startScreen.style.display = 'none';
         initializeGame();
     });
-
-;
 });
-
 
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
@@ -30,12 +27,28 @@ const SHEEP_WALK_DISTANCE = 10;
 const SHEEP_WALK_SPEED = 1;
 const SHEEP_FALL_SPEED = 3;
 
+// Audio files
+const winSound = new Audio('audio/win.wav');
+const loseSound = new Audio('audio/lose.wav');
+const sheepCollectSounds = [
+    new Audio('audio/1.wav'),
+    new Audio('audio/2.wav'),
+    new Audio('audio/3.wav'),
+    new Audio('audio/4.wav'),
+    new Audio('audio/5.wav'),
+    new Audio('audio/6.wav'),
+    new Audio('audio/7.wav'),
+    new Audio('audio/8.wav'),
+    new Audio('audio/9.wav'),
+    new Audio('audio/10.wav')
+];
+
 // Global Constants
 const INITIAL_SCALE = 4;
 const BASE_SPEED = 5;
 const BASE_JUMP_SPEED = -15;
 const BASE_GRAVITY = 0.7;
-const DOUBLE_JUMP_MULTIPLIER = .8; // adjust for second jump height
+const DOUBLE_JUMP_MULTIPLIER = 0.8; // adjust for second jump height
 const CHARACTER_BOTTOM_OFFSET_PERCENT = 0.2;
 const CHARACTER_INITIAL_X_PERCENT = 0.2; // Start at the center
 const MOBILE_CONTROLS_HEIGHT = 200;
@@ -69,7 +82,6 @@ let gracePeriod = 3000; // 3 seconds in milliseconds
 let gameStartTime;
 let isInvulnerable = false;
 
-
 // Character dimensions
 const characterWidth = 50;
 const characterHeight = 50;
@@ -78,15 +90,15 @@ const style = document.createElement('style');
 style.textContent += `
     #victoryScreen, #gameOverScreen {
         position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 100;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.8);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 100;
     }
     .victory-content, .game-over-content {
         background-color: white;
@@ -333,8 +345,8 @@ let coyotes = [];
 let tumbleweeds = [];
 
 function initializeObstacles() {
-    const MIN_DISTANCE = 150;
-    const attempts = 100;
+    const MIN_DISTANCE = 100; // Adjusted minimum distance for more flexibility
+    const attempts = 200; // Increased attempts to improve chances of placement
 
     function placeObstacle(ObstacleClass, array) {
         for (let i = 0; i < 2; i++) {
@@ -348,15 +360,22 @@ function initializeObstacles() {
                 if (isObstaclePositionValid(newObstacle, MIN_DISTANCE)) {
                     array.push(newObstacle);
                     placed = true;
+                    console.log(`Placed ${ObstacleClass.name} at ${newObstacle.worldX}`);
                     break;
                 }
             }
 
             if (!placed) {
+                console.log(`Couldn't place ${ObstacleClass.name} ${i + 1} after ${attempts} attempts`);
             }
         }
     }
 
+    // Clear existing obstacles
+    coyotes = [];
+    tumbleweeds = [];
+
+    // Place new obstacles
     placeObstacle(Coyote, coyotes);
     placeObstacle(Tumbleweed, tumbleweeds);
 }
@@ -365,11 +384,13 @@ function isObstaclePositionValid(newObstacle, minDistance) {
     for (let existingObstacle of [...sheep, ...coyotes, ...tumbleweeds]) {
         let distance = Math.abs(newObstacle.worldX - existingObstacle.worldX);
         if (distance < minDistance) {
+            console.log(`Obstacle too close: ${distance}px (min ${minDistance}px)`);
             return false;
         }
     }
     return true;
 }
+
 
 // Event Listeners
 document.addEventListener('keydown', keyDownHandler);
@@ -694,6 +715,7 @@ function checkPlatformCollision() {
             characterBottom > s.y) {
             // Collision detected
             sheepCollected++;
+            playSheepCollectSound(sheepCollected); // Play sheep collect sound
             // Check for victory
             if (sheepCollected >= 10) {
                 showVictoryScreen();
@@ -756,16 +778,20 @@ function checkPlatformCollision() {
 }
 
 function checkObstacleCollision() {
-        if (isInvulnerable) return false;
+    if (isInvulnerable) return false;
 
     const characterBottom = characterY + characterHeight * characterScale;
     const characterRight = characterX + characterWidth * characterScale;
 
+    const collisionBuffer = 20; // Adjust this value to make the collision tighter
+
     for (let obstacle of [...coyotes, ...tumbleweeds]) {
-        if (characterX < obstacle.x + obstacle.width &&
-            characterRight > obstacle.x &&
-            characterY < obstacle.y + obstacle.height &&
-            characterBottom > obstacle.y) {
+        if (
+            characterX + collisionBuffer < obstacle.x + obstacle.width &&
+            characterRight - collisionBuffer > obstacle.x &&
+            characterY + collisionBuffer < obstacle.y + obstacle.height &&
+            characterBottom - collisionBuffer > obstacle.y
+        ) {
             // Collision detected
             console.log("Collision with obstacle!");
             showGameOverScreen();
@@ -775,9 +801,9 @@ function checkObstacleCollision() {
     return false; // No collision
 }
 
-function update(dt) {
 
-     if (gameOver) return;
+function update(dt) {
+    if (gameOver) return;
 
     // Check if grace period has ended
     if (isInvulnerable && Date.now() - gameStartTime > gracePeriod) {
@@ -863,7 +889,6 @@ function update(dt) {
 
     // Ensure character stays within the canvas
     characterX = Math.max(0, Math.min(canvas.width - characterWidth * characterScale, characterX));
-
 }
 
 function jump() {
@@ -882,7 +907,7 @@ function jump() {
 }
 
 function draw() {
-        console.log("Drawing frame");
+    console.log("Drawing frame");
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(bg, bgX, 0, bg.width * bgScale, canvas.height);
@@ -924,7 +949,6 @@ function draw() {
         ctx.drawImage(walkSprites[0], drawX, drawY, scaledWidth, scaledHeight);  // Use first frame as idle pose
     }
 
-
     // Draw invulnerability indicator
     if (isInvulnerable) {
         ctx.save();
@@ -936,14 +960,12 @@ function draw() {
         ctx.font = '30px Arial';
         ctx.fillStyle = 'black';
         ctx.textAlign = 'center';
-ctx.textBaseline = 'middle';
-ctx.fillText(`Get ready to catch sheep!`, canvas.width / 2, canvas.height / 2 - 30);
-    ctx.fillText(`Starting in: ${remainingTime}`, canvas.width / 2, canvas.height / 2 + 30);
+        ctx.textBaseline = 'middle';
+        ctx.fillText(`Get ready to catch sheep!`, canvas.width / 2, canvas.height / 2 - 30);
+        ctx.fillText(`Starting in: ${remainingTime}`, canvas.width / 2, canvas.height / 2 + 30);
+        ctx.restore();
+    }
     ctx.restore();
-}
-ctx.restore();
-
-
 }
 
 function gameLoop(currentTime) {
@@ -1066,6 +1088,8 @@ function showVictoryScreen() {
     `;
     document.body.appendChild(victoryScreen);
 
+    playWinSound(); // Play win sound
+
     const restartButton = document.getElementById('restartButton');
     restartButton.addEventListener('click', restartGame);
 
@@ -1090,6 +1114,8 @@ function showGameOverScreen() {
     `;
     document.body.appendChild(gameOverScreen);
 
+    playLoseSound(); // Play lose sound
+
     const restartButton = document.getElementById('restartButton');
     restartButton.addEventListener('click', restartGame);
 
@@ -1101,6 +1127,19 @@ function showGameOverScreen() {
     gameOver = true; // Set gameOver flag to true
 }
 
+function playSheepCollectSound(sheepCollected) {
+    if (sheepCollected >= 1 && sheepCollected <= 10) {
+        sheepCollectSounds[sheepCollected - 1].play();
+    }
+}
+
+function playWinSound() {
+    winSound.play();
+}
+
+function playLoseSound() {
+    loseSound.play();
+}
 
 function restartGame() {
     // Remove victory screen or game over screen
@@ -1137,7 +1176,7 @@ function restartGame() {
     // Reset time variables
     lastTime = 0;
 
-      // Reset gameOver flag
+    // Reset gameOver flag
     gameOver = false;
 
     // Restart game loop
@@ -1147,6 +1186,7 @@ function restartGame() {
     gameLoopId = null; // Ensure gameLoopId is null before restarting
     gameLoopId = requestAnimationFrame(gameLoop);
 }
+
 function initializeGame() {
     initialWindowWidth = window.innerWidth;
     initialWindowHeight = window.innerHeight - (isMobile() && isLandscape() ? window.innerHeight * 0.30 : MOBILE_CONTROLS_HEIGHT);
@@ -1171,9 +1211,9 @@ function initializeGame() {
     extractPlatformsFromImage(platformsImg);
 
     initializeSheep();
-    initializeObstacles();
+    initializeObstacles(); // Call this function to initialize obstacles
 
-  gameStartTime = Date.now();
+    gameStartTime = Date.now();
     isInvulnerable = true;
 
     if (gameLoopId) {
@@ -1181,3 +1221,4 @@ function initializeGame() {
     }
     gameLoopId = requestAnimationFrame(gameLoop);
 }
+
