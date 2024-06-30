@@ -43,6 +43,25 @@ const sheepCollectSounds = [
     new Audio('audio/10.wav')
 ];
 
+const navajoNumbers = [
+    "ádin",
+    "Tʼááłáʼí", // 1
+    "Naakí",    // 2
+    "Taaʼ",     // 3
+    "Dį́į́ʼ",    // 4
+    "Ashdlaʼ",  // 5
+    "Hastą́ą́", // 6
+    "Tsostsʼid",// 7
+    "Tseebíí", // 8
+    "Náhástʼéí",// 9
+    "Neeznáá",   // 10
+    "Łaʼtsʼáadah",// 11
+    "Naakitsʼáadah",  // 12
+    "Tááʼtsʼáadah", // 13
+    "Dį́į́ʼtsʼáadah",// 14
+    "Ashdlaʼáadah" // 15
+];
+
 // Global Constants
 const INITIAL_SCALE = 4;
 const BASE_SPEED = 5;
@@ -907,10 +926,12 @@ function jump() {
 }
 
 function draw() {
-    console.log("Drawing frame");
+  
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(bg, bgX, 0, bg.width * bgScale, canvas.height);
+
+    // Draw the sheep counter
     drawSheepCounter();
 
     // Draw platforms
@@ -967,6 +988,7 @@ function draw() {
     }
     ctx.restore();
 }
+
 
 function gameLoop(currentTime) {
     if (!lastTime) lastTime = currentTime;
@@ -1041,10 +1063,33 @@ function drawHUD() {
 
 function drawSheepCounter() {
     ctx.font = '24px Arial';
-    ctx.fillStyle = 'white';
     ctx.textAlign = 'right';
-    ctx.fillText(`Sheep: ${sheepCollected}/10`, canvas.width - 10, 30);
+
+    // Define the text for both lines
+    const sheepText = `Sheep: ${sheepCollected}`;
+    const navajoText = `Dibé: ${navajoNumbers[sheepCollected] || ''}`;
+
+    // Calculate the width and height of the text
+    const sheepTextWidth = ctx.measureText(sheepText).width;
+    const navajoTextWidth = ctx.measureText(navajoText).width;
+    const textWidth = Math.max(sheepTextWidth, navajoTextWidth) + 20;
+
+    // Set the background dimensions
+    const bgWidth = textWidth;
+    const bgHeight = 60; // Adjust height to fit two lines of text
+
+    // Draw background rectangle for better legibility
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)'; // White background with some transparency
+    ctx.fillRect(canvas.width - bgWidth - 5, 10, bgWidth, bgHeight);
+
+    // Draw the sheep text
+    ctx.fillStyle = 'black';
+    ctx.fillText(sheepText, canvas.width - 10, 30);
+
+    // Draw the Navajo text below the sheep text
+    ctx.fillText(navajoText, canvas.width - 10, 60);
 }
+
 
 let loadedImages = 0;
 const totalImages = walkSprites.length + 3; // Include bg, jumpSprite, and platformsImg
