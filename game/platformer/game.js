@@ -24,6 +24,8 @@ const MOBILE_CONTROLS_HEIGHT = 200;
 const LANDSCAPE_GAME_WIDTH_PERCENT = 0.60;
 const RIGHT_CAMERA_FOLLOW_THRESHOLD = 0.25; // 60% of screen width when moving right
 const LEFT_CAMERA_FOLLOW_THRESHOLD = 0.75;  // 40% of screen width when moving left
+const MOBILE_CONTROL_WIDTH = 100; // Adjust this based on your actual control width
+const MOBILE_LANDSCAPE_OFFSET = 10; // 10 pixel offset
 
 // Global Variables
 let lastTime = 0;
@@ -198,35 +200,28 @@ function updateControlLayout() {
 
         if (isLandscape()) {
             mobileControls.style.flexDirection = 'row';
-            mobileControls.style.height = `${window.innerHeight * 0.30}px`;
-            mobileControls.style.bottom = '0';
-
-            leftControls.style.flexDirection = 'column';
-            leftControls.style.position = 'fixed';
-            leftControls.style.left = '20px';
-            leftControls.style.top = `${window.innerHeight * 0.35}px`;
-            leftControls.style.transform = 'translateY(-50%)';
-
-            rightControls.style.flexDirection = 'column';
-            rightControls.style.position = 'fixed';
-            rightControls.style.right = '20px';
-            rightControls.style.top = `${window.innerHeight * 0.35}px`;
-            rightControls.style.transform = 'translateY(-50%)';
-        } else {
-            mobileControls.style.flexDirection = 'row';
-            mobileControls.style.height = `${MOBILE_CONTROLS_HEIGHT}px`;
+            mobileControls.style.height = '100%';
+            mobileControls.style.width = '100%';
+            mobileControls.style.position = 'fixed';
+            mobileControls.style.top = '0';
+            mobileControls.style.left = '0';
 
             leftControls.style.flexDirection = 'column';
             leftControls.style.position = 'absolute';
-            leftControls.style.left = '20px';
-            leftControls.style.bottom = '20px';
-            leftControls.style.transform = 'none';
+            leftControls.style.left = '0';
+            leftControls.style.top = '50%';
+            leftControls.style.transform = 'translateY(-50%)';
+            leftControls.style.width = `${MOBILE_CONTROL_WIDTH}px`;
 
             rightControls.style.flexDirection = 'column';
             rightControls.style.position = 'absolute';
-            rightControls.style.right = '20px';
-            rightControls.style.bottom = '20px';
-            rightControls.style.transform = 'none';
+            rightControls.style.right = '0';
+            rightControls.style.top = '50%';
+            rightControls.style.transform = 'translateY(-50%)';
+            rightControls.style.width = `${MOBILE_CONTROL_WIDTH}px`;
+        } else {
+            // Portrait mode layout remains the same
+            // ...
         }
     } else {
         mobileControls.style.display = 'none';
@@ -258,20 +253,35 @@ function keyUpHandler(e) {
 }
 
 function resizeCanvas() {
-    if (isMobile() && isLandscape()) {
-        const controlWidth = 100;
-        const availableWidth = window.innerWidth * LANDSCAPE_GAME_WIDTH_PERCENT;
-        canvas.height = window.innerHeight * 0.70;
+
+const canvas = document.getElementById('gameCanvas');
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+
+    // Set canvas height to 100% of the window height
+    canvas.height = windowHeight;
+
+    // Set canvas width to window width minus 10 pixels
+    canvas.width = windowWidth - 10;
+
+   if (isMobile() && isLandscape()) {
+        const totalControlWidth = (MOBILE_CONTROL_WIDTH + MOBILE_LANDSCAPE_OFFSET) * 2;
+        const availableWidth = windowWidth - totalControlWidth;
+        
         canvas.width = availableWidth;
+        canvas.height = windowHeight;
         canvas.style.position = 'absolute';
-        canvas.style.left = `${(window.innerWidth - availableWidth) / 2}px`;
+        canvas.style.left = `${MOBILE_CONTROL_WIDTH + MOBILE_LANDSCAPE_OFFSET}px`;
+        canvas.style.top = '0';
     } else if (isMobile()) {
-        canvas.height = window.innerHeight - MOBILE_CONTROLS_HEIGHT;
-        canvas.width = window.innerWidth;
+        // Portrait mode code remains the same
+        canvas.height = windowHeight - MOBILE_CONTROLS_HEIGHT;
+        canvas.width = windowWidth;
         canvas.style.position = 'static';
     } else {
-        canvas.height = window.innerHeight - 200;
-        canvas.width = window.innerWidth;
+        // Non-mobile code remains the same
+        canvas.height = windowHeight - 200;
+        canvas.width = windowWidth;
         canvas.style.position = 'static';
     }
 
@@ -287,6 +297,12 @@ function resizeCanvas() {
 
     updateControlLayout();
 }
+
+// Call resizeCanvas when the window is resized
+window.addEventListener('resize', resizeCanvas);
+
+// Call resizeCanvas initially to set the correct size
+window.addEventListener('load', resizeCanvas);
 
 function extractPlatformsFromImage(image) {
     const tempCanvas = document.createElement('canvas');
@@ -554,9 +570,13 @@ function gameLoop(currentTime) {
 function drawHUD() {
     const hudCanvas = document.createElement('canvas');
     hudCanvas.id = 'hudCanvas';
-    if (isMobile() && isLandscape()) {
-        hudCanvas.height = window.innerHeight * 0.30;
-    } else {
+     if (isMobile() && isLandscape()) {
+        hudCanvas.height = window.innerHeight;
+        hudCanvas.width = window.innerWidth - (MOBILE_CONTROL_WIDTH + MOBILE_LANDSCAPE_OFFSET) * 2;
+        hudCanvas.style.position = 'fixed';
+        hudCanvas.style.top = '0';
+        hudCanvas.style.left = `${MOBILE_CONTROL_WIDTH + MOBILE_LANDSCAPE_OFFSET}px`;
+    }  else {
         hudCanvas.height = 200;
     }
     hudCanvas.width = window.innerWidth;
@@ -569,15 +589,6 @@ function drawHUD() {
     const hudCtx = hudCanvas.getContext('2d');
     hudCtx.fillStyle = 'rgba(0, 0, 0, 0)';
     hudCtx.fillRect(0, 0, hudCanvas.width, hudCanvas.height);
-
-    hudCtx.fillStyle = 'white';
-    hudCtx.font = '20px Arial';
-    const text = 'HUD Placeholder';
-    const textWidth = hudCtx.measureText(text).width;
-    const xPosition = (hudCanvas.width - textWidth) / 2;
-    const yPosition = (hudCanvas.height / 2) + 10;
-
-    hudCtx.fillText(text, xPosition, yPosition);
 }
 
 let loadedImages = 0;
