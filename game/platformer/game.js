@@ -726,7 +726,7 @@ function checkPlatformCollision() {
     const characterBottom = characterY + characterHeight * characterScale;
     const characterRight = characterX + characterWidth * characterScale;
 
-    sheep = sheep.filter(s => {
+   sheep = sheep.filter(s => {
         if (!s.falling &&
             characterX < s.x + s.width &&
             characterRight > s.x &&
@@ -737,7 +737,8 @@ function checkPlatformCollision() {
             playSheepCollectSound(sheepCollected); // Play sheep collect sound
             // Check for victory
             if (sheepCollected >= 10) {
-                showVictoryScreen();
+                setTimeout(showVictoryScreen, 1000); // Delay victory screen by 1 second
+                return false;
             }
             return false;
         }
@@ -1133,7 +1134,7 @@ function showVictoryScreen() {
     `;
     document.body.appendChild(victoryScreen);
 
-    playWinSound(); // Play win sound
+    setTimeout(playWinSound, 500); // Play win sound after a 0.5 second delay
 
     const restartButton = document.getElementById('restartButton');
     restartButton.addEventListener('click', restartGame);
