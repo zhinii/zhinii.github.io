@@ -1,15 +1,15 @@
 // Prevent default behavior for touch events
-document.addEventListener('touchstart', function(event) {
-    event.preventDefault();
-}, { passive: false });
+// document.addEventListener('touchstart', function(event) {
+//     event.preventDefault();
+// }, { passive: false });
 
-document.addEventListener('touchmove', function(event) {
-    event.preventDefault();
-}, { passive: false });
+// document.addEventListener('touchmove', function(event) {
+//     event.preventDefault();
+// }, { passive: false });
 
-document.addEventListener('touchend', function(event) {
-    event.preventDefault();
-}, { passive: false });
+// document.addEventListener('touchend', function(event) {
+//     event.preventDefault();
+// }, { passive: false });
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -20,6 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
         startScreen.style.display = 'none';
         initializeGame();
     });
+
+    // Ensure resizeCanvas is called after the DOM is fully loaded
+    resizeCanvas();
 });
 
 const canvas = document.getElementById('gameCanvas');
@@ -446,6 +449,10 @@ function isLandscape() {
 }
 
 function setupMobileControls(jumpCallback) {
+    if (document.getElementById('mobileControls')) {
+        return; // Exit if controls are already created
+    }
+
     const mobileControls = document.createElement('div');
     mobileControls.id = 'mobileControls';
     mobileControls.innerHTML = `
@@ -467,33 +474,55 @@ function setupMobileControls(jumpCallback) {
         button.style.backgroundColor = isPressed ? 'rgba(0, 255, 0, 0.5)' : 'rgba(255, 255, 255, 0.5)';
     }
 
-    leftBtn.addEventListener('touchstart', () => {
-        leftPressed = true;
-        setButtonColor(leftBtn, true);
-        navigator.vibrate(50);
-    });
-    leftBtn.addEventListener('touchend', () => {
-        leftPressed = false;
-        setButtonColor(leftBtn, false);
+    function handleTouchEvent(event, callback) {
+        if (event.cancelable) {
+            event.preventDefault();
+        }
+        callback();
+    }
+
+    leftBtn.addEventListener('touchstart', (event) => {
+        handleTouchEvent(event, () => {
+            leftPressed = true;
+            setButtonColor(leftBtn, true);
+            navigator.vibrate(50);
+        });
     });
 
-    rightBtn.addEventListener('touchstart', () => {
-        rightPressed = true;
-        setButtonColor(rightBtn, true);
-        navigator.vibrate(50);
-    });
-    rightBtn.addEventListener('touchend', () => {
-        rightPressed = false;
-        setButtonColor(rightBtn, false);
+    leftBtn.addEventListener('touchend', (event) => {
+        handleTouchEvent(event, () => {
+            leftPressed = false;
+            setButtonColor(leftBtn, false);
+        });
     });
 
-    jumpBtn.addEventListener('touchstart', () => {
-        jumpCallback();
-        setButtonColor(jumpBtn, true);
-        navigator.vibrate(50);
+    rightBtn.addEventListener('touchstart', (event) => {
+        handleTouchEvent(event, () => {
+            rightPressed = true;
+            setButtonColor(rightBtn, true);
+            navigator.vibrate(50);
+        });
     });
-    jumpBtn.addEventListener('touchend', () => {
-        setButtonColor(jumpBtn, false);
+
+    rightBtn.addEventListener('touchend', (event) => {
+        handleTouchEvent(event, () => {
+            rightPressed = false;
+            setButtonColor(rightBtn, false);
+        });
+    });
+
+    jumpBtn.addEventListener('touchstart', (event) => {
+        handleTouchEvent(event, () => {
+            jumpCallback();
+            setButtonColor(jumpBtn, true);
+            navigator.vibrate(50);
+        });
+    });
+
+    jumpBtn.addEventListener('touchend', (event) => {
+        handleTouchEvent(event, () => {
+            setButtonColor(jumpBtn, false);
+        });
     });
 
     const style = document.createElement('style');
@@ -540,36 +569,22 @@ function setupMobileControls(jumpCallback) {
             background-color: rgba(0, 255, 0, 0.5) !important;
         }
     `;
-
-    canvas.addEventListener('touchmove', function(e) {
-        e.preventDefault();
-        const touch = e.touches[0];
-        const rect = canvas.getBoundingClientRect();
-        const x = touch.clientX - rect.left;
-        
-        if (x < canvas.width / 2) {
-            leftPressed = true;
-            rightPressed = false;
-        } else {
-            leftPressed = false;
-            rightPressed = true;
-        }
-    }, false);
-
-    canvas.addEventListener('touchend', function(e) {
-        leftPressed = false;
-        rightPressed = false;
-    }, false);
-
     document.head.appendChild(style);
 
     updateControlLayout();
 }
 
+
+
+
 function updateControlLayout() {
     const mobileControls = document.getElementById('mobileControls');
     const leftControls = document.getElementById('leftControls');
     const rightControls = document.getElementById('rightControls');
+
+    if (!mobileControls || !leftControls || !rightControls) {
+        return; // Exit if controls are not yet created
+    }
 
     if (isMobile()) {
         mobileControls.style.display = 'flex';
@@ -604,6 +619,7 @@ function updateControlLayout() {
     }
 }
 
+
 function keyDownHandler(e) {
     if (e.key === 'ArrowRight') {
         isWalking = true;
@@ -629,32 +645,25 @@ function keyUpHandler(e) {
 }
 
 function resizeCanvas() {
-    const canvas = document.getElementById('gameCanvas');
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
-
-    // Set canvas height to 100% of the window height
-    canvas.height = windowHeight;
-
-    // Set canvas width to window width minus 10 pixels
-    canvas.width = windowWidth - 10;
 
     if (isMobile() && isLandscape()) {
         const totalControlWidth = (MOBILE_CONTROL_WIDTH + MOBILE_LANDSCAPE_OFFSET) * 2;
         const availableWidth = windowWidth - totalControlWidth;
-        
+
         canvas.width = availableWidth;
         canvas.height = windowHeight;
         canvas.style.position = 'absolute';
         canvas.style.left = `${MOBILE_CONTROL_WIDTH + MOBILE_LANDSCAPE_OFFSET}px`;
         canvas.style.top = '0';
     } else if (isMobile()) {
-        // Portrait mode code remains the same
+        // Portrait mode
         canvas.height = windowHeight - MOBILE_CONTROLS_HEIGHT;
         canvas.width = windowWidth;
         canvas.style.position = 'static';
     } else {
-        // Non-mobile code remains the same
+        // Non-mobile
         canvas.height = windowHeight - 200;
         canvas.width = windowWidth;
         canvas.style.position = 'static';
@@ -672,6 +681,13 @@ function resizeCanvas() {
 
     updateControlLayout();
 }
+
+// Call resizeCanvas when the window is resized
+window.addEventListener('resize', resizeCanvas);
+
+// Call resizeCanvas initially to set the correct size
+window.addEventListener('load', resizeCanvas);
+
 
 // Call resizeCanvas when the window is resized
 window.addEventListener('resize', resizeCanvas);
@@ -941,8 +957,6 @@ function jump() {
 }
 
 function draw() {
-  
-
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(bg, bgX, 0, bg.width * bgScale, canvas.height);
 
@@ -984,25 +998,33 @@ function draw() {
     } else {
         ctx.drawImage(walkSprites[0], drawX, drawY, scaledWidth, scaledHeight);  // Use first frame as idle pose
     }
+    ctx.restore();
 
-    // Draw invulnerability indicator
+    // Ensure character stays within the canvas
+    characterX = Math.max(0, Math.min(canvas.width - characterWidth * characterScale, characterX));
+
+    // Draw invulnerability indicator if applicable
     if (isInvulnerable) {
-        ctx.save();
-        const remainingTime = Math.ceil((gracePeriod - (Date.now() - gameStartTime)) / 1000);
-        // Draw semi-transparent white background
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';  // White with 70% opacity
-        ctx.fillRect(canvas.width / 2 - 200, canvas.height / 2 - 60, 400, 120);  // Adjust size as needed
-
-        ctx.font = '30px Arial';
-        ctx.fillStyle = 'black';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(`Get ready to catch sheep!`, canvas.width / 2, canvas.height / 2 - 30);
-        ctx.fillText(`Starting in: ${remainingTime}`, canvas.width / 2, canvas.height / 2 + 30);
-        ctx.restore();
+        drawCountdownScreen();
     }
+}
+
+function drawCountdownScreen() {
+    ctx.save();
+    const remainingTime = Math.ceil((gracePeriod - (Date.now() - gameStartTime)) / 1000);
+    // Draw semi-transparent white background
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';  // White with 70% opacity
+    ctx.fillRect(canvas.width / 2 - 200, canvas.height / 2 - 60, 400, 120);  // Adjust size as needed
+
+    ctx.font = '30px Arial';
+    ctx.fillStyle = 'black';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText(`Get ready to catch sheep!`, canvas.width / 2, canvas.height / 2 - 30);
+    ctx.fillText(`Starting in: ${remainingTime}`, canvas.width / 2, canvas.height / 2 + 30);
     ctx.restore();
 }
+
 
 
 function gameLoop(currentTime) {
@@ -1109,13 +1131,19 @@ function drawSheepCounter() {
 let loadedImages = 0;
 const totalImages = walkSprites.length + 3; // Include bg, jumpSprite, and platformsImg
 
-function imageLoaded(e) {
+function imageLoaded() {
     loadedImages++;
-    console.log(`Image loaded: ${e.target.src}`);
     if (loadedImages === totalImages) {
-      
+        initializeGame();
+        resizeCanvas(); // Call resizeCanvas after all images are loaded
     }
 }
+
+bg.onload = imageLoaded;
+jumpSprite.onload = imageLoaded;
+platformsImg.onload = imageLoaded;
+walkSprites.forEach(sprite => sprite.onload = imageLoaded);
+
 
 function imageError(e) {
     console.error(`Error loading image: ${e.target.src}`);
@@ -1265,7 +1293,6 @@ function initializeGame() {
     gravity = BASE_GRAVITY * (characterScale / INITIAL_SCALE);
 
     setupMobileControls(jump);
-    resizeCanvas();
     drawHUD();
 
     extractPlatformsFromImage(platformsImg);
@@ -1280,5 +1307,13 @@ function initializeGame() {
         cancelAnimationFrame(gameLoopId);
     }
     gameLoopId = requestAnimationFrame(gameLoop);
+
+    // Call updateControlLayout after the controls are created
+    updateControlLayout();
+
+    // Ensure the canvas is correctly sized on initial load
+    resizeCanvas();
 }
+
+
 
