@@ -3,9 +3,9 @@
 //     event.preventDefault();
 // }, { passive: false });
 
-// document.addEventListener('touchmove', function(event) {
-//     event.preventDefault();
-// }, { passive: false });
+document.addEventListener('touchmove', function(event) {
+    event.preventDefault();
+}, { passive: false });
 
 // document.addEventListener('touchend', function(event) {
 //     event.preventDefault();
@@ -1275,45 +1275,59 @@ function restartGame() {
     gameLoopId = requestAnimationFrame(gameLoop);
 }
 
-function initializeGame() {
+let gameStarted = false;
+
+function setupGame() {
     initialWindowWidth = window.innerWidth;
     initialWindowHeight = window.innerHeight - (isMobile() && isLandscape() ? window.innerHeight * 0.30 : MOBILE_CONTROLS_HEIGHT);
-
     canvas.width = initialWindowWidth;
     canvas.height = initialWindowHeight;
-
     bgScale = canvas.height / bg.height;
     characterScale = INITIAL_SCALE * (canvas.height / bg.height);
-
     characterX = (initialWindowWidth * CHARACTER_INITIAL_X_PERCENT) - ((characterWidth * characterScale) / 2);
     characterY = 0; // Start high above the canvas
-
     speed = BASE_SPEED * (characterScale / INITIAL_SCALE);
     jumpSpeed = BASE_JUMP_SPEED * (characterScale / INITIAL_SCALE);
     gravity = BASE_GRAVITY * (characterScale / INITIAL_SCALE);
-
     setupMobileControls(jump);
     drawHUD();
-
     extractPlatformsFromImage(platformsImg);
-
-    initializeSheep();
-    initializeObstacles(); // Call this function to initialize obstacles
-
-    gameStartTime = Date.now();
-    isInvulnerable = true;
-
-    if (gameLoopId) {
-        cancelAnimationFrame(gameLoopId);
+    
+    // Get the start button and add event listener
+    const startButton = document.getElementById('startButton');
+    if (startButton) {
+        startButton.addEventListener('click', startGame);
     }
-    gameLoopId = requestAnimationFrame(gameLoop);
-
+    
     // Call updateControlLayout after the controls are created
     updateControlLayout();
-
     // Ensure the canvas is correctly sized on initial load
     resizeCanvas();
 }
 
+function startGame() {
+    if (gameStarted) return;
+    
+    gameStarted = true;
+    
+    // Hide the start content
+    const startContent = document.querySelector('.start-content');
+    if (startContent) {
+        startContent.style.display = 'none';
+    }
+    
+    initializeSheep();
+    initializeObstacles();
+    
+    gameStartTime = Date.now();
+    isInvulnerable = true;
+    
+    if (gameLoopId) {
+        cancelAnimationFrame(gameLoopId);
+    }
+    gameLoopId = requestAnimationFrame(gameLoop);
+}
 
+// Make sure to call this function when the page loads
+window.addEventListener('load', setupGame);
 
