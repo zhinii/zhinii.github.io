@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     startButton.addEventListener('click', () => {
         startScreen.style.display = 'none';
-        initializeGame();
+      
     });
 
     // Ensure resizeCanvas is called after the DOM is fully loaded
@@ -482,6 +482,7 @@ function setupMobileControls(jumpCallback) {
     }
 
     leftBtn.addEventListener('touchstart', (event) => {
+       event.preventDefault(); 
         handleTouchEvent(event, () => {
             leftPressed = true;
             setButtonColor(leftBtn, true);
@@ -497,6 +498,7 @@ function setupMobileControls(jumpCallback) {
     });
 
     rightBtn.addEventListener('touchstart', (event) => {
+        event.preventDefault(); 
         handleTouchEvent(event, () => {
             rightPressed = true;
             setButtonColor(rightBtn, true);
@@ -512,6 +514,7 @@ function setupMobileControls(jumpCallback) {
     });
 
     jumpBtn.addEventListener('touchstart', (event) => {
+        event.preventDefault(); 
         handleTouchEvent(event, () => {
             jumpCallback();
             setButtonColor(jumpBtn, true);
@@ -568,13 +571,37 @@ function setupMobileControls(jumpCallback) {
         #mobileControls button:active {
             background-color: rgba(0, 255, 0, 0.5) !important;
         }
+        * {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        -webkit-tap-highlight-color: rgba(0,0,0,0);
+    }
+    body, #gameCanvas {
+        touch-action: manipulation;
+    }
     `;
     document.head.appendChild(style);
 
     updateControlLayout();
 }
 
+document.getElementById('gameCanvas').addEventListener('touchstart', function(e) {
+    if (e.touches.length > 1) {
+        e.preventDefault();
+    }
+}, { passive: false });
 
+document.addEventListener('gesturestart', function(e) {
+    e.preventDefault();
+}, { passive: false });
+
+document.addEventListener('gesturechange', function(e) {
+    e.preventDefault();
+}, { passive: false });
 
 
 function updateControlLayout() {
@@ -1134,7 +1161,7 @@ const totalImages = walkSprites.length + 3; // Include bg, jumpSprite, and platf
 function imageLoaded() {
     loadedImages++;
     if (loadedImages === totalImages) {
-        initializeGame();
+       
         resizeCanvas(); // Call resizeCanvas after all images are loaded
     }
 }
