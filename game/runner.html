@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equation Runner</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+        #gameCanvas {
+            border: 2px solid #333;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas" width="800" height="400"></canvas>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        let score = 0;
+        let equation = { left: '2x', right: '10' };
+        let options = [3, 5, 7];
+        let feedback = '';
+        let playerY = 300;
+        let isJumping = false;
+        let jumpHeight = 0;
+
+        function generateEquation() {
+            const x = Math.floor(Math.random() * 10) + 1;
+            const coefficient = Math.floor(Math.random() * 5) + 1;
+            const right = coefficient * x;
+            equation = { left: `${coefficient}x`, right: right.toString() };
+            options = [x - 1, x, x + 1].sort(() => Math.random() - 0.5);
+        }
+
+        function drawGame() {
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Draw sky
+            ctx.fillStyle = '#87CEEB';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw ground
+            ctx.fillStyle = '#8B4513';
+            ctx.fillRect(0, 350, canvas.width, 50);
+
+            // Draw player
+            ctx.fillStyle = '#FF0000';
+            ctx.fillRect(50, playerY - jumpHeight, 40, 40);
+
+            // Draw equation
+            ctx.fillStyle = '#000000';
+            ctx.font = '24px Arial';
+            ctx.fillText(`${equation.left} = ${equation.right}`, 20, 30);
+
+            // Draw score
+            ctx.fillText(`Score: ${score}`, canvas.width - 120, 30);
+
+            // Draw options
+            options.forEach((option, index) => {
+                ctx.fillStyle = '#4CAF50';
+                ctx.fillRect(250 + index * 200, 300, 100, 40);
+                ctx.fillStyle = '#FFFFFF';
+                ctx.fillText(`x = ${option}`, 270 + index * 200, 325);
+            });
+
+            // Draw feedback
+            ctx.fillStyle = '#000000';
+            ctx.fillText(feedback, 20, 380);
+        }
+
+        function jump() {
+            if (!isJumping) {
+                isJumping = true;
+                let jumpCounter = 0;
+                const jumpInterval = setInterval(() => {
+                    jumpCounter++;
+                    jumpHeight = Math.sin((jumpCounter / 20) * Math.PI) * 100;
+                    if (jumpCounter > 20) {
+                        clearInterval(jumpInterval);
+                        isJumping = false;
+                        jumpHeight = 0;
+                    }
+                }, 20);
+            }
+        }
+
+        function handleClick(event) {
+            const rect = canvas.getBoundingClientRect();
+            const x = event.clientX - rect.left;
+            const y = event.clientY - rect.top;
+
+            options.forEach((option, index) => {
+                if (x > 250 + index * 200 && x < 350 + index * 200 && y > 300 && y < 340) {
+                    const correctValue = parseInt(equation.right) / parseInt(equation.left[0]);
+                    if (option === correctValue) {
+                        feedback = 'Correct!';
+                        score += 10;
+                        setTimeout(generateEquation, 1000);
+                    } else {
+                        feedback = 'Try again!';
+                    }
+                    jump();
+                }
+            });
+        }
+
+        canvas.addEventListener('click', handleClick);
+
+        function gameLoop() {
+            drawGame();
+            requestAnimationFrame(gameLoop);
+        }
+
+        generateEquation();
+        gameLoop();
+    </script>
+</body>
+</html>
