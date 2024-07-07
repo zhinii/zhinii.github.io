@@ -3,24 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Equation Runner</title>
+    <title>Responsive Equation Runner</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+        body, html {
             margin: 0;
-            background-color: #f0f0f0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
         }
         #gameCanvas {
-            border: 2px solid #333;
+            display: block;
         }
     </style>
 </head>
 <body>
-    <canvas id="gameCanvas" width="800" height="400"></canvas>
+    <canvas id="gameCanvas"></canvas>
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
@@ -29,9 +27,22 @@
         let equation = { left: '2x', right: '10' };
         let options = [3, 5, 7];
         let feedback = '';
-        let playerY = 300;
+        let playerY = 0.75; // Percentage of canvas height
         let isJumping = false;
         let jumpHeight = 0;
+
+        // Responsive design variables
+        let canvasWidth, canvasHeight;
+        let scale;
+
+        function resizeCanvas() {
+            canvasWidth = window.innerWidth;
+            canvasHeight = window.innerHeight;
+            canvas.width = canvasWidth;
+            canvas.height = canvasHeight;
+            scale = Math.min(canvasWidth / 800, canvasHeight / 400);
+            playerY = canvasHeight * 0.75;
+        }
 
         function generateEquation() {
             const x = Math.floor(Math.random() * 10) + 1;
@@ -43,39 +54,39 @@
 
         function drawGame() {
             // Clear canvas
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.clearRect(0, 0, canvasWidth, canvasHeight);
 
             // Draw sky
             ctx.fillStyle = '#87CEEB';
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
             // Draw ground
             ctx.fillStyle = '#8B4513';
-            ctx.fillRect(0, 350, canvas.width, 50);
+            ctx.fillRect(0, canvasHeight * 0.875, canvasWidth, canvasHeight * 0.125);
 
             // Draw player
             ctx.fillStyle = '#FF0000';
-            ctx.fillRect(50, playerY - jumpHeight, 40, 40);
+            ctx.fillRect(canvasWidth * 0.0625, playerY - jumpHeight - canvasHeight * 0.1, canvasWidth * 0.05, canvasHeight * 0.1);
 
             // Draw equation
             ctx.fillStyle = '#000000';
-            ctx.font = '24px Arial';
-            ctx.fillText(`${equation.left} = ${equation.right}`, 20, 30);
+            ctx.font = `${24 * scale}px Arial`;
+            ctx.fillText(`${equation.left} = ${equation.right}`, canvasWidth * 0.025, canvasHeight * 0.075);
 
             // Draw score
-            ctx.fillText(`Score: ${score}`, canvas.width - 120, 30);
+            ctx.fillText(`Score: ${score}`, canvasWidth * 0.85, canvasHeight * 0.075);
 
             // Draw options
             options.forEach((option, index) => {
                 ctx.fillStyle = '#4CAF50';
-                ctx.fillRect(250 + index * 200, 300, 100, 40);
+                ctx.fillRect(canvasWidth * (0.3125 + index * 0.25), canvasHeight * 0.75, canvasWidth * 0.125, canvasHeight * 0.1);
                 ctx.fillStyle = '#FFFFFF';
-                ctx.fillText(`x = ${option}`, 270 + index * 200, 325);
+                ctx.fillText(`x = ${option}`, canvasWidth * (0.3375 + index * 0.25), canvasHeight * 0.8125);
             });
 
             // Draw feedback
             ctx.fillStyle = '#000000';
-            ctx.fillText(feedback, 20, 380);
+            ctx.fillText(feedback, canvasWidth * 0.025, canvasHeight * 0.95);
         }
 
         function jump() {
@@ -84,7 +95,7 @@
                 let jumpCounter = 0;
                 const jumpInterval = setInterval(() => {
                     jumpCounter++;
-                    jumpHeight = Math.sin((jumpCounter / 20) * Math.PI) * 100;
+                    jumpHeight = Math.sin((jumpCounter / 20) * Math.PI) * canvasHeight * 0.25;
                     if (jumpCounter > 20) {
                         clearInterval(jumpInterval);
                         isJumping = false;
@@ -100,7 +111,10 @@
             const y = event.clientY - rect.top;
 
             options.forEach((option, index) => {
-                if (x > 250 + index * 200 && x < 350 + index * 200 && y > 300 && y < 340) {
+                if (x > canvasWidth * (0.3125 + index * 0.25) && 
+                    x < canvasWidth * (0.4375 + index * 0.25) && 
+                    y > canvasHeight * 0.75 && 
+                    y < canvasHeight * 0.85) {
                     const correctValue = parseInt(equation.right) / parseInt(equation.left[0]);
                     if (option === correctValue) {
                         feedback = 'Correct!';
@@ -121,6 +135,8 @@
             requestAnimationFrame(gameLoop);
         }
 
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
         generateEquation();
         gameLoop();
     </script>
