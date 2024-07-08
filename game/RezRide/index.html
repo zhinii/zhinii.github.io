@@ -43,14 +43,23 @@
 
         const backgroundImg = new Image();
         backgroundImg.src = 'pictures/background.jpg';
-
+        const terrainControlPoints = [];
         const truckScale = 2;
         const cogOffsetFactor = 0.1;
         let spriteIndex = 0;
         const spriteChangeInterval = 10; // Change sprite every 10 frames
         let frameCounter = 0;
-        let score = 0;
-        let lives = 5;
+
+        let distanceTraveled = 0;
+const difficultyIncreaseInterval = 10000; // Increase difficulty every 1000 pixels
+let maxLivesTime = 0;
+const difficultyIncreaseMaxLivesTime = 10000; // Increase difficulty if max lives maintained for 20 seconds
+        // Change this line
+const maxLives = 5;
+let lives = maxLives;
+let difficultyFactor = 1;
+  let difficultyLevel = 1;
+  let terrainRoughness = 1;
 
         const truck = {
             x: 100,
@@ -61,13 +70,16 @@
             get height() { return this.baseHeight * truckScale; },
             verticalSpeed: 0,
             horizontalSpeed: 4,
-            minSpeed: 2,
-            maxSpeed: 8,
+            minSpeed: 3,
+            maxSpeed: 10,
             acceleration: 0.1,
             rotation: 0,
             rotationalVelocity: 0,
             rotationalAcceleration: 0,
             isJumping: false,
+              jumpForce: 10,         // Initial upward force when jumping
+    maxJumpHeight: 150,    // Maximum jump height (adjust as needed)
+    minJumpHeight: 80,     // Minimum jump height (adjust as needed)
             get centerOfGravityOffset() { return this.width * cogOffsetFactor; }
         };
 
@@ -76,10 +88,11 @@
         const terrainPoints = [];
         const terrainSegmentWidth = 100;
         const offscreenOffset = canvas.width;
+        const objectSpawnHeightAdjustment = 5; // Adjust this value as needed
         let terrainOffset = 0;
 
-        const objects = [];
-        const objectSize = truck.width / 4;
+        let objects = [];
+        const objectSize = truck.width / 5;
 
         let nextObjectTime = getRandomObjectTime();
 
@@ -87,78 +100,151 @@
             return Math.random() * (8000 - 3000) + 3000; // Random time between 3 and 8 seconds
         }
 
-        function generateSmoothTerrain(startX, endX) {
-            const points = [];
-            const segmentCount = Math.ceil((endX - startX) / terrainSegmentWidth);
-            let lastY = canvas.height * 0.7;
-            for (let i = 0; i <= segmentCount; i++) {
-                const x = startX + i * terrainSegmentWidth;
-                const normalizedX = x * 0.001;
-                const maxY = canvas.height * 0.6;
-                const minY = canvas.height;
-                let y = Math.max(maxY, Math.min(minY, Math.sin(normalizedX) * 100 + Math.sin(normalizedX * 3) * 50 + Math.cos(normalizedX * 5) * 25 + canvas.height * 0.7));
-                
-                // Ensure the ground plane is never flat for more than 50% of the canvas width
-                if (Math.abs(y - lastY) < 10) {
-                    if (Math.random() > 0.5) {
-                        y = Math.max(maxY, y - Math.random() * 50);
-                    } else {
-                        y = Math.min(minY, y + Math.random() * 50);
-                    }
-                }
-                lastY = y;
+        function drawLifeBar() {
+    const barWidth = 200;
+    const barHeight = 20;
+    const x = 10;
+    const y = 10;
 
-                points.push({ x, y });
+    // Draw background
+    ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+    ctx.fillRect(x, y, barWidth, barHeight);
+
+    // Draw life
+    const lifeWidth = (lives / maxLives) * barWidth;
+    ctx.fillStyle = 'rgba(0, 255, 0, 0.7)';
+    ctx.fillRect(x, y, lifeWidth, barHeight);
+
+    // Draw border
+    ctx.strokeStyle = 'white';
+    ctx.strokeRect(x, y, barWidth, barHeight);
+}
+
+      function generateSmoothTerrain(startX, endX) {
+    const points = [];
+    const segmentCount = Math.ceil((endX - startX) / terrainSegmentWidth);
+    let lastY = canvas.height * 0.7;
+
+    for (let i = 0; i <= segmentCount; i++) {
+        const x = startX + i * terrainSegmentWidth;
+        const normalizedX = x * 0.001;
+        const maxY = canvas.height * 0.6;
+        const minY = canvas.height;
+        let y = Math.max(maxY, Math.min(minY, 
+            Math.sin(normalizedX) * 100 * terrainRoughness + 
+            Math.sin(normalizedX * 3) * 50 * terrainRoughness + 
+            Math.cos(normalizedX * 5) * 25 * terrainRoughness + 
+            canvas.height * 0.7));
+        
+        // Ensure the ground plane is never flat for more than 50% of the canvas width
+        if (Math.abs(y - lastY) < 10 * terrainRoughness) {
+            if (Math.random() > 0.5) {
+                y = Math.max(maxY, y - Math.random() * 50 * terrainRoughness);
+            } else {
+                y = Math.min(minY, y + Math.random() * 50 * terrainRoughness);
             }
-            return points;
         }
+        lastY = y;
+
+        points.push({ x, y });
+    }
+
+    // Generate control points for cubic Bezier curves
+    const controlPoints = [];
+    for (let i = 0; i < points.length - 1; i++) {
+        const p1 = points[i];
+        const p2 = points[i + 1];
+        const midX = (p1.x + p2.x) / 2;
+        const midY = (p1.y + p2.y) / 2;
+        controlPoints.push([
+            { x: p1.x + (midX - p1.x) / 3, y: p1.y + (midY - p1.y) / 3 },
+            { x: p2.x - (p2.x - midX) / 3, y: p2.y - (p2.y - midY) / 3 }
+        ]);
+    }
+
+    return { points, controlPoints };
+}
 
         function generateInitialTerrain() {
-            terrainPoints.push(...generateSmoothTerrain(0, canvas.width + offscreenOffset));
-        }
+    const { points, controlPoints } = generateSmoothTerrain(0, canvas.width + offscreenOffset);
+    terrainPoints.push(...points);
+    terrainControlPoints.push(...controlPoints);
+}
 
-        function updateTerrain() {
-            terrainOffset += truck.horizontalSpeed;
-            while (terrainPoints.length > 0 && terrainPoints[0].x < terrainOffset - terrainSegmentWidth) {
-                terrainPoints.shift();
-            }
-            while (terrainPoints[terrainPoints.length - 1].x < terrainOffset + canvas.width + offscreenOffset) {
-                const lastPoint = terrainPoints[terrainPoints.length - 1];
-                const newX = lastPoint.x + terrainSegmentWidth;
-                const newY = generateTerrainY(newX);
-                terrainPoints.push({ x: newX, y: newY });
-            }
-        }
+    function updateTerrain() {
+    terrainOffset += truck.horizontalSpeed;
+    while (terrainPoints.length > 0 && terrainPoints[0].x < terrainOffset - terrainSegmentWidth) {
+        terrainPoints.shift();
+        terrainControlPoints.shift();
+    }
+    while (terrainPoints[terrainPoints.length - 1].x < terrainOffset + canvas.width + offscreenOffset) {
+        const lastPoint = terrainPoints[terrainPoints.length - 1];
+        const newX = lastPoint.x + terrainSegmentWidth;
+        const newY = generateTerrainY(newX);
+        terrainPoints.push({ x: newX, y: newY });
+        
+        const midX = (lastPoint.x + newX) / 2;
+        const midY = (lastPoint.y + newY) / 2;
+        terrainControlPoints.push([
+            { x: lastPoint.x + (midX - lastPoint.x) / 3, y: lastPoint.y + (midY - lastPoint.y) / 3 },
+            { x: newX - (newX - midX) / 3, y: newY - (newY - midY) / 3 }
+        ]);
+    }
+}
 
         function generateTerrainY(x) {
-            const normalizedX = x * 0.001;
-            const maxY = canvas.height * 0.6;
-            const minY = canvas.height;
-            let y = Math.max(maxY, Math.min(minY, Math.sin(normalizedX) * 100 + Math.sin(normalizedX * 3) * 50 + Math.cos(normalizedX * 5) * 25 + canvas.height * 0.7));
-            const lastY = terrainPoints.length > 0 ? terrainPoints[terrainPoints.length - 1].y : canvas.height * 0.7;
+    const normalizedX = x * 0.001;
+    const maxY = canvas.height * 0.6;
+    const minY = canvas.height;
+    let y = Math.max(maxY, Math.min(minY, 
+        Math.sin(normalizedX) * 100 * terrainRoughness + 
+        Math.sin(normalizedX * 3) * 50 * terrainRoughness + 
+        Math.cos(normalizedX * 5) * 25 * terrainRoughness + 
+        canvas.height * 0.7));
+    const lastY = terrainPoints.length > 0 ? terrainPoints[terrainPoints.length - 1].y : canvas.height * 0.7;
 
-            // Ensure the ground plane is never flat for more than 50% of the canvas width
-            if (Math.abs(y - lastY) < 10) {
-                if (Math.random() > 0.5) {
-                    y = Math.max(maxY, y - Math.random() * 50);
-                } else {
-                    y = Math.min(minY, y + Math.random() * 50);
-                }
-            }
-
-            return y;
+    // Ensure the ground plane is never flat for more than 50% of the canvas width
+    if (Math.abs(y - lastY) < 10 * terrainRoughness) {
+        if (Math.random() > 0.5) {
+            y = Math.max(maxY, y - Math.random() * 50 * terrainRoughness);
+        } else {
+            y = Math.min(minY, y + Math.random() * 50 * terrainRoughness);
         }
+    }
 
-        function getTerrainYAtX(x) {
+    return y;
+}
+
+        function increaseDifficulty() {
+    difficultyFactor += 0.01;
+}
+
+      function getTerrainSegmentAtX(x) {
             const adjustedX = x + terrainOffset;
             const index = terrainPoints.findIndex(point => point.x > adjustedX);
-            if (index === -1) return terrainPoints[terrainPoints.length - 1].y;
-            if (index === 0) return terrainPoints[0].y;
-            const point1 = terrainPoints[index - 1];
-            const point2 = terrainPoints[index];
-            const t = (adjustedX - point1.x) / (point2.x - point1.x);
-            return point1.y * (1 - t) + point2.y * t;
+            if (index === -1) return [terrainPoints[terrainPoints.length - 2], terrainPoints[terrainPoints.length - 1]];
+            if (index === 0) return [terrainPoints[0], terrainPoints[1]];
+            return [terrainPoints[index - 1], terrainPoints[index]];
         }
+
+       function getTerrainYAtX(x) {
+    const adjustedX = x + terrainOffset;
+    const index = terrainPoints.findIndex(point => point.x > adjustedX);
+    if (index === -1) return terrainPoints[terrainPoints.length - 1].y;
+    if (index === 0) return terrainPoints[0].y;
+
+    const p1 = terrainPoints[index - 1];
+    const p2 = terrainPoints[index];
+    const [cp1, cp2] = terrainControlPoints[index - 1];
+
+    const t = (adjustedX - p1.x) / (p2.x - p1.x);
+
+    // Cubic Bezier curve formula
+    return Math.pow(1-t, 3) * p1.y +
+           3 * Math.pow(1-t, 2) * t * cp1.y +
+           3 * (1-t) * Math.pow(t, 2) * cp2.y +
+           Math.pow(t, 3) * p2.y;
+}
 
         function getTerrainAngleAtX(x) {
             const x1 = x - truck.width / 2;
@@ -169,11 +255,15 @@
         }
 
         function generateRandomObject() {
-            const x = terrainOffset + canvas.width;
-            const terrainY = getTerrainYAtX(x);
+            const spawnX = canvas.width + objectSize; // Spawn just off-screen to the right
+            const terrainY = getTerrainYAtX(spawnX);
             const type = Math.random() > 0.5 ? 'circle' : 'square';
             const color = type === 'circle' ? 'blue' : 'red';
-            objects.push({ x, y: terrainY - objectSize / 2 - truck.height / 2, type, color });
+            
+            // Place the object on top of the terrain with a small offset
+    const y = terrainY - objectSize + objectSpawnHeightAdjustment; 
+            
+            objects.push({ x: spawnX + terrainOffset, y, type, color });
         }
 
         function initializeGame() {
@@ -182,44 +272,82 @@
             setTimeout(generateRandomObject, nextObjectTime);
         }
 
-        function updateGame() {
-            if (gameOver) return;
+      
 
-            updateTerrain();
+function increaseDifficulty() {
+    difficultyLevel++;
+    
+    // Increase truck speed
+    truck.maxSpeed += 0.5;
+    truck.horizontalSpeed = Math.min(truck.horizontalSpeed + 0.25, truck.maxSpeed);
 
-            const gravity = 0.5;
-            const terrainY = getTerrainYAtX(truck.x);
-            const terrainAngle = getTerrainAngleAtX(truck.x);
+    // Make terrain more challenging (if you have a way to control terrain difficulty)
+    // For example, if you have a amplitude variable for terrain:
+    // terrainAmplitude *= 1.1;
 
-            // Adjust speed based on terrain angle
-            const speedChange = terrainAngle * truck.acceleration;
-            truck.horizontalSpeed += speedChange;
+    // Increase obstacle spawn rate
+    nextObjectTime *= 0.9; // Reduce time between obstacle spawns by 10%
 
-            // Clamp speed between min and max
-            truck.horizontalSpeed = Math.max(Math.min(truck.horizontalSpeed, truck.maxSpeed), truck.minSpeed);
+    console.log("Difficulty increased to level " + difficultyLevel);
+}
 
-            truck.verticalSpeed += gravity;
-            truck.y += truck.verticalSpeed;
+       function updateGame() {
+    if (gameOver) return;
 
-            // Ground collision
-            if (truck.y + truck.height / 2 >= terrainY) {
-                truck.y = terrainY - truck.height / 2;
-                truck.isJumping = false;
-                truck.verticalSpeed = 0; // Reset vertical speed on ground
+    updateTerrain();
 
-                // Update truck rotation to match terrain angle
-                truck.rotation = terrainAngle;
-            }
+    const generalGravity = 0.1;  // Your current low gravity value
+    const jumpGravity = 0.5;     // Higher gravity for jumping
 
-            // Update the sprite index for animation
-            frameCounter++;
-            if (frameCounter >= spriteChangeInterval) {
-                spriteIndex = (spriteIndex + 1) % truckSprites.length;
-                frameCounter = 0;
-            }
+    const terrainY = getTerrainYAtX(truck.x);
+    const terrainAngle = getTerrainAngleAtX(truck.x);
 
-            // Check for collisions
-            checkCollisions();
+    // Adjust speed based on terrain angle
+    const speedChange = terrainAngle * truck.acceleration;
+    truck.horizontalSpeed += speedChange;
+
+    // Clamp speed between min and max
+    truck.horizontalSpeed = Math.max(Math.min(truck.horizontalSpeed, truck.maxSpeed), truck.minSpeed);
+
+    // Apply gravity
+    if (truck.isJumping) {
+        truck.verticalSpeed += jumpGravity;
+    } else {
+        truck.verticalSpeed += generalGravity;
+    }
+
+    truck.y += truck.verticalSpeed;
+
+    distanceTraveled += truck.horizontalSpeed;
+    if (distanceTraveled >= difficultyIncreaseInterval) {
+        increaseDifficulty();
+        distanceTraveled = 0; // Reset the counter
+    }
+
+    // Ground collision
+    if (truck.y + truck.height / 2 >= terrainY) {
+        truck.y = terrainY - truck.height / 2;
+        truck.isJumping = false;
+        truck.verticalSpeed = 0; // Reset vertical speed on ground
+
+        // Update truck rotation to match terrain angle
+        truck.rotation = terrainAngle;
+    }
+
+    // Update the sprite index for animation
+    frameCounter++;
+    if (frameCounter >= spriteChangeInterval) {
+        spriteIndex = (spriteIndex + 1) % truckSprites.length;
+        frameCounter = 0;
+    }
+
+    // Remove objects that have scrolled off the screen
+    objects = objects.filter(obj => obj.x > terrainOffset - objectSize);
+
+    // Check for collisions
+    checkCollisions();
+
+
 
             // Remove objects that have scrolled off the screen
             while (objects.length > 0 && objects[0].x < terrainOffset - objectSize) {
@@ -227,31 +355,31 @@
             }
         }
 
-        function checkCollisions() {
-            for (const obj of objects) {
-                const objX = obj.x - terrainOffset;
-                const objY = obj.y;
-                const truckX = truck.x;
-                const truckY = truck.y;
+       function checkCollisions() {
+    for (const obj of objects) {
+        const objX = obj.x - terrainOffset;
+        const objY = obj.y;
+        const truckX = truck.x;
+        const truckY = truck.y;
 
-                if (objX < truckX + truck.width / 2 &&
-                    objX + objectSize > truckX - truck.width / 2 &&
-                    objY < truckY + truck.height / 2 &&
-                    objY + objectSize > truckY - truck.height / 2) {
+        if (objX < truckX + truck.width / 2 &&
+            objX + objectSize > truckX - truck.width / 2 &&
+            objY < truckY + truck.height / 2 &&
+            objY + objectSize > truckY - truck.height / 2) {
 
-                    if (obj.color === 'blue') {
-                        score++;
-                        objects.splice(objects.indexOf(obj), 1); // Remove the object
-                    } else if (obj.color === 'red') {
-                        lives--;
-                        objects.splice(objects.indexOf(obj), 1); // Remove the object
-                        if (lives <= 0) {
-                            gameOver = true;
-                        }
-                    }
+            if (obj.color === 'blue') {
+                lives = Math.min(lives + 1, maxLives); // Add life, but don't exceed maxLives
+                objects.splice(objects.indexOf(obj), 1); // Remove the object
+            } else if (obj.color === 'red') {
+                lives--;
+                objects.splice(objects.indexOf(obj), 1); // Remove the object
+                if (lives <= 0) {
+                    gameOver = true;
                 }
             }
         }
+    }
+}
 
         function drawGame() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -260,14 +388,22 @@
             ctx.drawImage(backgroundImg, -backgroundScrollX, 0, backgroundImg.width, canvas.height);
             ctx.drawImage(backgroundImg, -backgroundScrollX + backgroundImg.width, 0, backgroundImg.width, canvas.height);
 
-            ctx.beginPath();
-            ctx.moveTo(0, canvas.height);
-            for (let point of terrainPoints) {
-                ctx.lineTo(point.x - terrainOffset, point.y);
-            }
-            ctx.lineTo(terrainPoints[terrainPoints.length - 1].x - terrainOffset, canvas.height);
-            ctx.fillStyle = 'rgba(0, 255, 0, 0.5)';
-            ctx.fill();
+             ctx.beginPath();
+    ctx.moveTo(terrainPoints[0].x - terrainOffset, terrainPoints[0].y);
+    for (let i = 0; i < terrainPoints.length - 1; i++) {
+        const p1 = terrainPoints[i];
+        const p2 = terrainPoints[i + 1];
+        const [cp1, cp2] = terrainControlPoints[i];
+        ctx.bezierCurveTo(
+            cp1.x - terrainOffset, cp1.y,
+            cp2.x - terrainOffset, cp2.y,
+            p2.x - terrainOffset, p2.y
+        );
+    }
+    ctx.lineTo(canvas.width, canvas.height);
+    ctx.lineTo(0, canvas.height);
+    ctx.fillStyle = 'rgba(0, 255, 0, 0.5)';
+    ctx.fill();
 
             // Draw objects
             for (const obj of objects) {
@@ -276,10 +412,10 @@
                 ctx.fillStyle = obj.color;
                 if (obj.type === 'circle') {
                     ctx.beginPath();
-                    ctx.arc(0, 0, objectSize / 2, 0, Math.PI * 2);
+                    ctx.arc(objectSize / 2, objectSize / 2, objectSize / 2, 0, Math.PI * 2);
                     ctx.fill();
                 } else if (obj.type === 'square') {
-                    ctx.fillRect(-objectSize / 2, -objectSize / 2, objectSize, objectSize);
+                    ctx.fillRect(0, 0, objectSize, objectSize);
                 }
                 ctx.restore();
             }
@@ -293,8 +429,8 @@
             ctx.fillStyle = 'white';
             ctx.font = '16px Arial';
             ctx.fillText(`Speed: ${truck.horizontalSpeed.toFixed(2)}`, 10, 70);
-            ctx.fillText(`Score: ${score}`, 10, 50);
-            ctx.fillText(`Lives: ${lives}`, 10, 30);
+             // Replace the score and lives text with the life bar
+    drawLifeBar();
 
             if (gameOver) {
                 ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
@@ -307,29 +443,34 @@
         }
 
         function gameLoop() {
-            updateGame();
-            drawGame();
-            requestAnimationFrame(gameLoop);
-            if (!gameOver) {
-                nextObjectTime -= 16.67; // Approximate time for one frame at 60 FPS
-                if (nextObjectTime <= 0) {
-                    generateRandomObject();
-                    nextObjectTime = getRandomObjectTime();
-                }
-            }
+    updateGame();
+    drawGame();
+    requestAnimationFrame(gameLoop);
+    if (!gameOver) {
+        nextObjectTime -= 16.67; // Approximate time for one frame at 60 FPS
+        if (nextObjectTime <= 0) {
+            generateRandomObject();
+            nextObjectTime = getRandomObjectTime();
         }
+    }
+}
 
-        function handleJump(e) {
-            e.preventDefault();
-            if (!truck.isJumping && !gameOver) {
-                truck.isJumping = true;
-                const minJumpHeight = truck.height;
-                const maxJumpHeight = truck.height * 4;
-                const speedFactor = (truck.horizontalSpeed - truck.minSpeed) / (truck.maxSpeed - truck.minSpeed);
-                const jumpHeight = minJumpHeight + speedFactor * (maxJumpHeight - minJumpHeight);
-                truck.verticalSpeed = -Math.sqrt(2 * 0.5 * jumpHeight);
-            }
-        }
+      function handleJump(e) {
+    e.preventDefault();
+    if (!truck.isJumping && !gameOver) {
+        truck.isJumping = true;
+        
+        // Calculate jump velocity based on current speed
+        const speedFactor = (truck.horizontalSpeed - truck.minSpeed) / (truck.maxSpeed - truck.minSpeed);
+        const jumpHeight = truck.minJumpHeight + speedFactor * (truck.maxJumpHeight - truck.minJumpHeight);
+        
+        // Use a higher gravity value for the jump calculation
+        const jumpGravity = 0.5; // This is higher than the general gravity
+        
+        // Calculate initial vertical speed for the desired jump height
+        truck.verticalSpeed = -Math.sqrt(2 * jumpGravity * jumpHeight);
+    }
+}
 
         canvas.addEventListener('touchstart', handleJump);
         canvas.addEventListener('mousedown', handleJump);
