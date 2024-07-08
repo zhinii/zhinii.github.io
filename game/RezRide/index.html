@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Truck Bouncing Game</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+        #gameCanvas {
+            display: block;
+            touch-action: none;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas"></canvas>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const truckSprites = [];
+        for (let i = 1; i <= 4; i++) {
+            const img = new Image();
+            img.src = `pictures/truck${i}.png`;
+            truckSprites.push(img);
+        }
+
+        const backgroundImg = new Image();
+        backgroundImg.src = 'pictures/background.jpg';
+
+        const truckScale = 2;
+        const cogOffsetFactor = 0.1;
+        let spriteIndex = 0;
+        const spriteChangeInterval = 10; // Change sprite every 10 frames
+        let frameCounter = 0;
+        let score = 0;
+        let lives = 5;
+
+        const truck = {
+            x: 100,
+            y: 0, // We'll set this correctly after terrain generation
+            baseWidth: 60,
+            baseHeight: 30,
+            get width() { return this.baseWidth * truckScale; },
+            get height() { return this.baseHeight * truckScale; },
+            verticalSpeed: 0,
+            horizontalSpeed: 4,
+            minSpeed: 2,
+            maxSpeed: 8,
+            acceleration: 0.1,
+            rotation: 0,
+            rotationalVelocity: 0,
+            rotationalAcceleration: 0,
+            isJumping: false,
+            get centerOfGravityOffset() { return this.width * cogOffsetFactor; }
+        };
+
+        let gameOver = false;
+
+        const terrainPoints = [];
+        const terrainSegmentWidth = 100;
+        const offscreenOffset = canvas.width;
+        let terrainOffset = 0;
+
+        const objects = [];
+        const objectSize = truck.width / 4;
+
+        let nextObjectTime = getRandomObjectTime();
+
+        function getRandomObjectTime() {
+            return Math.random() * (8000 - 3000) + 3000; // Random time between 3 and 8 seconds
+        }
+
+        function generateSmoothTerrain(startX, endX) {
+            const points = [];
+            const segmentCount = Math.ceil((endX - startX) / terrainSegmentWidth);
+            let lastY = canvas.height * 0.7;
+            for (let i = 0; i <= segmentCount; i++) {
+                const x = startX + i * terrainSegmentWidth;
+                const normalizedX = x * 0.001;
+                const maxY = canvas.height * 0.6;
+                const minY = canvas.height;
+                let y = Math.max(maxY, Math.min(minY, Math.sin(normalizedX) * 100 + Math.sin(normalizedX * 3) * 50 + Math.cos(normalizedX * 5) * 25 + canvas.height * 0.7));
+                
+                // Ensure the ground plane is never flat for more than 50% of the canvas width
+                if (Math.abs(y - lastY) < 10) {
+                    if (Math.random() > 0.5) {
+                        y = Math.max(maxY, y - Math.random() * 50);
+                    } else {
+                        y = Math.min(minY, y + Math.random() * 50);
+                    }
+                }
+                lastY = y;
+
+                points.push({ x, y });
+            }
+            return points;
+        }
+
+        function generateInitialTerrain() {
+            terrainPoints.push(...generateSmoothTerrain(0, canvas.width + offscreenOffset));
+        }
+
+        function updateTerrain() {
+            terrainOffset += truck.horizontalSpeed;
+            while (terrainPoints.length > 0 && terrainPoints[0].x < terrainOffset - terrainSegmentWidth) {
+                terrainPoints.shift();
+            }
+            while (terrainPoints[terrainPoints.length - 1].x < terrainOffset + canvas.width + offscreenOffset) {
+                const lastPoint = terrainPoints[terrainPoints.length - 1];
+                const newX = lastPoint.x + terrainSegmentWidth;
+                const newY = generateTerrainY(newX);
+                terrainPoints.push({ x: newX, y: newY });
+            }
+        }
+
+        function generateTerrainY(x) {
+            const normalizedX = x * 0.001;
+            const maxY = canvas.height * 0.6;
+            const minY = canvas.height;
+            let y = Math.max(maxY, Math.min(minY, Math.sin(normalizedX) * 100 + Math.sin(normalizedX * 3) * 50 + Math.cos(normalizedX * 5) * 25 + canvas.height * 0.7));
+            const lastY = terrainPoints.length > 0 ? terrainPoints[terrainPoints.length - 1].y : canvas.height * 0.7;
+
+            // Ensure the ground plane is never flat for more than 50% of the canvas width
+            if (Math.abs(y - lastY) < 10) {
+                if (Math.random() > 0.5) {
+                    y = Math.max(maxY, y - Math.random() * 50);
+                } else {
+                    y = Math.min(minY, y + Math.random() * 50);
+                }
+            }
+
+            return y;
+        }
+
+        function getTerrainYAtX(x) {
+            const adjustedX = x + terrainOffset;
+            const index = terrainPoints.findIndex(point => point.x > adjustedX);
+            if (index === -1) return terrainPoints[terrainPoints.length - 1].y;
+            if (index === 0) return terrainPoints[0].y;
+            const point1 = terrainPoints[index - 1];
+            const point2 = terrainPoints[index];
+            const t = (adjustedX - point1.x) / (point2.x - point1.x);
+            return point1.y * (1 - t) + point2.y * t;
+        }
+
+        function getTerrainAngleAtX(x) {
+            const x1 = x - truck.width / 2;
+            const x2 = x + truck.width / 2;
+            const y1 = getTerrainYAtX(x1);
+            const y2 = getTerrainYAtX(x2);
+            return Math.atan2(y2 - y1, truck.width);
+        }
+
+        function generateRandomObject() {
+            const x = terrainOffset + canvas.width;
+            const terrainY = getTerrainYAtX(x);
+            const type = Math.random() > 0.5 ? 'circle' : 'square';
+            const color = type === 'circle' ? 'blue' : 'red';
+            objects.push({ x, y: terrainY - objectSize / 2, type, color });
+        }
+
+        function initializeGame() {
+            generateInitialTerrain();
+            truck.y = 0; // Start from the top
+            setTimeout(generateRandomObject, nextObjectTime);
+        }
+
+        function updateGame() {
+            if (gameOver) return;
+
+            updateTerrain();
+
+            const gravity = 0.5;
+            const terrainY = getTerrainYAtX(truck.x);
+            const terrainAngle = getTerrainAngleAtX(truck.x);
+
+            // Adjust speed based on terrain angle
+            const speedChange = terrainAngle * truck.acceleration;
+            truck.horizontalSpeed += speedChange;
+
+            // Clamp speed between min and max
+            truck.horizontalSpeed = Math.max(Math.min(truck.horizontalSpeed, truck.maxSpeed), truck.minSpeed);
+
+            truck.verticalSpeed += gravity;
+            truck.y += truck.verticalSpeed;
+
+            // Ground collision
+            if (truck.y + truck.height / 2 >= terrainY) {
+                truck.y = terrainY - truck.height / 2;
+                truck.isJumping = false;
+                truck.verticalSpeed = 0; // Reset vertical speed on ground
+
+                // Update truck rotation to match terrain angle
+                truck.rotation = terrainAngle;
+            }
+
+            // Update the sprite index for animation
+            frameCounter++;
+            if (frameCounter >= spriteChangeInterval) {
+                spriteIndex = (spriteIndex + 1) % truckSprites.length;
+                frameCounter = 0;
+            }
+
+            // Check for collisions
+            checkCollisions();
+
+            // Remove objects that have scrolled off the screen
+            while (objects.length > 0 && objects[0].x < terrainOffset - objectSize) {
+                objects.shift();
+            }
+        }
+
+        function checkCollisions() {
+            for (const obj of objects) {
+                const distX = truck.x - obj.x;
+                const distY = (truck.y + truck.height / 2) - obj.y;
+                const distance = Math.sqrt(distX * distX + distY * distY);
+
+                if (distance < objectSize / 2 + truck.width / 2) {
+                    if (obj.color === 'blue') {
+                        score++;
+                        objects.splice(objects.indexOf(obj), 1); // Remove the object
+                    } else if (obj.color === 'red') {
+                        lives--;
+                        objects.splice(objects.indexOf(obj), 1); // Remove the object
+                        if (lives <= 0) {
+                            gameOver = true;
+                        }
+                    }
+                }
+            }
+        }
+
+        function drawGame() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const backgroundScrollX = (terrainOffset * 0.5) % backgroundImg.width;
+            ctx.drawImage(backgroundImg, -backgroundScrollX, 0, backgroundImg.width, canvas.height);
+            ctx.drawImage(backgroundImg, -backgroundScrollX + backgroundImg.width, 0, backgroundImg.width, canvas.height);
+
+            ctx.beginPath();
+            ctx.moveTo(0, canvas.height);
+            for (let point of terrainPoints) {
+                ctx.lineTo(point.x - terrainOffset, point.y);
+            }
+            ctx.lineTo(terrainPoints[terrainPoints.length - 1].x - terrainOffset, canvas.height);
+            ctx.fillStyle = 'rgba(0, 255, 0, 0.5)';
+            ctx.fill();
+
+            // Draw objects
+            for (const obj of objects) {
+                ctx.save();
+                ctx.translate(obj.x - terrainOffset, obj.y);
+                ctx.fillStyle = obj.color;
+                if (obj.type === 'circle') {
+                    ctx.beginPath();
+                    ctx.arc(0, 0, objectSize / 2, 0, Math.PI * 2);
+                    ctx.fill();
+                } else if (obj.type === 'square') {
+                    ctx.fillRect(-objectSize / 2, -objectSize / 2, objectSize, objectSize);
+                }
+                ctx.restore();
+            }
+
+            ctx.save();
+            ctx.translate(truck.x, truck.y);
+            ctx.rotate(truck.rotation);
+            ctx.drawImage(truckSprites[spriteIndex], -truck.width / 2, -truck.height / 2, truck.width, truck.height);
+            ctx.restore();
+
+            ctx.fillStyle = 'white';
+            ctx.font = '16px Arial';
+            ctx.fillText(`Speed: ${truck.horizontalSpeed.toFixed(2)}`, 10, 70);
+            ctx.fillText(`Score: ${score}`, 10, 50);
+            ctx.fillText(`Lives: ${lives}`, 10, 30);
+
+            if (gameOver) {
+                ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = 'white';
+                ctx.font = '40px Arial';
+                ctx.textAlign = 'center';
+                ctx.fillText('Game Over!', canvas.width / 2, canvas.height / 2);
+            }
+        }
+
+        function gameLoop() {
+            updateGame();
+            drawGame();
+            requestAnimationFrame(gameLoop);
+            if (!gameOver) {
+                nextObjectTime -= 16.67; // Approximate time for one frame at 60 FPS
+                if (nextObjectTime <= 0) {
+                    generateRandomObject();
+                    nextObjectTime = getRandomObjectTime();
+                }
+            }
+        }
+
+        function handleJump(e) {
+            e.preventDefault();
+            if (!truck.isJumping && !gameOver) {
+                truck.isJumping = true;
+                const minJumpHeight = truck.height;
+                const maxJumpHeight = truck.height * 4;
+                const speedFactor = (truck.horizontalSpeed - truck.minSpeed) / (truck.maxSpeed - truck.minSpeed);
+                const jumpHeight = minJumpHeight + speedFactor * (maxJumpHeight - minJumpHeight);
+                truck.verticalSpeed = -Math.sqrt(2 * 0.5 * jumpHeight);
+            }
+        }
+
+        canvas.addEventListener('touchstart', handleJump);
+        canvas.addEventListener('mousedown', handleJump);
+
+        Promise.all([
+            new Promise(resolve => truckSprites[0].onload = resolve),
+            new Promise(resolve => backgroundImg.onload = resolve)
+        ]).then(() => {
+            initializeGame();
+            gameLoop();
+        });
+    });
+    </script>
+</body>
+</html>
