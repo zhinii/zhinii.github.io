@@ -5,18 +5,30 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Truck Bouncing Game</title>
     <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
+    body, html {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+    #gameCanvas {
+        display: block;
+        touch-action: none;
+    }
+    @media screen and (orientation: portrait) {
+        html {
+            transform: rotate(-90deg);
+            transform-origin: left top;
+            width: 100vh;
+            height: 100vw;
+            overflow-x: hidden;
+            position: absolute;
+            top: 100%;
+            left: 0;
         }
-        #gameCanvas {
-            display: block;
-            touch-action: none;
-        }
-    </style>
+    }
+</style>
 </head>
 <body>
     <canvas id="gameCanvas"></canvas>
@@ -296,8 +308,8 @@ function increaseDifficulty() {
 
     updateTerrain();
 
-    const generalGravity = 0.1;  // Your current low gravity value
-    const jumpGravity = 0.5;     // Higher gravity for jumping
+    const generalGravity = 0.05;  // Your current low gravity value
+    const jumpGravity = 0.48;     // Higher gravity for jumping
 
     const terrainY = getTerrainYAtX(truck.x);
     const terrainAngle = getTerrainAngleAtX(truck.x);
@@ -455,25 +467,32 @@ function increaseDifficulty() {
     }
 }
 
-      function handleJump(e) {
-    e.preventDefault();
-    if (!truck.isJumping && !gameOver) {
-        truck.isJumping = true;
-        
-        // Calculate jump velocity based on current speed
-        const speedFactor = (truck.horizontalSpeed - truck.minSpeed) / (truck.maxSpeed - truck.minSpeed);
-        const jumpHeight = truck.minJumpHeight + speedFactor * (truck.maxJumpHeight - truck.minJumpHeight);
-        
-        // Use a higher gravity value for the jump calculation
-        const jumpGravity = 0.5; // This is higher than the general gravity
-        
-        // Calculate initial vertical speed for the desired jump height
-        truck.verticalSpeed = -Math.sqrt(2 * jumpGravity * jumpHeight);
+    function handleJump() {
+        if (!truck.isJumping && !gameOver) {
+            truck.isJumping = true;
+            
+            // Calculate jump velocity based on current speed
+            const speedFactor = (truck.horizontalSpeed - truck.minSpeed) / (truck.maxSpeed - truck.minSpeed);
+            const jumpHeight = truck.minJumpHeight + speedFactor * (truck.maxJumpHeight - truck.minJumpHeight);
+            
+            // Use a higher gravity value for the jump calculation
+            const jumpGravity = 0.5; // This is higher than the general gravity
+            
+            // Calculate initial vertical speed for the desired jump height
+            truck.verticalSpeed = -Math.sqrt(2 * jumpGravity * jumpHeight);
+        }
     }
-}
 
-        canvas.addEventListener('touchstart', handleJump);
-        canvas.addEventListener('mousedown', handleJump);
+        canvas.addEventListener('touchstart', handleTap, { passive: false });
+    canvas.addEventListener('mousedown', handleTap);
+
+    function handleTap(e) {
+        e.preventDefault();
+        if (e.type === 'touchstart' && e.touches.length > 1) {
+            return; // Ignore multi-touch events
+        }
+        handleJump();
+    }
 
         Promise.all([
             new Promise(resolve => truckSprites[0].onload = resolve),
