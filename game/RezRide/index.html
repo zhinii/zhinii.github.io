@@ -173,7 +173,7 @@
             const terrainY = getTerrainYAtX(x);
             const type = Math.random() > 0.5 ? 'circle' : 'square';
             const color = type === 'circle' ? 'blue' : 'red';
-            objects.push({ x, y: terrainY - objectSize / 2, type, color });
+            objects.push({ x, y: terrainY - objectSize / 2 - truck.height / 2, type, color });
         }
 
         function initializeGame() {
@@ -229,11 +229,16 @@
 
         function checkCollisions() {
             for (const obj of objects) {
-                const distX = truck.x - obj.x;
-                const distY = (truck.y + truck.height / 2) - obj.y;
-                const distance = Math.sqrt(distX * distX + distY * distY);
+                const objX = obj.x - terrainOffset;
+                const objY = obj.y;
+                const truckX = truck.x;
+                const truckY = truck.y;
 
-                if (distance < objectSize / 2 + truck.width / 2) {
+                if (objX < truckX + truck.width / 2 &&
+                    objX + objectSize > truckX - truck.width / 2 &&
+                    objY < truckY + truck.height / 2 &&
+                    objY + objectSize > truckY - truck.height / 2) {
+
                     if (obj.color === 'blue') {
                         score++;
                         objects.splice(objects.indexOf(obj), 1); // Remove the object
