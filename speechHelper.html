@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Speech to Text with Unintelligible Detection</title>
+
+  <!-- Mobile-friendly viewport -->
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover">
+
+  <style>
+    :root {
+      --primary: #4caf50;
+      --danger: #f44336;
+      --bg: #f5f5f5;
+      --text: #222;
+      --card-bg: #ffffff;
+      --border: #dddddd;
+      --accent: #1976d2;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      margin: 0;
+      padding: 16px;
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 780px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    header {
+      margin-bottom: 16px;
+    }
+
+    header h1 {
+      font-size: 1.4rem;
+      margin: 0 0 6px 0;
+    }
+
+    header p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    .row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 8px 0 12px 0;
+      flex-wrap: wrap;
+    }
+
+    label {
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    select {
+      padding: 6px 10px;
+      font-size: 0.9rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      min-width: 180px;
+      background: #fafafa;
+    }
+
+    .status {
+      margin: 10px 0;
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    .transcript-label {
+      margin-top: 4px;
+      margin-bottom: 4px;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+
+    .transcript-box {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 10px;
+      min-height: 120px;
+      white-space: pre-wrap;
+      line-height: 1.5;
+      font-size: 1rem;
+      background: #fafafa;
+    }
+
+    .controls {
+      margin-top: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    button {
+      padding: 12px 20px;
+      border-radius: 999px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.95rem;
+      font-weight: 600;
+      min-width: 120px;
+    }
+
+    #startBtn {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    #stopBtn {
+      background: var(--danger);
+      color: #fff;
+    }
+
+    button:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    .note {
+      margin-top: 10px;
+      font-size: 0.8rem;
+      color: #666;
+    }
+
+    .legend {
+      margin-top: 5px;
+      font-size: 0.8rem;
+    }
+
+    .unintelligible {
+      color: #d32f2f;
+      font-weight: 700;
+    }
+
+    ul {
+      padding-left: 1.1rem;
+      margin-top: 4px;
+      margin-bottom: 0;
+      font-size: 0.85rem;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 8px;
+      }
+
+      .container {
+        padding: 16px;
+        border-radius: 0;
+        box-shadow: none;
+      }
+
+      .controls {
+        flex-direction: column;
+      }
+
+      button {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Speech to Text with Unintelligible Detection</h1>
+      <p>
+        This page runs entirely in the browser (no paid APIs).
+        It transcribes speech and inserts
+        <span class="unintelligible">[unintelligible]</span> when there is loud
+        audio but nothing can be transcribed.
+      </p>
+    </header>
+
+    <section>
+      <div class="row">
+        <label for="languageSelect">Language:</label>
+        <select id="languageSelect">
+          <option value="en-US">English (US)</option>
+          <option value="fr-FR">French (France)</option>
+          <option value="zh-CN">Chinese (Mandarin, Simplified)</option>
+        </select>
+      </div>
+
+      <div class="status" id="status">Status: idle</div>
+
+      <div class="transcript-label">Recognized speech:</div>
+      <div id="transcriptDisplay" class="transcript-box"></div>
+
+      <div class="legend">
+        <strong>Legend:</strong>
+        <span class="unintelligible">[unintelligible]</span> =
+        microphone heard “speech-like” sound for a while, but recognition
+        produced no new text.
+      </div>
+
+      <div class="controls">
+        <button id="startBtn">Start</button>
+        <button id="stopBtn" disabled>Stop</button>
+      </div>
+
+      <div class="note">
+        • Works best in Chrome / Edge over HTTPS (or <code>http://localhost</code>).<br>
+        • On iPhone/iPad, Safari does not currently support the Web Speech API,
+          so speech recognition may be unavailable.<br>
+        • All processing is client-side using Web Speech + Web Audio APIs.
+      </div>
+    </section>
+  </div>
+
+  <script>
+    // ========= CONFIGURABLE CONSTANTS =========
+    const VOLUME_THRESHOLD = 0.05;      // 0–1, lower = more sensitive to quiet sounds
+    const CHECK_INTERVAL_MS = 100;      // how often we sample volume
+    const NO_TEXT_TIMEOUT_MS = 1200;    // loud duration (ms) before we insert [unintelligible]
+
+    // ========= DOM ELEMENTS =========
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const statusEl = document.getElementById('status');
+    const transcriptDisplay = document.getElementById('transcriptDisplay');
+    const startBtn = document.getElementById('startBtn');
+    const stopBtn = document.getElementById('stopBtn');
+    const languageSelect = document.getElementById('languageSelect');
+
+    let recognition;
+    let fullTranscript = '';
+    let currentTranscriptText = '';
+
+    // Audio monitoring
+    let audioContext = null;
+    let analyser = null;
+    let micSource = null;
+    let micStream = null;
+    let volumeTimer = null;
+
+    let loudStartTime = null;
+    let transcriptAtLoudStart = '';
+
+    // ========= UTILS =========
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function renderTranscript(text) {
+      const safe = escapeHtml(text);
+      const withHighlight = safe.replace(/\[unintelligible\]/g,
+        '<span class="unintelligible">[unintelligible]</span>');
+      transcriptDisplay.innerHTML = withHighlight;
+    }
+
+    // ========= VOLUME MONITOR (Web Audio) =========
+    async function startVolumeMonitor() {
+      if (micStream) return; // already running
+
+      micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      micSource = audioContext.createMediaStreamSource(micStream);
+      analyser = audioContext.createAnalyser();
+      analyser.fftSize = 2048;
+      micSource.connect(analyser);
+
+      const dataArray = new Uint8Array(analyser.fftSize);
+
+      volumeTimer = setInterval(() => {
+        analyser.getByteTimeDomainData(dataArray);
+
+        // Root-mean-square volume (0–1)
+        let sumSquares = 0;
+        for (let i = 0; i < dataArray.length; i++) {
+          const v = (dataArray[i] - 128) / 128; // center
+          sumSquares += v * v;
+        }
+        const rms = Math.sqrt(sumSquares / dataArray.length);
+
+        const now = performance.now();
+        const loud = rms > VOLUME_THRESHOLD;
+
+        if (loud) {
+          if (loudStartTime === null) {
+            // just became loud
+            loudStartTime = now;
+            transcriptAtLoudStart = currentTranscriptText;
+          } else {
+            const elapsed = now - loudStartTime;
+            if (
+              elapsed > NO_TEXT_TIMEOUT_MS &&
+              currentTranscriptText === transcriptAtLoudStart
+            ) {
+              // Loud for long enough, but no new words -> flag as unintelligible
+              fullTranscript = (fullTranscript + ' [unintelligible] ').trim();
+              currentTranscriptText = fullTranscript;
+              renderTranscript(currentTranscriptText);
+
+              // Reset so we don't insert it repeatedly
+              loudStartTime = null;
+              transcriptAtLoudStart = currentTranscriptText;
+            }
+          }
+        } else {
+          // Quiet now: reset timer
+          loudStartTime = null;
+          transcriptAtLoudStart = currentTranscriptText;
+        }
+      }, CHECK_INTERVAL_MS);
+    }
+
+    function stopVolumeMonitor() {
+      if (volumeTimer) {
+        clearInterval(volumeTimer);
+        volumeTimer = null;
+      }
+      if (micStream) {
+        micStream.getTracks().forEach(t => t.stop());
+        micStream = null;
+      }
+      if (audioContext) {
+        audioContext.close();
+        audioContext = null;
+      }
+      analyser = null;
+      micSource = null;
+      loudStartTime = null;
+    }
+
+    // ========= SPEECH RECOGNITION SETUP =========
+    if (!SpeechRecognition) {
+      statusEl.textContent =
+        'Status: Speech recognition is not supported in this browser/device. ' +
+        'On iPhone/iPad, please use a desktop or Android device for live transcription.';
+      startBtn.disabled = true;
+      stopBtn.disabled = true;
+    } else {
+      recognition = new SpeechRecognition();
+      recognition.interimResults = true;
+      recognition.continuous = true;
+
+      recognition.onstart = () => {
+        statusEl.textContent = 'Status: listening (' + recognition.lang + ')...';
+        startBtn.disabled = true;
+        stopBtn.disabled = false;
+      };
+
+      recognition.onend = () => {
+        statusEl.textContent = 'Status: stopped';
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
+        stopVolumeMonitor();
+      };
+
+      recognition.onerror = (event) => {
+        console.error('Speech recognition error:', event.error);
+        statusEl.textContent = 'Error: ' + event.error;
+        startBtn.disabled = false;
+        stopBtn.disabled = true;
+        stopVolumeMonitor();
+      };
+
+      recognition.onresult = (event) => {
+        let interimTranscript = '';
+
+        // Only process *new* results
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          const result = event.results[i];
+          const transcript = result[0].transcript;
+
+          if (result.isFinal) {
+            fullTranscript += transcript + ' ';
+          } else {
+            interimTranscript += transcript + ' ';
+          }
+        }
+
+        currentTranscriptText = (fullTranscript + interimTranscript).trim();
+        renderTranscript(currentTranscriptText);
+
+        // If we got new text while loud, reset baseline
+        transcriptAtLoudStart = currentTranscriptText;
+      };
+
+      // ========= BUTTON HANDLERS =========
+      startBtn.addEventListener('click', async () => {
+        recognition.lang = languageSelect.value;
+        fullTranscript = '';
+        currentTranscriptText = '';
+        renderTranscript('');
+        loudStartTime = null;
+        transcriptAtLoudStart = '';
+
+        try {
+          await startVolumeMonitor();  // starts mic + volume checks
+          recognition.start();
+        } catch (err) {
+          console.error('Microphone error:', err);
+          statusEl.textContent = 'Error: could not access microphone. ' +
+            'Check permissions and that you are on HTTPS or localhost.';
+        }
+      });
+
+      stopBtn.addEventListener('click', () => {
+        recognition.stop();
+        stopVolumeMonitor();
+      });
+    }
+  </script>
+</body>
+</html>
